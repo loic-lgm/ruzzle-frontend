@@ -1,7 +1,8 @@
-import './navbar.css';
+import styles from './navbar.module.scss';
+
 const Navbar = () => {
     return (
-        <div className="navbar-container">
+        <div className={styles.navbar_container}>
             <div>HOME</div>
             <div>PUZZLES</div>
             <div>ADD</div>
