@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import './App.css';
-import Navbar from './components/Navbar';
+import { Button } from "@/components/ui/button"
+import Navbar from '@/components/Navbar';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <div>
         <Navbar />
+          <Button className="cursor-pointer">Click</Button>
       </div>
     </>
   );
