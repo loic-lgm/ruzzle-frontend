@@ -7,7 +7,7 @@ import UserInfo from "@/components/Navbar/components/UserInfo";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
