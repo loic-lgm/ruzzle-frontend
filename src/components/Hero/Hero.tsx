@@ -7,7 +7,7 @@ const Hero = () => {
         <div className="absolute top-0 right-0 w-64 h-64 bg-lime-500/10 rounded-full filter blur-3xl animate-spin-slow"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-teal-500/10 rounded-full filter blur-3xl"></div>
 
-        <div className="relative z-10 text-center">
+        <div className="z-10 text-center">
           <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-green-500/10 to-lime-500/10 rounded-full font-medium mb-4 animate-fade-in">
             Rejoignez la communauté!
           </span>

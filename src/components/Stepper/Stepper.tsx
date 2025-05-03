@@ -1,4 +1,5 @@
-import { ArrowLeftRight, Upload, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ArrowLeftRight, ChevronsRight, Upload, User } from 'lucide-react';
 
 const steps = [
   {
@@ -21,30 +22,29 @@ const steps = [
 
 const Stepper = () => {
   return (
-    <section className="flex w-full justify-center mb-8">
-      <div className="relative w-2/3">
-        <div className="h-1 bg-gray-200 w-full absolute top-10 left-0 z-0" />
+    <section className="flex flex-col items-center w-full mb-15">
+      <div className="relative w-[900px]">
+        <div className="absolute top-10 left-0 w-full h-1 bg-gray-200 z-0" />
 
-        <div className="relative z-10 flex justify-between items-start w-full">
+        <div className="relative z-10 h-40 w-full">
           {steps.map((step, index) => {
-            const isFirst = index === 0;
-            const isLast = index === steps.length - 1;
-            const translate = isFirst
-              ? '-translate-x-1/2'
-              : isLast
-              ? 'translate-x-1/2'
-              : '';
+            const total = steps.length - 1;
+            const leftPercent = (index / total) * 100;
 
             return (
               <div
                 key={index}
-                className={`flex flex-col items-center text-center w-[250px] relative ${translate}`}
+                className="absolute flex flex-col items-center text-center"
+                style={{
+                  left: `${leftPercent}%`,
+                  transform: 'translateX(-50%)',
+                }}
               >
-                <div className="w-20 h-20 rounded-full bg-gradient-to-bl from-lime-500 to-green-500 text-white flex items-center justify-center z-10">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-bl from-lime-500 to-green-500 text-white flex items-center justify-center transition-transform duration-200 ease-in-out hover:scale-110">
                   {step.icon}
                 </div>
 
-                <div className="mt-3 min-h-[3.5rem] max-w-[280px] w-[300px]">
+                <div className="mt-3 w-[300px]">
                   <div className="text-base font-medium">{step.title}</div>
                   <div className="text-sm text-gray-600">
                     {step.description}
@@ -54,6 +54,13 @@ const Stepper = () => {
             );
           })}
         </div>
+      </div>
+
+      <div className="mt-15">
+        <Button className="px-10 py-6 border-2 border-lime-400 bg-tranparent text-gray-900 hover:border-green-500 hover:bg-transparent text-lg">
+          Démarrer maintenant
+          <ChevronsRight />
+        </Button>
       </div>
     </section>
   );
