@@ -21,7 +21,7 @@ const steps = [
 
 const Stepper = () => {
   return (
-    <div className="flex w-full justify-center mb-8">
+    <section className="flex w-full justify-center mb-8">
       <div className="relative w-2/3">
         <div className="h-1 bg-gray-200 w-full absolute top-10 left-0 z-0" />
 
@@ -40,7 +40,7 @@ const Stepper = () => {
                 key={index}
                 className={`flex flex-col items-center text-center w-[250px] relative ${translate}`}
               >
-                <div className="w-20 h-20 rounded-full bg-primary text-white flex items-center justify-center z-10">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-bl from-lime-500 to-green-500 text-white flex items-center justify-center z-10">
                   {step.icon}
                 </div>
 
@@ -55,7 +55,7 @@ const Stepper = () => {
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
