@@ -1,10 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router";
-import Home from "./pages/Home";
+import { BrowserRouter, Route, Routes } from 'react-router';
+import Home from './pages/Home';
 
 const App = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path='/' element={<Home />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
