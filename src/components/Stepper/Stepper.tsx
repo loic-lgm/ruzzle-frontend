@@ -24,7 +24,19 @@ const Stepper = () => {
   return (
     <section className="flex flex-col items-center w-full mb-15">
       <div className="relative w-[900px]">
-        <div className="absolute top-10 left-0 w-full h-1 bg-gray-200 z-0" />
+        <svg
+          className="absolute top-7 left-0 w-full h-10 z-0"
+          viewBox="0 0 1000 100"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+        >
+          <path
+            d=" M0,50 C 125,0 125,100 250,50 S 375,0 500,50 S 625,100 750,50 S 875,0 1000,50"
+            stroke="#e5e7eb"
+            strokeWidth="16"
+            fill="transparent"
+          />
+        </svg>
 
         <div className="relative z-10 h-40 w-full">
           {steps.map((step, index) => {
