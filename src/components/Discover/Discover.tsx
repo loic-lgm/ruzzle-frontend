@@ -46,7 +46,8 @@ const mockPuzzles: Puzzle[] = [
   {
     id: 'l1',
     title: 'Mountain Sunset',
-    image: 'https://images.unsplash.com/photo-1472396961693-142e6e269027',
+    image:
+      'https://www.mackoviahracky.sk/image/handle/image_bank/19057-a-educa-puzzle.jpg',
     pieceCount: 1000,
     category: 'Landscapes',
     brand: 'Ravensburger',
@@ -55,7 +56,8 @@ const mockPuzzles: Puzzle[] = [
   {
     id: 'l2',
     title: 'Ocean Waves',
-    image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21',
+    image:
+      'https://www.artieinventive.it/wp-content/uploads/2023/05/puzzle-personalizzato-stampa-a-colori-e-laser-2-1024x810.jpg',
     pieceCount: 500,
     category: 'Landscapes',
     brand: 'Clementoni',
@@ -96,20 +98,22 @@ const Discover = () => {
         Parcourez notre vaste collection de puzzles de haute qualité prêts à
         être échangés.
       </p>
-      <div className="flex items-center justify-center flex-wrap gap-3 mb-12">
-        {categories.map((category, index) => (
-          <button
-            key={index}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              activeCategory === index
-                ? 'bg-gradient-to-r from-lime-500 to-green-500 text-white shadow-md'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-            onClick={() => handleActiveCategory(index)}
-          >
-            {category}
-          </button>
-        ))}
+      <div className="flex flex-col items-center justify-center flex-wrap gap-3 mb-12">
+        <div className="flex gap-3">
+          {categories.map((category, index) => (
+            <button
+              key={index}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                activeCategory === index
+                  ? 'bg-gradient-to-r from-lime-500 to-green-500 text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+              onClick={() => handleActiveCategory(index)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-15 mb-15">
           {mockPuzzles.slice(0, 4).map((puzzle) => (
             <PuzzleCard key={puzzle.id} puzzle={puzzle} />
