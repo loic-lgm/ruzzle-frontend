@@ -2,11 +2,6 @@ import { Eye, ArrowLeftRight, MapPin, Layout } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import {
-    HoverCard,
-    HoverCardTrigger,
-    HoverCardContent,
-} from '@/components/ui/hover-card';
 import { Puzzle } from '@/types/puzzle';
 
 interface PuzzleCardProps {
@@ -15,8 +10,7 @@ interface PuzzleCardProps {
 
 const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
   return (
-    <Card className="group relative h-64 w-full overflow-hidden transition-all duration-200 hover:shadow-lg">
-      {/* Badge flottant */}
+    <Card className="group relative h-64 w-full overflow-hidden transition-shadow duration-00 hover:shadow-xl p-0">
       <div className="absolute top-2 right-2 z-20">
         <Badge
           variant="secondary"
@@ -27,17 +21,15 @@ const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
         </Badge>
       </div>
 
-      {/* Image en fond */}
       <CardContent className="p-0 h-full w-full">
         <img
           src={puzzle.image}
           alt={puzzle.title}
-          className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
         />
       </CardContent>
 
-      {/* Overlay en bas */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+      <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-4">
         <h3 className="text-white font-semibold truncate">{puzzle.title}</h3>
 
         {puzzle.city && (
@@ -51,25 +43,18 @@ const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
           <span className="text-white/80 text-xs">{puzzle.category}</span>
 
           <div className="flex items-center space-x-2">
-            <HoverCard>
-              <HoverCardTrigger asChild>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  className="h-8 w-8 p-0 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40 transition-all duration-300"
-                >
-                  <ArrowLeftRight className="h-4 w-4 text-white" />
-                </Button>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-auto p-2">
-                <span className="text-xs">Échanger</span>
-              </HoverCardContent>
-            </HoverCard>
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-8 w-8 p-0 rounded-full bg-white/20 text-white "
+            >
+              <ArrowLeftRight className="h-4 w-4" />
+            </Button>
 
             <Button
               size="sm"
-              variant="secondary"
-              className="h-8 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40"
+              variant="ghost"
+              className="h-8 rounded-full flex items-center bg-white/20 text-white "
             >
               <Eye className="h-4 w-4 mr-1" />
               <span className="text-xs">Aperçu</span>

@@ -56,8 +56,7 @@ const mockPuzzles: Puzzle[] = [
   {
     id: 'l2',
     title: 'Ocean Waves',
-    image:
-      'https://www.artieinventive.it/wp-content/uploads/2023/05/puzzle-personalizzato-stampa-a-colori-e-laser-2-1024x810.jpg',
+    image: 'https://images.unsplash.com/photo-1472396961693-142e6e269027',
     pieceCount: 500,
     category: 'Landscapes',
     brand: 'Clementoni',
