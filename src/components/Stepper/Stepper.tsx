@@ -22,7 +22,10 @@ const steps = [
 
 const Stepper = () => {
   return (
-    <section className="flex flex-col items-center w-full mb-15">
+    <section
+      className="flex flex-col items-center w-full mb-15 scroll-mt-24"
+      id="stepper"
+    >
       <div className="relative w-[900px]">
         <svg
           className="absolute top-7 left-0 w-full h-10 z-0"

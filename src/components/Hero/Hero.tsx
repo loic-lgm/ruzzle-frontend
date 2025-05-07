@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router';
 
 const Hero = () => {
   return (
@@ -23,16 +24,16 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up-delay-2">
-            <a
-              href="/puzzles"
+            <Link
+              to="/puzzles"
               className="bg-gradient-to-r from-teal-500 to-green-500 text-white px-8 py-3 rounded-xl font-semibold text-lg inline-flex items-center justify-center gap-2 shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30 transition-all hover:-translate-y-1"
             >
               Parcourir les puzzles
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </Link>
 
             <a
-              href="/how-it-works"
+              href="#stepper"
               className="bg-white text-gray-800 px-8 py-3 rounded-xl font-semibold text-lg inline-flex items-center justify-center gap-2 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all border border-green-500"
             >
               Comment ça marche

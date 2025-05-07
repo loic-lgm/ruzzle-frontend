@@ -1,3 +1,5 @@
+import { Link } from 'react-router';
+
 const Footer = () => {
   return (
     <footer className="bg-gray-50 border-t border-gray-200">
@@ -72,16 +74,16 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#explore"
+                <Link
+                  to="/puzzles"
                   className="text-gray-600 hover:text-green-500 transition-colors"
                 >
                   Explorer les puzzles
-                </a>
+                </Link>
               </li>
               <li>
                 <a
-                  href="#how-it-works"
+                  href="#stepper"
                   className="text-gray-600 hover:text-green-500 transition-colors"
                 >
                   Comment ça marche
