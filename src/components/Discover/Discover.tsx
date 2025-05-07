@@ -113,7 +113,7 @@ const Discover = () => {
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-15 mb-15">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-15 mb-15 px-8">
           {mockPuzzles.slice(0, 4).map((puzzle) => (
             <PuzzleCard key={puzzle.id} puzzle={puzzle} />
           ))}
