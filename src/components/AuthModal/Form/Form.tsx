@@ -2,29 +2,77 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Loader } from 'lucide-react';
 import SocialLoginButtons from '@/components/AuthModal/SocialLoginButtons';
+import axios, { AxiosError } from 'axios';
+import { useMutation } from '@tanstack/react-query';
 
 interface FormProps {
   setActiveTab: React.Dispatch<React.SetStateAction<'login' | 'signup'>>;
   activeTab: 'login' | 'signup';
 }
 
+type LoginData = {
+  email: string;
+  password: string;
+};
+
+type LoginResponse = {
+  token: string;
+  user: {
+    id: number;
+    username: string;
+  };
+};
+
+const loginFn = async (data: LoginData): Promise<LoginResponse> => {
+  const response = await axios.post('http://127.0.0.1:8000/users/login/', data);
+  return response.data;
+};
+
+/**
+ * 
+ * TODO
+ * Mettre les types dans un fichier à part
+ * Mettre loginFn dans une autre fonction
+ * Utiliser une variable d'environement pour http://127.0.0.1:8000
+ * Trouver un moyen d'enregistrer le token du user
+ */
+
 const Form = ({ setActiveTab, activeTab }: FormProps) => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const login = useMutation({
+    mutationFn: loginFn,
+    onSuccess: (data) => {
+      console.log('Login réussi :', data);
+      // exemple : localStorage.setItem('token', data.token)
+    },
+    onError: (error) => {
+      console.error('Erreur de login :', error);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle login logic here
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    login.mutate({ email, password });
     console.log('Login form submitted');
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="text-red-500 text-sm">
+        {(login.error as AxiosError<{ error: string }>)?.response?.data?.error}
+      </div>
       {activeTab === 'login' && (
         <>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              name="email"
               type="email"
               placeholder="votreemail@exemple.com"
               required
@@ -44,6 +92,7 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
               id="password"
               type="password"
               placeholder="••••••••"
+              name="password"
               required
             />
           </div>
@@ -89,7 +138,11 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
         className="w-full gradient-border-button-cta bg-white/10 text-gray-900 hover:bg-white/20 font-semibold"
       >
         <span>{activeTab === 'login' ? 'Se connecter' : 'S\'inscrire'}</span>
-        <ChevronRight size={16} />
+        {login.isPending ? (
+          <Loader className="animate-spin" size={16} />
+        ) : (
+          <ChevronRight size={16} />
+        )}
       </Button>
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
