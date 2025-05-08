@@ -33,7 +33,7 @@ const Hero = () => {
             </Link>
 
             <a
-              href="#stepper"
+              href="#how-it-works"
               className="bg-white text-gray-800 px-8 py-3 rounded-xl font-semibold text-lg inline-flex items-center justify-center gap-2 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all border border-green-500"
             >
               Comment ça marche

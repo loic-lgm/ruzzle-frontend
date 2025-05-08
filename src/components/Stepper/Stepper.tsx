@@ -24,8 +24,11 @@ const Stepper = () => {
   return (
     <section
       className="flex flex-col items-center w-full mb-15 scroll-mt-24"
-      id="stepper"
+      id="how-it-works"
     >
+      <p className="text-4xl mb-30 font-bold bg-gradient-to-r from-lime-500 via-green-500 to-teal-500 bg-clip-text text-transparent animate-slide-up">
+        Comment ça marche ?
+      </p>
       <div className="relative w-[900px]">
         <svg
           className="absolute top-7 left-0 w-full h-10 z-0"
@@ -71,10 +74,14 @@ const Stepper = () => {
         </div>
       </div>
 
-      <div className="mt-15">
-        <Button className="px-10 py-6 border-2 border-lime-400 bg-tranparent text-gray-900 hover:border-green-500 hover:bg-transparent text-lg">
+      <div className="mt-30">
+        <Button
+          variant="custom"
+          className="group px-8 py-4 bg-gradient-to-r from-green-500/10 to-lime-500/10 rounded-full text-gray-800 text-lg"
+          size="custom"
+        >
           Démarrer maintenant
-          <ChevronsRight />
+          <ChevronsRight className="transition-transform duration-300 group-hover:scale-140" />
         </Button>
       </div>
     </section>

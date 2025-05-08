@@ -83,7 +83,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#stepper"
+                  href="#how-it-works"
                   className="text-gray-600 hover:text-green-500 transition-colors"
                 >
                   Comment ça marche
