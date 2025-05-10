@@ -1,71 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ChevronRight, Loader } from 'lucide-react';
 import SocialLoginButtons from '@/components/AuthModal/SocialLoginButtons';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query';
-
-interface FormProps {
-  setActiveTab: React.Dispatch<React.SetStateAction<'login' | 'signup'>>;
-  activeTab: 'login' | 'signup';
-}
-
-type LoginData = {
-  email: string;
-  password: string;
-};
-
-type LoginResponse = {
-  token: string;
-  user: {
-    id: number;
-    username: string;
-  };
-};
-
-const loginFn = async (data: LoginData): Promise<LoginResponse> => {
-  const response = await axios.post('http://127.0.0.1:8000/users/login/', data);
-  return response.data;
-};
-
-/**
- * 
- * TODO
- * Mettre les types dans un fichier à part
- * Mettre loginFn dans une autre fonction
- * Utiliser une variable d'environement pour http://127.0.0.1:8000
- * Trouver un moyen d'enregistrer le token du user
- */
+import { FormProps } from '@/types/auth';
+import { loginFn } from '@/service/auth';
+import { useNavigate } from 'react-router';
 
 const Form = ({ setActiveTab, activeTab }: FormProps) => {
+  const navigate = useNavigate();
+  const [error, setError] = useState<string | null | undefined>();
+
   const login = useMutation({
     mutationFn: loginFn,
-    onSuccess: (data) => {
-      console.log('Login réussi :', data);
-      // exemple : localStorage.setItem('token', data.token)
+    onSuccess: () => {
+      setError(null);
+      navigate('/puzzles');
     },
     onError: (error) => {
-      console.error('Erreur de login :', error);
+      const axiosError = error as AxiosError<{ error: string }>;
+      setError(axiosError.response?.data?.error || 'Une erreur est survenue');
     },
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle login logic here
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
+    if (!email || !password) {
+      setError(
+        !email
+          ? 'Vous devez fournir un email valide.'
+          : 'Vous devez fournir un mot de passe.'
+      );
+      return;
+    }
     login.mutate({ email, password });
     console.log('Login form submitted');
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="text-red-500 text-sm">
-        {(login.error as AxiosError<{ error: string }>)?.response?.data?.error}
-      </div>
+      {error && <div className="text-red-500 text-sm">{error}</div>}
       {activeTab === 'login' && (
         <>
           <div className="space-y-2">
@@ -75,7 +55,6 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
               name="email"
               type="email"
               placeholder="votreemail@exemple.com"
-              required
             />
           </div>
           <div className="space-y-2">
@@ -93,7 +72,6 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
               type="password"
               placeholder="••••••••"
               name="password"
-              required
             />
           </div>
         </>
