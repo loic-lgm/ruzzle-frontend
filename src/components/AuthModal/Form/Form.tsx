@@ -45,10 +45,16 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
     mutationFn: signupFn,
     onSuccess: () => {
       setError(null);
+      setActiveTab('login');
     },
     onError: (error) => {
-      const axiosError = error as AxiosError<{ error: string }>;
-      setError(axiosError.response?.data?.error || 'Une erreur est survenue');
+      const axiosError = error as AxiosError<{ error?: string, username?: string, email?: string }>;
+      setError(
+        axiosError.response?.data?.error ||
+          axiosError.response?.data?.username ||
+          axiosError.response?.data?.email ||
+          'Une erreur est survenue'
+      );
     },
   });
 
