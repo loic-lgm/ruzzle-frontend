@@ -40,7 +40,7 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
-      quotes: ['error', 'single'],
+      quotes: ['error', 'single', { avoidEscape: true }],
     },
   },
 ] satisfies unknown[]; // <-- évite toute erreur de type
