@@ -5,12 +5,15 @@ import { Button } from '@/components/ui/button';
 import SearchBar from '@/components/Navbar/components/SearchBar';
 import UserInfo from '@/components/Navbar/components/UserInfo';
 import AuthModal from '@/components/AuthModal';
+import { useFetchUser } from '@/hooks/useFetchUser';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+
+  const user = useFetchUser()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,7 +51,7 @@ const Navbar = () => {
             Ruzzle
           </Link>
           <SearchBar />
-          {isLoggedIn ? (
+          {user ? (
             <UserInfo />
           ) : (
             <Button
