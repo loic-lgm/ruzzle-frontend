@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router';
 import Home from './pages/Home';
-import useUserStore from '@/stores/useUserStore';
+import { useFetchUser } from '@/hooks/useFetchUser';
 
 const App = () => {
-  useUserStore();
+  useFetchUser();
   return (
     <BrowserRouter>
       <Routes>

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import SearchBar from '@/components/Navbar/components/SearchBar';
 import UserInfo from '@/components/Navbar/components/UserInfo';
 import AuthModal from '@/components/AuthModal';
-import { useFetchUser } from '@/hooks/useFetchUser';
+import useUserStore from '@/stores/useUserStore';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -13,7 +13,7 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
 
-  const user = useFetchUser()
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,7 +52,7 @@ const Navbar = () => {
           </Link>
           <SearchBar />
           {user ? (
-            <UserInfo />
+            <UserInfo user={user}/>
           ) : (
             <Button
               className="border-2 border-green-400 bg-tranparent text-gray-900 hover:border-green-500 hover:bg-transparent"

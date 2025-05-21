@@ -6,10 +6,12 @@ import { useQuery } from '@tanstack/react-query';
 export const useFetchUser = () => {
   const setUser = useUserStore((state) => state.setUser);
 
-  const query =  useQuery({
+  const query = useQuery({
     queryKey: ['user'],
     queryFn: fetchUser,
     staleTime: 5 * 60 * 1000,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {

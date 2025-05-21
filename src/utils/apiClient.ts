@@ -12,11 +12,17 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    const isRefreshCall = originalRequest.url?.includes('/users/me/');
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !isRefreshCall
+    ) {
       originalRequest._retry = true;
 
       try {
-        await api.post(`${import.meta.env.VITE_API_URL}/users/refresh/`);
+        await api.post('/users/refresh/');
         return api(originalRequest);
       } catch (refreshError) {
         window.location.href = '/';

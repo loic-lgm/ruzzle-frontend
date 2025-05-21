@@ -5,46 +5,52 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Bell, MessageSquare, Package, User } from 'lucide-react';
+import { Bell, MessageSquare, Package, User as UserIcon} from 'lucide-react';
 import { Link } from 'react-router';
+import { User } from '@/types/user';
 
-const UserInfo = () => {
+interface UserInfoProps {
+  user: User;
+}
+
+const UserInfo = ({ user }: UserInfoProps) => {
+  console.log(user);
   return (
-    <div className='flex gap-8'>
-      <Button variant='ghost' size='icon'>
+    <div className="flex gap-8">
+      <Button variant="ghost" size="icon">
         <Bell />
       </Button>
       <Popover>
         <PopoverTrigger>
-          <Avatar className='cursor-pointer'>
-            <AvatarImage src='https://cdn.britannica.com/06/122506-050-C8E03A8A/Pyramid-of-Khafre-Giza-Egypt.jpg' />
+          <Avatar className="cursor-pointer">
+            <AvatarImage src="https://cdn.britannica.com/06/122506-050-C8E03A8A/Pyramid-of-Khafre-Giza-Egypt.jpg" />
           </Avatar>
         </PopoverTrigger>
-        <PopoverContent className='w-56'>
-          <div className='grid gap-4'>
+        <PopoverContent className="w-56">
+          <div className="grid gap-4">
             <Link
-              to='/profile'
-              className='flex items-center gap-2 text-sm font-medium hover:text-green-500'
+              to="/profile"
+              className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
             >
-              <User size={16} />
+              <UserIcon size={16} />
               <span>Mon profil</span>
             </Link>
             <Link
-              to='/profile?tab=exchanges'
-              className='flex items-center gap-2 text-sm font-medium hover:text-green-500'
+              to="/profile?tab=exchanges"
+              className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
             >
               <Package size={16} />
               <span>Mes Échanges</span>
             </Link>
             <Link
-              to='/profile?tab=messages'
-              className='flex items-center gap-2 text-sm font-medium hover:text-green-500'
+              to="/profile?tab=messages"
+              className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
             >
               <MessageSquare size={16} />
               <span>Messages</span>
             </Link>
             <hr />
-            <Button variant='outline' className='w-full'>
+            <Button variant="outline" className="w-full">
               Déconnexion
             </Button>
           </div>
