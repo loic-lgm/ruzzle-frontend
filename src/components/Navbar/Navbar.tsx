@@ -9,8 +9,6 @@ import useUserStore from '@/stores/useUserStore';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
 
   const user = useUserStore((state) => state.user);

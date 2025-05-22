@@ -15,12 +15,12 @@ import { AxiosError } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { FormProps } from '@/types/auth';
 import { loginFn, signupFn } from '@/service/auth';
-// import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { City } from '@/types/city';
 import { fetchCities } from '@/service/city';
 
 const Form = ({ setActiveTab, activeTab }: FormProps) => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [error, setError] = useState<string | null>('');
 
@@ -36,7 +36,7 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
     mutationFn: loginFn,
     onSuccess: () => {
       setError(null);
-      // navigate('/puzzles');
+      navigate('/puzzles');
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
