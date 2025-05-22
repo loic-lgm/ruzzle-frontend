@@ -2,7 +2,10 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  // Ajoute d'autres champs si besoin
+  city?: string;
+  first_name?: string;
+  image?: string;
+  last_name?: string;
 }
 
 export interface UserStore {
