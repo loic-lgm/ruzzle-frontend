@@ -12,13 +12,7 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
-    const isRefreshCall = originalRequest.url?.includes('/users/me/');
-
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !isRefreshCall
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
