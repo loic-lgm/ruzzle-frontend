@@ -14,3 +14,8 @@ export interface FilterTypes {
   brands: string[];
   cities?: string[];
 }
+
+export type PieceCount = {
+  id: number;
+  name: string;
+};

@@ -32,20 +32,18 @@ const Puzzles = () => {
   };
 
   return (
-    <>
+    <div className="bg-gray-50">
       <Navbar />
       <Explore />
 
-      
-
       {/* Filters section */}
       {/* {filtersVisible && ( */}
-        <Filter
-          filters={filters}
-          onFilterChange={handleFilterChange}
-          onClearFilters={handleClearFilters}
-          onApplyFilters={handleApplyFilters}
-        />
+      <Filter
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        onClearFilters={handleClearFilters}
+        onApplyFilters={handleApplyFilters}
+      />
       {/* )} */}
 
       {/* Results section */}
@@ -66,7 +64,7 @@ const Puzzles = () => {
         )} */}
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
