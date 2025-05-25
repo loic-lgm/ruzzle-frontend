@@ -26,6 +26,8 @@ const SelectCustom = ({ label, data }: SelectCustomProps) => {
     setSelectedItem(name);
   };
 
+  console.log(data)
+
   return (
     <Select>
       <SelectTrigger className="w-full border-lightblue/30 focus:border-green-500">

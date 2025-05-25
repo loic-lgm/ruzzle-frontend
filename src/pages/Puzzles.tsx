@@ -1,50 +1,44 @@
-import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
-import { FilterTypes } from '@/types/puzzle';
 import Filter from '@/components/Filter';
 import Footer from '@/components/Footer';
 import Explore from '@/components/Explore';
+import { useQuery } from '@tanstack/react-query';
+import { fetchCities } from '@/service/city';
+import { fetchBrands } from '@/service/brand';
+import { fetchCategories } from '@/service/categories';
 
 const Puzzles = () => {
-  const [filters, setFilters] = useState<FilterTypes>({
-    categories: [],
-    pieceCount: [],
-    brands: [],
-    cities: [],
+  const { data: cities } = useQuery({
+    queryKey: ['cities'],
+    queryFn: fetchCities,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
   });
 
-  const handleFilterChange = (newFilters: FilterTypes) => {
-    setFilters(newFilters);
-  };
+  const { data: brands } = useQuery({
+    queryKey: ['brands'],
+    queryFn: fetchBrands,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  const handleClearFilters = () => {
-    setFilters({
-      categories: [],
-      pieceCount: [],
-      brands: [],
-      cities: [],
-    });
-  };
-
-  const handleApplyFilters = () => {
-    // In a real app, this would trigger an API call
-    console.log('Applied filters:', filters);
-  };
+  const { data: categories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
 
   return (
     <div className="bg-gray-50">
       <Navbar />
       <Explore />
-
-      {/* Filters section */}
-      {/* {filtersVisible && ( */}
-      <Filter
-        filters={filters}
-        onFilterChange={handleFilterChange}
-        onClearFilters={handleClearFilters}
-        onApplyFilters={handleApplyFilters}
-      />
-      {/* )} */}
+      {cities && brands && categories && (
+        <Filter cities={cities} brands={brands} categories={categories} />
+      )}
 
       {/* Results section */}
       <div className="mb-6">

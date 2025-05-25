@@ -9,10 +9,10 @@ export interface Puzzle {
 }
 
 export interface FilterTypes {
-  categories: string[];
-  pieceCount: string[];
-  brands: string[];
-  cities?: string[];
+  category: string;
+  pieceCount: string;
+  brand: string;
+  city: string;
 }
 
 export type PieceCount = {
