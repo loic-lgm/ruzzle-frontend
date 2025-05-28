@@ -16,12 +16,12 @@ interface SelectCustomProps {
   data: Array<Category | Brand | City | PieceCount>;
   label: string;
   type: keyof FilterTypes;
-  onChange: (filterType: keyof FilterTypes, value: string) => void;
+  onChange: (type: keyof FilterTypes, value: string) => void;
 }
 
 const SelectCustom = ({ label, data, onChange, type }: SelectCustomProps) => {
   return (
-    <Select>
+    <Select onValueChange={(value) => onChange(type, value)}>
       <SelectTrigger className="w-full border-lightblue/30 focus:border-green-500">
         <SelectValue placeholder={`Choisir une ${label.toLocaleLowerCase()}`} />
       </SelectTrigger>
@@ -32,10 +32,7 @@ const SelectCustom = ({ label, data, onChange, type }: SelectCustomProps) => {
         {data.map((item: Category | Brand | City | PieceCount) => (
           <SelectItem
             key={item.id}
-            value={item.name}
-            onClick={(e) =>
-              onChange(type, (e.target as HTMLSelectElement).value)
-            }
+            value={item.id.toString()}
           >
             <div className="flex items-center">
               <span>{item.name}</span>

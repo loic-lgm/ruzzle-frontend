@@ -52,12 +52,32 @@ const Filter = ({
 
   const handleFilterChange = useCallback(
     (type: keyof FilterTypes, value: string) => {
+      let selectedItem;
+
+      switch (type) {
+        case 'category':
+          selectedItem = categories.find(
+            (item) => item.id.toString() === value
+          );
+          break;
+        case 'brand':
+          selectedItem = brands.find((item) => item.id.toString() === value);
+          break;
+        case 'city':
+          selectedItem = cities.find((item) => item.id.toString() === value);
+          break;
+        default:
+          return;
+      }
+
+      if (!selectedItem) return;
+
       setFilters((prev) => ({
         ...prev,
-        [type]: value,
+        [type]: type == 'city' ? selectedItem.name : selectedItem.id,
       }));
     },
-    [setFilters]
+    [brands, categories, cities, setFilters]
   );
 
   const hasActiveFilters =

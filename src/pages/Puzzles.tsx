@@ -45,7 +45,7 @@ const Puzzles = () => {
   });
 
   const { data: puzzles } = useQuery({
-    queryKey: ['puzzles'],
+    queryKey: ['puzzles', filters],
     queryFn: () => fetchPuzzles(filters),
     refetchOnWindowFocus: false,
     retry: false,
