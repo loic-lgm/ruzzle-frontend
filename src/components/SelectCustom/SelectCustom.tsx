@@ -10,24 +10,16 @@ import {
 import { Brand } from '@/types/brand';
 import { Category } from '@/types/category';
 import { City } from '@/types/city';
-import { PieceCount } from '@/types/puzzle';
-import { useState } from 'react';
+import { FilterTypes, PieceCount } from '@/types/puzzle';
 
 interface SelectCustomProps {
   data: Array<Category | Brand | City | PieceCount>;
   label: string;
-  type: string;
+  type: keyof FilterTypes;
+  onChange: (filterType: keyof FilterTypes, value: string) => void;
 }
 
-const SelectCustom = ({ label, data }: SelectCustomProps) => {
-  const [, setSelectedItem] = useState<string>('');
-
-  const handleChange = (name: string) => {
-    setSelectedItem(name);
-  };
-
-  console.log(data)
-
+const SelectCustom = ({ label, data, onChange, type }: SelectCustomProps) => {
   return (
     <Select>
       <SelectTrigger className="w-full border-lightblue/30 focus:border-green-500">
@@ -41,7 +33,9 @@ const SelectCustom = ({ label, data }: SelectCustomProps) => {
           <SelectItem
             key={item.id}
             value={item.name}
-            onClick={() => handleChange(item.name)}
+            onClick={(e) =>
+              onChange(type, (e.target as HTMLSelectElement).value)
+            }
           >
             <div className="flex items-center">
               <span>{item.name}</span>

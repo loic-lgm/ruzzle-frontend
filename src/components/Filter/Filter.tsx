@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   FilterIcon,
@@ -8,15 +8,7 @@ import {
   LayoutList,
   Search,
 } from 'lucide-react';
-// import {
-//   categories as allCategories,
-//   pieceCounts as allPieceCounts,
-//   brands as allBrands,
-//   frenchCities as allCities,
-// } from '@/data/filter-options';
-// import { City } from '@/types/city';
 import { Brands } from '@/types/brand';
-// import { Category } from '@/types/category';
 import { FilterTypes } from '@/types/puzzle';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { PIECE_COUNT } from '@/utils/constants';
@@ -27,15 +19,22 @@ interface FilterPropsType {
   brands: Brands;
   cities: Cities;
   categories: Categories;
+  displayMode: string;
+  filters: FilterTypes;
+  setFilters: Dispatch<SetStateAction<FilterTypes>>;
+  setDisplayMode: Dispatch<SetStateAction<'grid' | 'carousel'>>;
 }
 
-const Filter = ({ brands, cities, categories }: FilterPropsType) => {
-  const [filters, setFilters] = useState<FilterTypes>({
-    category: '',
-    pieceCount: '',
-    brand: '',
-    city: '',
-  });
+const Filter = ({
+  brands,
+  cities,
+  categories,
+  displayMode,
+  filters,
+  setFilters,
+  setDisplayMode,
+}: FilterPropsType) => {
+  const [filtersVisible, setFiltersVisible] = useState(true);
 
   const handleClearFilters = () => {
     setFilters({
@@ -51,67 +50,18 @@ const Filter = ({ brands, cities, categories }: FilterPropsType) => {
     console.log('Applied filters:', filters);
   };
 
-  // const handleFilterChange = (newFilters: FilterTypes) => {
-  //   setFilters(newFilters);
-  // };
-
-  // const handleCategoryChange = (category: string) => {
-  //   const newCategories = filters.categories.includes(category)
-  //     ? filters.categories.filter((c) => c !== category)
-  //     : [...filters.categories, category];
-
-  //   onFilterChange({
-  //     ...filters,
-  //     categories: newCategories,
-  //   });
-  // };
-
-  // const handlePieceCountChange = (pieceCount: string) => {
-  //   const newPieceCounts = filters.pieceCount.includes(pieceCount)
-  //     ? filters.pieceCount.filter((p) => p !== pieceCount)
-  //     : [...filters.pieceCount, pieceCount];
-
-  //   onFilterChange({
-  //     ...filters,
-  //     pieceCount: newPieceCounts,
-  //   });
-  // };
-
-  // const handleBrandChange = (brand: string) => {
-  //   const newBrands = filters.brands.includes(brand)
-  //     ? filters.brands.filter((b) => b !== brand)
-  //     : [...filters.brands, brand];
-
-  //   onFilterChange({
-  //     ...filters,
-  //     brands: newBrands,
-  //   });
-  // };
-
-  // const handleCityChange = (city: string) => {
-  //   const newCities = filters.cities?.includes(city)
-  //     ? filters.cities.filter((c) => c !== city)
-  //     : [...(filters.cities || []), city];
-
-  //   onFilterChange({
-  //     ...filters,
-  //     cities: newCities,
-  //   });
-  // };
+  const handleFilterChange = useCallback(
+    (type: keyof FilterTypes, value: string) => {
+      setFilters((prev) => ({
+        ...prev,
+        [type]: value,
+      }));
+    },
+    [setFilters]
+  );
 
   const hasActiveFilters =
     filters.category || filters.pieceCount || filters.brand || filters.city;
-
-  const [displayMode, setDisplayMode] = useState<'grid' | 'carousel'>('grid');
-  const [filtersVisible, setFiltersVisible] = useState(true);
-
-  /**
-   * TODO
-   * 1. Faire les appels pour passer les datas
-   * 2. Centrer l'intérieur du bloc filter: titre - select - button search
-   * 3. Reorganiser les state dans Puzzles
-   * 4. Afficher tous les puzzles sans filtres
-   */
 
   return (
     <>
@@ -185,19 +135,31 @@ const Filter = ({ brands, cities, categories }: FilterPropsType) => {
               )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-18 mb-6">
+            <div className="flex gap-10 mb-10">
               <SelectCustom
                 label="Categorie"
                 data={categories}
                 type="category"
+                onChange={handleFilterChange}
               />
               <SelectCustom
                 label="Nombre de pièce"
                 data={PIECE_COUNT}
                 type="pieceCount"
+                onChange={() => {}}
               />
-              <SelectCustom label="Marque" data={brands} type="brand" />
-              <SelectCustom label="Ville" data={cities} type="city" />
+              <SelectCustom
+                label="Marque"
+                data={brands}
+                type="brand"
+                onChange={handleFilterChange}
+              />
+              <SelectCustom
+                label="Ville"
+                data={cities}
+                type="city"
+                onChange={handleFilterChange}
+              />
               <div></div>
             </div>
 

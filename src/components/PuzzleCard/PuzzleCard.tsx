@@ -17,7 +17,7 @@ const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
           className="bg-white/80 backdrop-blur-sm text-gray-800 shadow-sm px-2 py-1 flex items-center gap-1"
         >
           <Layout className="h-3 w-3" />
-          <span>{puzzle.pieceCount} pièces</span>
+          <span>{puzzle.piece_count} pièces</span>
         </Badge>
       </div>
 
@@ -40,7 +40,7 @@ const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
         )}
 
         <div className="flex justify-between items-center mt-2">
-          <span className="text-white/80 text-xs">{puzzle.category}</span>
+          <span className="text-white/80 text-xs">{puzzle.category.name}</span>
 
           <div className="flex items-center space-x-2">
             <Button

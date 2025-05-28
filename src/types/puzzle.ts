@@ -1,12 +1,16 @@
+import { Category } from '@/types/category';
+
 export interface Puzzle {
   id: string;
   title: string;
   image: string;
-  pieceCount: number;
-  category: string;
+  piece_count: number;
+  category: Category;
   brand: string;
   city?: string;
 }
+
+export type Puzzles = [Puzzle];
 
 export interface FilterTypes {
   category: string;
