@@ -10,6 +10,7 @@ import { fetchPuzzles } from '@/service/puzzle';
 import { useState } from 'react';
 import PuzzlesResult from '@/components/PuzzlesResult';
 import { FilterTypes } from '@/types/puzzle';
+import { Loader } from 'lucide-react';
 
 const Puzzles = () => {
   const [displayMode, setDisplayMode] = useState<'grid' | 'carousel'>('grid');
@@ -44,7 +45,7 @@ const Puzzles = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  const { data: puzzles } = useQuery({
+  const { data: puzzles, isLoading } = useQuery({
     queryKey: ['puzzles', filters],
     queryFn: () => fetchPuzzles(filters),
     refetchOnWindowFocus: false,
@@ -67,6 +68,7 @@ const Puzzles = () => {
           setDisplayMode={setDisplayMode}
         />
       )}
+      {isLoading && <Loader className="animate-spin m-auto" size={45} />}
       {puzzles && <PuzzlesResult puzzles={puzzles} displayMode={displayMode} />}
       <Footer />
     </div>
