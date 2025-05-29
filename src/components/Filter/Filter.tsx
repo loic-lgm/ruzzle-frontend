@@ -45,11 +45,6 @@ const Filter = ({
     });
   };
 
-  const handleApplyFilters = () => {
-    // In a real app, this would trigger an API call
-    console.log('Applied filters:', filters);
-  };
-
   const handleFilterChange = useCallback(
     (type: keyof FilterTypes, value: string) => {
       let selectedItem;
@@ -181,15 +176,6 @@ const Filter = ({
                 onChange={handleFilterChange}
               />
               <div></div>
-            </div>
-
-            <div className="flex justify-center">
-              <Button
-                onClick={handleApplyFilters}
-                className="px-8 py-2 h-12 bg-gradient-to-r from-green-500 to-teal-500 text-white hover:shadow-lg transition-all hover:scale-105"
-              >
-                <span className="font-medium">Rechercher</span>
-              </Button>
             </div>
           </div>
         )}
