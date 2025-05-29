@@ -68,7 +68,7 @@ const Puzzles = () => {
           setDisplayMode={setDisplayMode}
         />
       )}
-      {isLoading && <Loader className="animate-spin m-auto" size={45} />}
+      {isLoading && <Loader className="animate-spin m-auto mt-12 mb-12" size={45} />}
       {puzzles && <PuzzlesResult puzzles={puzzles} displayMode={displayMode} />}
       <Footer />
     </div>

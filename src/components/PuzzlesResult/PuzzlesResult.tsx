@@ -9,8 +9,9 @@ const PuzzlesResult = ({ puzzles, displayMode }: PuzzlesResultProps) => {
   return (
     <div className="mb-16 flex justify-center flex-col m-auto max-w-7xl">
       <h2 className="text-xl font-semibold mb-4">
-        {puzzles.length}{' '}
-        {puzzles.length === 1 ? 'puzzle trouvé' : 'puzzles trouvés'}
+        {puzzles.length < 1  && 'Aucun puzzle trouvé'}
+        {puzzles.length === 1 && `${puzzles.length} puzzle trouvé`}
+        {puzzles.length > 1 && `${puzzles.length} puzzles trouvés`}
       </h2>
 
       {displayMode === 'grid' ? (
