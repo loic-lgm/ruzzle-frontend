@@ -25,7 +25,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
     <div className="flex gap-4">
       <Button
         variant="ghost"
-        size='icon'
+        size="icon"
         className="text-green-500 bg-transparent hover:text-green-500"
       >
         <Link to="/ajouter-un-puzzle">
@@ -33,7 +33,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
         </Link>
       </Button>
       <Button variant="ghost">
-        <Bell size={32} />
+        <Bell />
       </Button>
       <Popover>
         <PopoverTrigger>

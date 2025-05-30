@@ -6,6 +6,7 @@ import SearchBar from '@/components/Navbar/components/SearchBar';
 import UserInfo from '@/components/Navbar/components/UserInfo';
 import AuthModal from '@/components/AuthModal';
 import useUserStore from '@/stores/useUserStore';
+import { LogIn } from 'lucide-react';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -56,7 +57,7 @@ const Navbar = () => {
               className="border-2 border-green-400 bg-tranparent text-gray-900 hover:border-green-500 hover:bg-transparent"
               onClick={handleToggleModal}
             >
-              Commencer
+              <LogIn />
             </Button>
           )}
           <AuthModal isOpen={isAuthModalOpen} toggleModal={handleToggleModal} />
