@@ -5,7 +5,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Bell, MessageSquare, Package, User as UserIcon} from 'lucide-react';
+import {
+  Bell,
+  CirclePlus,
+  MessageSquare,
+  Package,
+  User as UserIcon,
+} from 'lucide-react';
 import { Link } from 'react-router';
 import { User } from '@/types/user';
 
@@ -16,9 +22,12 @@ interface UserInfoProps {
 const UserInfo = ({ user }: UserInfoProps) => {
   console.log(user);
   return (
-    <div className="flex gap-8">
-      <Button variant="ghost" size="icon">
-        <Bell />
+    <div className="flex gap-4">
+      <Button variant="ghost" className="text-green-500 bg-transparent hover:text-green-500">
+        <CirclePlus />
+      </Button>
+      <Button variant="ghost">
+        <Bell size={32}/>
       </Button>
       <Popover>
         <PopoverTrigger>
