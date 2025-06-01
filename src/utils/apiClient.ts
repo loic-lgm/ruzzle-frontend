@@ -12,6 +12,10 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
+    if (originalRequest.url?.endsWith('/users/refresh/')) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -19,7 +23,6 @@ api.interceptors.response.use(
         await api.post('/users/refresh/');
         return api(originalRequest);
       } catch (refreshError) {
-        window.location.href = '/';
         return Promise.reject(refreshError);
       }
     }

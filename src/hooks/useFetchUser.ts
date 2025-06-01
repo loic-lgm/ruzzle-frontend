@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { fetchUser } from '@/service/user';
 import useUserStore from '@/stores/useUserStore';
 import { useQuery } from '@tanstack/react-query';
@@ -6,21 +5,21 @@ import { useQuery } from '@tanstack/react-query';
 export const useFetchUser = () => {
   const setUser = useUserStore((state) => state.setUser);
 
-  const query = useQuery({
+  return useQuery({
     queryKey: ['user'],
-    queryFn: fetchUser,
+    queryFn: async () => {
+      try {
+        const user = await fetchUser();
+        setUser(user);
+        return user;
+      } catch (error) {
+        setUser(null);
+        throw error;
+      }
+    },
     staleTime: 5 * 60 * 1000,
     retry: false,
     refetchOnWindowFocus: false,
+    retryOnMount: false,
   });
-
-  useEffect(() => {
-    if (query.data) {
-      setUser(query.data);
-    } else if (query.isError) {
-      setUser(null);
-    }
-  }, [query.data, query.isError, setUser]);
-
-  return query;
 };
