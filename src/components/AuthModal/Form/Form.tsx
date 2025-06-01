@@ -13,13 +13,14 @@ import { ChevronRight, Loader } from 'lucide-react';
 import SocialLoginButtons from '@/components/AuthModal/SocialLoginButtons';
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { FormProps } from '@/types/auth';
 import { loginFn, signupFn } from '@/service/auth';
 import { useNavigate } from 'react-router';
 import { City } from '@/types/city';
 import { fetchCities } from '@/service/city';
+import { useAuthModalStore } from '@/stores/useAuthModalStore';
 
-const Form = ({ setActiveTab, activeTab }: FormProps) => {
+const Form = () => {
+  const { activeTab, switchTab } = useAuthModalStore();
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [error, setError] = useState<string | null>('');
@@ -48,7 +49,7 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
     mutationFn: signupFn,
     onSuccess: () => {
       setError(null);
-      setActiveTab('login');
+      switchTab('login');
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{
@@ -228,7 +229,7 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
             Vous n&apos;avez pas de compte ?{' '}
             <button
               type="button"
-              onClick={() => setActiveTab('signup')}
+              onClick={() => switchTab('signup')}
               className="text-green-500 hover:underline font-medium"
             >
               S&apos;inscrire
@@ -240,7 +241,7 @@ const Form = ({ setActiveTab, activeTab }: FormProps) => {
             Vous avez déjà un compte ?{' '}
             <button
               type="button"
-              onClick={() => setActiveTab('login')}
+              onClick={() => switchTab('login')}
               className="text-green-500 hover:underline font-medium"
             >
               Connexion

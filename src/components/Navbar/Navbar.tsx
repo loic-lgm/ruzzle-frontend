@@ -6,12 +6,11 @@ import SearchBar from '@/components/Navbar/components/SearchBar';
 import UserInfo from '@/components/Navbar/components/UserInfo';
 import useUserStore from '@/stores/useUserStore';
 import { LogIn } from 'lucide-react';
+import { useAuthModalStore } from '@/stores/useAuthModalStore';
 
-interface NavbarProps {
-  handleToggleModal: () => void;
-}
 
-const Navbar = ({ handleToggleModal }: NavbarProps) => {
+const Navbar = () => {
+  const { open } = useAuthModalStore();
   const [scrolled, setScrolled] = useState(false);
   const user = useUserStore((state) => state.user);
 
@@ -52,7 +51,7 @@ const Navbar = ({ handleToggleModal }: NavbarProps) => {
           ) : (
             <Button
               className="border-2 border-green-400 bg-tranparent text-gray-900 hover:border-green-500 hover:bg-transparent"
-              onClick={handleToggleModal}
+              onClick={() => open('login')}
             >
               <LogIn />
             </Button>

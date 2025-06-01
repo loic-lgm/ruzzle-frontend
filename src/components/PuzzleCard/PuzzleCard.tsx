@@ -3,12 +3,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Puzzle } from '@/types/puzzle';
+import { useAuthModalStore } from '@/stores/useAuthModalStore';
 
 interface PuzzleCardProps {
   puzzle: Puzzle;
 }
 
 const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
+  const {open} = useAuthModalStore()
   return (
     <Card className="group relative h-64 w-full overflow-hidden transition-shadow duration-00 hover:shadow-xl p-0">
       <div className="absolute top-2 right-2 z-20">
@@ -46,7 +48,8 @@ const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
             <Button
               size="sm"
               variant="ghost"
-              className="h-8 w-8 p-0 rounded-full bg-white/20 text-white "
+              className="h-8 w-8 p-0 rounded-full bg-white/20 text-white"
+              onClick={() => open('login')}
             >
               <ArrowLeftRight className="h-4 w-4" />
             </Button>

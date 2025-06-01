@@ -5,25 +5,14 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-// import SignUpForm from './SignUpForm';
-import { useState } from 'react';
 import Form from '@/components/AuthModal/Form';
+import { useAuthModalStore } from '@/stores/useAuthModalStore';
 
-interface AuthModalProps {
-  isOpen: boolean;
-  toggleModal: () => void;
-  defaultTab?: 'login' | 'signup';
-}
-
-const AuthModal = ({
-  isOpen,
-  toggleModal,
-  defaultTab = 'login',
-}: AuthModalProps) => {
-  const [activeTab, setActiveTab] = useState<'login' | 'signup'>(defaultTab);
+const AuthModal = () => {
+  const { isOpen, activeTab, close, switchTab } = useAuthModalStore();
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && toggleModal()}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
       <DialogContent className="sm:max-w-[425px] bg-white/90 backdrop-blur-md border border-white/30 rounded-xl shadow-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center font-bold text-gray-900 gradient-text">
@@ -36,7 +25,7 @@ const AuthModal = ({
         <Tabs
           value={activeTab}
           className="w-full"
-          onValueChange={(value) => setActiveTab(value as 'login' | 'signup')}
+          onValueChange={(tab) => switchTab(tab as 'login' | 'signup')}
         >
           <TabsList className="grid w-full grid-cols-2 mb-6">
             <TabsTrigger value="login" className="text-base">
@@ -48,11 +37,11 @@ const AuthModal = ({
           </TabsList>
 
           <TabsContent value="login">
-            <Form setActiveTab={setActiveTab} activeTab={activeTab} />
+            <Form />
           </TabsContent>
 
           <TabsContent value="signup">
-            <Form setActiveTab={setActiveTab} activeTab={activeTab} />
+            <Form />
           </TabsContent>
         </Tabs>
       </DialogContent>
