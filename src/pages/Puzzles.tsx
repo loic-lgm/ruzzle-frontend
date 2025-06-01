@@ -1,6 +1,4 @@
-import Navbar from '@/components/Navbar';
 import Filter from '@/components/Filter';
-import Footer from '@/components/Footer';
 import Explore from '@/components/Explore';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCities } from '@/service/city';
@@ -55,7 +53,6 @@ const Puzzles = () => {
 
   return (
     <div className="bg-gray-50">
-      <Navbar />
       <Explore />
       {cities && brands && categories && (
         <Filter
@@ -70,7 +67,6 @@ const Puzzles = () => {
       )}
       {isLoading && <Loader className="animate-spin m-auto mt-12 mb-12" size={45} />}
       {puzzles && <PuzzlesResult puzzles={puzzles} displayMode={displayMode} />}
-      <Footer />
     </div>
   );
 };

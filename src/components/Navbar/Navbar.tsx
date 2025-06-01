@@ -1,17 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import SearchBar from '@/components/Navbar/components/SearchBar';
 import UserInfo from '@/components/Navbar/components/UserInfo';
-import AuthModal from '@/components/AuthModal';
 import useUserStore from '@/stores/useUserStore';
 import { LogIn } from 'lucide-react';
 
-const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+interface NavbarProps {
+  handleToggleModal: () => void;
+}
 
+const Navbar = ({ handleToggleModal }: NavbarProps) => {
+  const [scrolled, setScrolled] = useState(false);
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
@@ -27,10 +28,6 @@ const Navbar = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleToggleModal = useCallback(() => {
-    setAuthModalOpen((prev) => !prev);
   }, []);
 
   return (
@@ -51,7 +48,7 @@ const Navbar = () => {
           </Link>
           <SearchBar />
           {user ? (
-            <UserInfo user={user}/>
+            <UserInfo user={user} />
           ) : (
             <Button
               className="border-2 border-green-400 bg-tranparent text-gray-900 hover:border-green-500 hover:bg-transparent"
@@ -60,7 +57,6 @@ const Navbar = () => {
               <LogIn />
             </Button>
           )}
-          <AuthModal isOpen={isAuthModalOpen} toggleModal={handleToggleModal} />
         </div>
       </div>
     </header>
