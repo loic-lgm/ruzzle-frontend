@@ -1,4 +1,5 @@
 import { Category } from '@/types/category';
+import { User } from '@/types/user';
 
 export interface Puzzle {
   id: string;
@@ -7,7 +8,7 @@ export interface Puzzle {
   piece_count: number;
   category: Category;
   brand: string;
-  city?: string;
+  owner: User
 }
 
 export type Puzzles = [Puzzle];

@@ -1,4 +1,4 @@
-import { Eye, ArrowLeftRight, MapPin, Layout } from 'lucide-react';
+import { Eye, ArrowLeftRight, MapPin, Layout, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,7 +10,7 @@ interface PuzzleCardProps {
 }
 
 const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
-  const {open} = useAuthModalStore()
+  const { open } = useAuthModalStore();
   return (
     <Card className="group relative h-64 w-full overflow-hidden transition-shadow duration-00 hover:shadow-xl p-0">
       <div className="absolute top-2 right-2 z-20">
@@ -34,10 +34,16 @@ const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
       <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-4">
         <h3 className="text-white font-semibold truncate">{puzzle.title}</h3>
 
-        {puzzle.city && (
-          <div className="flex items-center mt-1 text-white/90 text-xs">
-            <MapPin className="h-3 w-3 mr-1" />
-            <span>{puzzle.city}</span>
+        {puzzle.owner && (
+          <div className="flex items-center justify-between mt-1 text-white/90 text-xs">
+            <div className="flex flex-row items-center">
+              <MapPin className="h-3 w-3 mr-1" />
+              <span>{puzzle.owner.city?.name}</span>
+            </div>
+            <div className="flex flex-row items-center">
+              <User className="h-3 w-3 mr-1" />
+              <span>{puzzle.owner.username}</span>
+            </div>
           </div>
         )}
 

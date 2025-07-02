@@ -1,8 +1,10 @@
+import { City } from '@/types/city';
+
 export interface User {
   id: number;
   username: string;
   email: string;
-  city?: string;
+  city?: City;
   first_name?: string;
   image?: string;
   last_name?: string;
