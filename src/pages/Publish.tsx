@@ -72,7 +72,7 @@ const Publish = () => {
 
               <div className="space-y-2">
                 <div className="border-2 border-dashed border-emerald-500 rounded-lg p-8 text-center hover:border-green-500 transition-colors">
-                  <Upload className="h-8 w-8 mx-auto mb-4 text-ruzzle-emerald-500" />
+                  <Upload className="h-8 w-8 mx-auto mb-4 text-emerald-500" />
                   <div className="space-y-2">
                     <p className="text-sm text-gray-600">
                       Glisser et déposez vos images de puzzle ici, ou cliquez
