@@ -13,9 +13,9 @@ const Publish = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <main className="flex-1 pt-24 pb-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="glass-card p-8">
+          <div className="p-8">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-ruzzle-pink to-ruzzle-purple bg-clip-text text-transparent mb-2">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-500 to-green-500 bg-clip-text text-transparent mb-2">
                 Partager votre puzzle
               </h1>
               <p className="text-gray-600">
@@ -28,7 +28,7 @@ const Publish = () => {
               <div className="flex justify-between gap-6">
                 <div className="space-y-2">
                   <Select>
-                    <SelectTrigger className="border-ruzzle-purple/20 focus:border-ruzzle-pink">
+                    <SelectTrigger className="border-emerald-500 focus:border-green-500">
                       <SelectValue placeholder="Catégorie" />
                     </SelectTrigger>
                     <SelectContent></SelectContent>
@@ -37,7 +37,7 @@ const Publish = () => {
 
                 <div className="space-y-2">
                   <Select>
-                    <SelectTrigger className="border-ruzzle-purple/20 focus:border-ruzzle-pink">
+                    <SelectTrigger className="border-emerald-500 focus:border-green-500">
                       <SelectValue placeholder="Nombre de pièces" />
                     </SelectTrigger>
                     <SelectContent>
@@ -48,7 +48,7 @@ const Publish = () => {
 
                 <div className="space-y-2">
                   <Select>
-                    <SelectTrigger className="border-ruzzle-purple/20 focus:border-ruzzle-pink">
+                    <SelectTrigger className="border-emerald-500 focus:border-green-500">
                       <SelectValue placeholder="Marque" />
                     </SelectTrigger>
                     <SelectContent></SelectContent>
@@ -57,7 +57,7 @@ const Publish = () => {
 
                 <div className="space-y-2">
                   <Select>
-                    <SelectTrigger className="border-ruzzle-purple/20 focus:border-ruzzle-pink">
+                    <SelectTrigger className="border-emerald-500 focus:border-green-500">
                       <SelectValue placeholder="État" />
                     </SelectTrigger>
                     <SelectContent>
@@ -71,8 +71,8 @@ const Publish = () => {
               </div>
 
               <div className="space-y-2">
-                <div className="border-2 border-dashed border-ruzzle-purple/20 rounded-lg p-8 text-center hover:border-ruzzle-pink transition-colors">
-                  <Upload className="h-8 w-8 mx-auto mb-4 text-ruzzle-purple" />
+                <div className="border-2 border-dashed border-emerald-500 rounded-lg p-8 text-center hover:border-green-500 transition-colors">
+                  <Upload className="h-8 w-8 mx-auto mb-4 text-ruzzle-emerald-500" />
                   <div className="space-y-2">
                     <p className="text-sm text-gray-600">
                       Glisser et déposez vos images de puzzle ici, ou cliquez
@@ -95,7 +95,7 @@ const Publish = () => {
               <div className="pt-4">
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-ruzzle-pink to-ruzzle-purple text-white hover:shadow-lg transition-all"
+                  className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transition-all"
                 >
                   Publish Puzzle
                 </Button>
