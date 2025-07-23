@@ -1,14 +1,26 @@
-import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Upload } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchBrands } from '@/service/brand';
+import { fetchCategories } from '@/service/category';
+import { Loader } from 'lucide-react';
+import PublishForm from '@/components/PublishForm';
 
 const Publish = () => {
+  const { data: brands } = useQuery({
+    queryKey: ['brands'],
+    queryFn: fetchBrands,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: categories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <main className="flex-1 pt-24 pb-12">
@@ -23,84 +35,16 @@ const Publish = () => {
                 d&apos;autres passionnés du puzzle
               </p>
             </div>
-
-            <form className="space-y-6">
-              <div className="flex justify-between gap-6">
-                <div className="space-y-2">
-                  <Select>
-                    <SelectTrigger className="border-emerald-500 focus:border-green-500">
-                      <SelectValue placeholder="Catégorie" />
-                    </SelectTrigger>
-                    <SelectContent></SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Select>
-                    <SelectTrigger className="border-emerald-500 focus:border-green-500">
-                      <SelectValue placeholder="Nombre de pièces" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem key={'count'} value={'count'}></SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Select>
-                    <SelectTrigger className="border-emerald-500 focus:border-green-500">
-                      <SelectValue placeholder="Marque" />
-                    </SelectTrigger>
-                    <SelectContent></SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Select>
-                    <SelectTrigger className="border-emerald-500 focus:border-green-500">
-                      <SelectValue placeholder="État" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="new">Neuf (jamais utilisé)</SelectItem>
-                      <SelectItem value="like-new">Comme neuf</SelectItem>
-                      <SelectItem value="good">Bon</SelectItem>
-                      <SelectItem value="fair">Passable</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+            {!categories || !brands ? (
+              <div className="text-center flex items-center justify-center">
+                <Loader className="animate-spin" size={32} />
               </div>
-
-              <div className="space-y-2">
-                <div className="border-2 border-dashed border-emerald-500 rounded-lg p-8 text-center hover:border-green-500 transition-colors">
-                  <Upload className="h-8 w-8 mx-auto mb-4 text-emerald-500" />
-                  <div className="space-y-2">
-                    <p className="text-sm text-gray-600">
-                      Glisser et déposez vos images de puzzle ici, ou cliquez
-                      pour sélectionner les fichiers
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Télécharger jusqu&apos;à 5 images (PNG, JPG, JPEG • 5MB
-                      max par image)
-                    </p>
-                  </div>
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    className="hidden"
-                  />
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <Button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transition-all"
-                >
-                  Publish Puzzle
-                </Button>
-              </div>
-            </form>
+            ) : (
+              <PublishForm
+                categories={categories}
+                brands={brands}
+              />
+            )}
           </div>
 
           <div className="mt-8 text-center">

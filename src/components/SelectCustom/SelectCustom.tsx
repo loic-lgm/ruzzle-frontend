@@ -17,23 +17,35 @@ interface SelectCustomProps {
   label: string;
   type: keyof FilterTypes;
   onChange: (type: keyof FilterTypes, value: string) => void;
+  className?: string;
+  onlyLabel?: boolean;
 }
 
-const SelectCustom = ({ label, data, onChange, type }: SelectCustomProps) => {
+const SelectCustom = ({
+  label,
+  onlyLabel = false,
+  data,
+  onChange,
+  type,
+  className,
+}: SelectCustomProps) => {
   return (
     <Select onValueChange={(value) => onChange(type, value)}>
-      <SelectTrigger className="w-full border-lightblue/30 focus:border-green-500">
-        <SelectValue placeholder={`Choisir une ${label.toLocaleLowerCase()}`} />
+      <SelectTrigger
+        className={`w-full border-lightblue/30 focus:border-green-500 ${className}`}
+      >
+        <SelectValue
+          placeholder={
+            onlyLabel ? label : `Choisir une ${label.toLocaleLowerCase()}`
+          }
+        />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>{label}</SelectLabel>
         </SelectGroup>
         {data.map((item: Category | Brand | City | PieceCount) => (
-          <SelectItem
-            key={item.id}
-            value={item.id.toString()}
-          >
+          <SelectItem key={item.id} value={item.id.toString()}>
             <div className="flex items-center">
               <span>{item.name}</span>
             </div>
