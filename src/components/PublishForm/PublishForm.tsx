@@ -1,17 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Upload } from 'lucide-react';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { Brands } from '@/types/brand';
 import { Categories } from '@/types/category';
-import { PIECE_COUNT } from '@/utils/constants';
+import { CONDITION, PIECE_COUNT } from '@/utils/constants';
 
 interface PublishFormProps {
   brands: Brands;
@@ -19,14 +12,24 @@ interface PublishFormProps {
 }
 
 const PublishForm = ({ categories, brands }: PublishFormProps) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
+  const [formData, setFormData] = useState({
+    category: '',
+    brand: '',
+    pieceCount: '',
+    condition: '',
+  });
+
+  const handleChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  const handleChange = () => {return true};
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formData);
+  };
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
@@ -37,7 +40,7 @@ const PublishForm = ({ categories, brands }: PublishFormProps) => {
             onlyLabel={true}
             data={categories}
             type="category"
-            onChange={handleChange}
+            onChange={(_, value) => handleChange('category', value)}
             className="border-emerald-500 focus:border-green-500"
           />
         </div>
@@ -49,7 +52,7 @@ const PublishForm = ({ categories, brands }: PublishFormProps) => {
               onlyLabel={true}
               data={PIECE_COUNT}
               type="pieceCount"
-              onChange={handleChange}
+              onChange={(_, value) => handleChange('pieceCount', value)}
               className="border-emerald-500 focus:border-green-500"
             />
           </div>
@@ -61,23 +64,20 @@ const PublishForm = ({ categories, brands }: PublishFormProps) => {
             onlyLabel={true}
             data={brands}
             type="brand"
-            onChange={handleChange}
+            onChange={(_, value) => handleChange('brand', value)}
             className="border-emerald-500 focus:border-green-500"
           />
         </div>
 
         <div className="space-y-2">
-          <Select>
-            <SelectTrigger className="border-emerald-500 focus:border-green-500">
-              <SelectValue placeholder="État" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="new">Neuf (jamais utilisé)</SelectItem>
-              <SelectItem value="like-new">Comme neuf</SelectItem>
-              <SelectItem value="good">Bon</SelectItem>
-              <SelectItem value="fair">Passable</SelectItem>
-            </SelectContent>
-          </Select>
+          <SelectCustom
+            label="État"
+            onlyLabel={true}
+            data={CONDITION}
+            type="condition"
+            onChange={(_, value) => handleChange('condition', value)}
+            className="border-emerald-500 focus:border-green-500"
+          />
         </div>
       </div>
 

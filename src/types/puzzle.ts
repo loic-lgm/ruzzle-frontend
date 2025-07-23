@@ -8,7 +8,7 @@ export interface Puzzle {
   piece_count: number;
   category: Category;
   brand: string;
-  owner: User
+  owner: User;
 }
 
 export type Puzzles = [Puzzle];
@@ -18,9 +18,15 @@ export interface FilterTypes {
   pieceCount: string;
   brand: string;
   city: string;
+  condition?: string;
 }
 
 export type PieceCount = {
   id: number;
+  name: string;
+};
+
+export type Condition = {
+  id: string;
   name: string;
 };
