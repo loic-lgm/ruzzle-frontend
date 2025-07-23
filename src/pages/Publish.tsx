@@ -3,8 +3,10 @@ import { fetchBrands } from '@/service/brand';
 import { fetchCategories } from '@/service/category';
 import { Loader } from 'lucide-react';
 import PublishForm from '@/components/PublishForm';
+import useUserStore from '@/stores/useUserStore';
 
 const Publish = () => {
+  const { user } = useUserStore();
   const { data: brands } = useQuery({
     queryKey: ['brands'],
     queryFn: fetchBrands,
@@ -43,6 +45,7 @@ const Publish = () => {
               <PublishForm
                 categories={categories}
                 brands={brands}
+                user={user}
               />
             )}
           </div>

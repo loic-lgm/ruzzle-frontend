@@ -5,20 +5,23 @@ import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { Brands } from '@/types/brand';
 import { Categories } from '@/types/category';
 import { CONDITION, PIECE_COUNT } from '@/utils/constants';
+import { useAuthModalStore } from '@/stores/useAuthModalStore';
+import { User } from '@/types/user';
 
 interface PublishFormProps {
   brands: Brands;
   categories: Categories;
+  user?: User | null;
 }
 
-const PublishForm = ({ categories, brands }: PublishFormProps) => {
+const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   const [formData, setFormData] = useState({
     category: '',
     brand: '',
     pieceCount: '',
     condition: '',
   });
-
+  const { open } = useAuthModalStore();
   const handleChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -28,6 +31,7 @@ const PublishForm = ({ categories, brands }: PublishFormProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) open('login');
     console.log(formData);
   };
 
