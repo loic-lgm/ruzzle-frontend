@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Upload } from 'lucide-react';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { Brands } from '@/types/brand';
 import { Categories } from '@/types/category';
 import { CONDITION, PIECE_COUNT } from '@/utils/constants';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import { User } from '@/types/user';
+import ImageInput from '@/components/ImageInput';
 
 interface PublishFormProps {
   brands: Brands;
@@ -20,6 +20,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     brand: '',
     pieceCount: '',
     condition: '',
+    images: [] as string[],
   });
   const { open } = useAuthModalStore();
   const handleChange = (field: keyof typeof formData, value: string) => {
@@ -28,6 +29,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
       [field]: value,
     }));
   };
+
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,24 +86,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
           />
         </div>
       </div>
-
-      <div className="space-y-2">
-        <div className="border-2 border-dashed border-emerald-500 rounded-lg p-8 text-center hover:border-green-500 transition-colors">
-          <Upload className="h-8 w-8 mx-auto mb-4 text-emerald-500" />
-          <div className="space-y-2">
-            <p className="text-sm text-gray-600">
-              Glisser et déposez vos images de puzzle ici, ou cliquez pour
-              sélectionner les fichiers
-            </p>
-            <p className="text-xs text-gray-500">
-              Télécharger jusqu&apos;à 5 images (PNG, JPG, JPEG • 5MB max par
-              image)
-            </p>
-          </div>
-          <input type="file" multiple accept="image/*" className="hidden" />
-        </div>
-      </div>
-
+      <ImageInput formData={formData} setFormData={setFormData}/>
       <div className="pt-4">
         <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transition-all">
           Publier
