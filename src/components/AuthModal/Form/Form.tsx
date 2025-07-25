@@ -19,7 +19,11 @@ import { City } from '@/types/city';
 import { fetchCities } from '@/service/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 
-const Form = () => {
+interface FormProps {
+  close?: () => void;
+}
+
+const Form = ({ close }: FormProps) => {
   const { activeTab, switchTab } = useAuthModalStore();
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState<string>('');
@@ -38,6 +42,7 @@ const Form = () => {
     onSuccess: () => {
       setError(null);
       navigate('/puzzles');
+      close?.();
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
