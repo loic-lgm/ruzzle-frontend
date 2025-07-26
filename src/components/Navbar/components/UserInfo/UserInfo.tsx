@@ -20,7 +20,6 @@ interface UserInfoProps {
 }
 
 const UserInfo = ({ user }: UserInfoProps) => {
-  console.log(user);
   return (
     <div className="flex gap-4">
       <Button

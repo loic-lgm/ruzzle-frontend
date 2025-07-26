@@ -13,18 +13,16 @@ export type LoginResponse = {
 
 export type SignupData = {
   email: string;
-  username: string,
+  username: string;
   password: string;
-  city_id: string
+  city_id: string;
 };
 
 export type SignupResponse = {
-    id: number;
-    username: string;
-    first_name: string,
-    last_name: string,
-    image: string,
-    city: string
+  id: number;
+  username: string;
+  first_name: string;
+  last_name: string;
+  image: string;
+  city: string;
 };
-
-// TODO Creer un type user pour SignupResponse

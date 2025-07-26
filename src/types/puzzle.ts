@@ -30,3 +30,16 @@ export type Condition = {
   id: string;
   name: string;
 };
+
+export type PublishPuzzleData = {
+  category_id: number;
+  brand_id: number;
+  piece_count: number;
+  condition: string;
+  image: File | null;
+  owner: number;
+};
+
+export type PublishPuzzleResponse = {
+  puzzle: Puzzle;
+};

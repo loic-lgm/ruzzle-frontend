@@ -21,7 +21,7 @@ const App = () => {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/puzzles" element={<Puzzles />} />
-          <Route path="/publish" element={<Publish />} />
+          <Route path="/ajouter-un-puzzle" element={<Publish />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           {/* <Route path="*" element={<NotFound />} /> */}
         </Route>
