@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import { publishPuzzle } from '@/service/puzzle';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 interface PublishFormProps {
   brands: Brands;
@@ -50,6 +51,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     mutationFn: publishPuzzle,
     onSuccess: () => {
       setInternalError('');
+      toast.success('Puzzle publié avec succès !');
       navigate('/puzzles');
     },
     onError: (error) => {

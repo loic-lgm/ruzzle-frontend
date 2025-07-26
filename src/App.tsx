@@ -5,6 +5,7 @@ import Puzzles from '@/pages/Puzzles';
 import { Loader } from 'lucide-react';
 import Layout from '@/Layout';
 import Publish from '@/pages/Publish';
+import { Toaster } from 'sonner';
 
 const App = () => {
   const { isLoading } = useFetchUser();
@@ -16,17 +17,20 @@ const App = () => {
     );
   }
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/puzzles" element={<Puzzles />} />
-          <Route path="/ajouter-un-puzzle" element={<Publish />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          {/* <Route path="*" element={<NotFound />} /> */}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Toaster position="top-right" richColors />
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/puzzles" element={<Puzzles />} />
+            <Route path="/ajouter-un-puzzle" element={<Publish />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            {/* <Route path="*" element={<NotFound />} /> */}
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 };
 
