@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import Home from './pages/Home';
 import { useFetchUser } from '@/hooks/useFetchUser';
 import Puzzles from '@/pages/Puzzles';
+import Puzzle from '@/pages/Puzzle';
 import { Loader } from 'lucide-react';
 import Layout from '@/Layout';
 import Publish from '@/pages/Publish';
@@ -24,6 +25,7 @@ const App = () => {
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/puzzles" element={<Puzzles />} />
+            <Route path="/puzzles/:hashid" element={<Puzzle />} />
             <Route path="/ajouter-un-puzzle" element={<Publish />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             {/* <Route path="*" element={<NotFound />} /> */}
