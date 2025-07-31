@@ -19,6 +19,13 @@ export const fetchPuzzles = async (
   return response.data;
 };
 
+export const fetchPuzzlesByUser = async (): Promise<Puzzles> => {
+  const response = await api.get(
+    `${import.meta.env.VITE_API_URL}/puzzles/mine/`
+  );
+  return response.data;
+};
+
 export const publishPuzzle = async (
   data: PublishPuzzleData
 ): Promise<Puzzle> => {

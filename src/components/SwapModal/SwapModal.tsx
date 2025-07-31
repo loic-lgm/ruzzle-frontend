@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,25 +10,20 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Check, MessageSquare } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
-import { Puzzle } from '@/types/puzzle';
+import { Puzzle, Puzzles } from '@/types/puzzle';
 import { useSwapModalStore } from '@/stores/useSwapModalStore';
-import { User } from '@/types/user';
 
 interface ExchangeModalProps {
   selectedPuzzle: Puzzle;
-  requester: User
+  userPuzzles: Puzzles | null;
 }
 
-const SwapModal = ({ selectedPuzzle, requester }: ExchangeModalProps) => {
+const SwapModal = ({ selectedPuzzle, userPuzzles }: ExchangeModalProps) => {
   const { isOpen, close } = useSwapModalStore();
   const [message, setMessage] = useState<string>(
     'Bonjour, je suis intéressé pour échanger votre puzzle.'
   );
-
-  console.log(requester)
-
-  let toto = 1;
-  let titi = 2;
+  const [puzzleToSend, setPuzzleToSend] = useState<Puzzle | null>(null);
 
   //   const handleSubmit = () => {
   //     if (!selectedPuzzle) {
@@ -96,40 +90,40 @@ const SwapModal = ({ selectedPuzzle, requester }: ExchangeModalProps) => {
             </h3>
             <ScrollArea className="h-[200px] rounded-md border">
               <div className="p-4 grid gap-3">
-                {/* {myPuzzles.length > 0 ? (
-                  myPuzzles.map((puzzle) => (
+                {userPuzzles && userPuzzles.length > 0 ? (
+                  userPuzzles.map((puzzle) => (
                     <div
                       key={puzzle.id}
-                      onClick={() => setSelectedPuzzle(puzzle)}
+                      onClick={() => setPuzzleToSend(puzzle)}
                       className={`flex items-center p-3 rounded-md cursor-pointer transition-colors ${
-                        selectedPuzzle?.id === puzzle.id
-                          ? 'bg-primary/10 border border-primary'
+                        puzzleToSend?.id === puzzle.id
+                          ? ' border border-green-500'
                           : 'hover:bg-muted border border-transparent'
                       }`}
                     >
-                      <div className="relative">
+                      <div className="flex">
                         <img
                           src={puzzle.image}
                           alt={puzzle.title}
                           className="w-16 h-16 object-cover rounded-md mr-3"
                         />
-                        {selectedPuzzle?.id === puzzle.id && (
-                          <div className="absolute -top-2 -right-2 bg-primary text-white rounded-full p-1">
-                            <Check className="h-4 w-4" />
-                          </div>
-                        )}
                       </div>
                       <div className="flex-1">
                         <h4 className="font-medium">{puzzle.title}</h4>
                         <p className="text-sm text-muted-foreground">
-                          {puzzle.pieceCount} pieces
+                          {puzzle.piece_count} pieces
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {puzzle.category.name}
                         </p>
                       </div>
+                      {puzzleToSend?.id === puzzle.id && (
+                        <div className="flex bg-green-500 text-white rounded-full p-1 h-8 w-8 justify-center items-center">
+                          <Check className="h-4 w-4" />
+                        </div>
+                      )}
                     </div>
                   ))
-                ) */}
-                {toto == titi ? (
-                  ''
                 ) : (
                   <p className="text-center text-muted-foreground py-8">
                     Vous n&apos;avez aucun puzzle à échanger.
@@ -148,7 +142,7 @@ const SwapModal = ({ selectedPuzzle, requester }: ExchangeModalProps) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Write a message to the puzzle owner..."
-              className="min-h-[100px]"
+              className="min-h-[100px] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-green-500"
             />
           </div>
         </div>
@@ -159,7 +153,7 @@ const SwapModal = ({ selectedPuzzle, requester }: ExchangeModalProps) => {
           </Button>
           <Button
             // onClick={handleSubmit}
-            disabled={!selectedPuzzle}
+            disabled={!puzzleToSend}
             className="bg-gradient-to-r from-green-500 to-emerald-500 text-white"
           >
             Envoyer une demande

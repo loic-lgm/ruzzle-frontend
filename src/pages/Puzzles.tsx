@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchCities } from '@/service/city';
 import { fetchBrands } from '@/service/brand';
 import { fetchCategories } from '@/service/category';
-import { fetchPuzzles } from '@/service/puzzle';
+import { fetchPuzzles, fetchPuzzlesByUser } from '@/service/puzzle';
 import { useState } from 'react';
 import PuzzlesResult from '@/components/PuzzlesResult';
 import { FilterTypes, Puzzle } from '@/types/puzzle';
@@ -55,6 +55,14 @@ const Puzzles = () => {
     staleTime: 5 * 60 * 1000,
   });
 
+  const { data: userPuzzles } = useQuery({
+    queryKey: ['userPuzzles'],
+    queryFn: fetchPuzzlesByUser,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
   return (
     <div className="bg-gray-50">
       <Explore />
@@ -80,8 +88,11 @@ const Puzzles = () => {
           user={user}
         />
       )}
-      {selectedPuzzle && user && (
-        <SwapModal selectedPuzzle={selectedPuzzle} requester={user} />
+      {selectedPuzzle && user && userPuzzles && (
+        <SwapModal
+          selectedPuzzle={selectedPuzzle}
+          userPuzzles={userPuzzles}
+        />
       )}
     </div>
   );
