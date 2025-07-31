@@ -72,8 +72,17 @@ const Puzzles = () => {
       {isLoading && (
         <Loader className="animate-spin m-auto mt-12 mb-12" size={45} />
       )}
-      {puzzles && <PuzzlesResult puzzles={puzzles} displayMode={displayMode} setSelectedPuzzle={setSelectedPuzzle} user={user}/>}
-      {selectedPuzzle && <SwapModal selectedPuzzle={selectedPuzzle} />}
+      {puzzles && (
+        <PuzzlesResult
+          puzzles={puzzles}
+          displayMode={displayMode}
+          setSelectedPuzzle={setSelectedPuzzle}
+          user={user}
+        />
+      )}
+      {selectedPuzzle && user && (
+        <SwapModal selectedPuzzle={selectedPuzzle} requester={user} />
+      )}
     </div>
   );
 };

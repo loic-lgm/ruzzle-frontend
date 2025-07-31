@@ -13,17 +13,20 @@ import { Check, MessageSquare } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Puzzle } from '@/types/puzzle';
 import { useSwapModalStore } from '@/stores/useSwapModalStore';
+import { User } from '@/types/user';
 
 interface ExchangeModalProps {
   selectedPuzzle: Puzzle;
+  requester: User
 }
 
-const SwapModal = ({ selectedPuzzle }: ExchangeModalProps) => {
+const SwapModal = ({ selectedPuzzle, requester }: ExchangeModalProps) => {
   const { isOpen, close } = useSwapModalStore();
-//   const [selectedPuzzle, setSelectedPuzzle] = useState<Puzzle | null>(null);
   const [message, setMessage] = useState<string>(
     'Bonjour, je suis intéressé pour échanger votre puzzle.'
   );
+
+  console.log(requester)
 
   let toto = 1;
   let titi = 2;
@@ -61,7 +64,7 @@ const SwapModal = ({ selectedPuzzle }: ExchangeModalProps) => {
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
-            Exchange Proposal
+            Demande d&apos;échange
           </DialogTitle>
         </DialogHeader>
 
@@ -72,14 +75,16 @@ const SwapModal = ({ selectedPuzzle }: ExchangeModalProps) => {
             </h3>
             <div className="flex items-center p-3 rounded-md bg-muted/50">
               <img
-                // src={currentPuzzle.image}
-                // alt={currentPuzzle.title}
+                src={selectedPuzzle.image}
                 className="w-16 h-16 object-cover rounded-md mr-3"
               />
               <div>
                 <h4 className="font-medium">{selectedPuzzle.title}</h4>
                 <p className="text-sm text-muted-foreground">
-                  {/* {currentPuzzle.pieceCount} pieces */}
+                  {selectedPuzzle.piece_count} pieces
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {selectedPuzzle.category.name}
                 </p>
               </div>
             </div>
@@ -137,7 +142,7 @@ const SwapModal = ({ selectedPuzzle }: ExchangeModalProps) => {
           <div>
             <h3 className="text-base font-semibold mb-2 flex items-center">
               <MessageSquare className="h-4 w-4 mr-2" />
-              Include a message:
+              Envoyer un message:
             </h3>
             <Textarea
               value={message}
@@ -150,14 +155,14 @@ const SwapModal = ({ selectedPuzzle }: ExchangeModalProps) => {
 
         <DialogFooter>
           <Button variant="outline" onClick={close}>
-            Cancel
+            Annuler
           </Button>
           <Button
             // onClick={handleSubmit}
             disabled={!selectedPuzzle}
-            className="bg-gradient-to-r from-ruzzle-pink to-ruzzle-purple text-white"
+            className="bg-gradient-to-r from-green-500 to-emerald-500 text-white"
           >
-            Send Exchange Request
+            Envoyer une demande
           </Button>
         </DialogFooter>
       </DialogContent>

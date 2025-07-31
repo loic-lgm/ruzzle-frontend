@@ -6,6 +6,7 @@ import { Puzzle } from '@/types/puzzle';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import React from 'react';
 import { User as UserType } from '@/types/user';
+import { useSwapModalStore } from '@/stores/useSwapModalStore';
 
 interface PuzzleCardProps {
   puzzle: Puzzle;
@@ -15,9 +16,11 @@ interface PuzzleCardProps {
 
 const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
   const { open } = useAuthModalStore();
+  const { open: openSwap } = useSwapModalStore();
   const handleSwap = () => {
     if (user) {
-      setSelectedPuzzle(puzzle)
+      setSelectedPuzzle(puzzle);
+      openSwap();
     } else {
       open('login');
     }
