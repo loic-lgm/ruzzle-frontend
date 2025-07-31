@@ -4,13 +4,24 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Puzzle } from '@/types/puzzle';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
+import React from 'react';
+import { User as UserType } from '@/types/user';
 
 interface PuzzleCardProps {
   puzzle: Puzzle;
+  setSelectedPuzzle: React.Dispatch<React.SetStateAction<Puzzle | null>>;
+  user: UserType | null;
 }
 
-const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
+const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
   const { open } = useAuthModalStore();
+  const handleSwap = () => {
+    if (user) {
+      setSelectedPuzzle(puzzle)
+    } else {
+      open('login');
+    }
+  };
   return (
     <Card className="group relative h-64 w-full overflow-hidden transition-shadow duration-00 hover:shadow-xl p-0">
       <div className="absolute top-2 right-2 z-20">
@@ -55,7 +66,7 @@ const PuzzleCard = ({ puzzle }: PuzzleCardProps) => {
               size="sm"
               variant="ghost"
               className="h-8 w-8 p-0 rounded-full bg-white/20 text-white"
-              onClick={() => open('login')}
+              onClick={handleSwap}
             >
               <ArrowLeftRight className="h-4 w-4" />
             </Button>

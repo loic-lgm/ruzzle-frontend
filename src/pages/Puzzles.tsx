@@ -7,11 +7,15 @@ import { fetchCategories } from '@/service/category';
 import { fetchPuzzles } from '@/service/puzzle';
 import { useState } from 'react';
 import PuzzlesResult from '@/components/PuzzlesResult';
-import { FilterTypes } from '@/types/puzzle';
+import { FilterTypes, Puzzle } from '@/types/puzzle';
 import { Loader } from 'lucide-react';
+import SwapModal from '@/components/SwapModal';
+import useUserStore from '@/stores/useUserStore';
 
 const Puzzles = () => {
+  const user = useUserStore((state) => state.user);
   const [displayMode, setDisplayMode] = useState<'grid' | 'carousel'>('grid');
+  const [selectedPuzzle, setSelectedPuzzle] = useState<null | Puzzle>(null);
   const [filters, setFilters] = useState<FilterTypes>({
     category: '',
     pieceCount: '',
@@ -65,8 +69,11 @@ const Puzzles = () => {
           setDisplayMode={setDisplayMode}
         />
       )}
-      {isLoading && <Loader className="animate-spin m-auto mt-12 mb-12" size={45} />}
-      {puzzles && <PuzzlesResult puzzles={puzzles} displayMode={displayMode} />}
+      {isLoading && (
+        <Loader className="animate-spin m-auto mt-12 mb-12" size={45} />
+      )}
+      {puzzles && <PuzzlesResult puzzles={puzzles} displayMode={displayMode} setSelectedPuzzle={setSelectedPuzzle} user={user}/>}
+      {selectedPuzzle && <SwapModal selectedPuzzle={selectedPuzzle} />}
     </div>
   );
 };
