@@ -56,6 +56,7 @@ const SwapModal = ({ selectedPuzzle, userPuzzles }: ExchangeModalProps) => {
       setInternalError(
         'Vous devez choisir un de vos puzzles à proposer en échange'
       );
+      return;
     }
     swap.mutate({
       message: message,
