@@ -12,6 +12,10 @@ import { Check, MessageSquare } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Puzzle, Puzzles } from '@/types/puzzle';
 import { useSwapModalStore } from '@/stores/useSwapModalStore';
+import { AxiosError } from 'axios';
+import { swapPuzzle } from '@/service/swap';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 interface ExchangeModalProps {
   selectedPuzzle: Puzzle;
@@ -19,39 +23,46 @@ interface ExchangeModalProps {
 }
 
 const SwapModal = ({ selectedPuzzle, userPuzzles }: ExchangeModalProps) => {
-  const { isOpen, close } = useSwapModalStore();
+  const [internalError, setInternalError] = useState<string | null>(null);
   const [message, setMessage] = useState<string>(
     'Bonjour, je suis intéressé pour échanger votre puzzle.'
   );
+  const { isOpen, close } = useSwapModalStore();
+
+  const swap = useMutation({
+    mutationFn: swapPuzzle,
+    onSuccess: () => {
+      setInternalError('');
+      toast.success("Demande d'échange effectuée avec succès !");
+      close();
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<{ error: string }>;
+      console.error(axiosError);
+      setInternalError(
+        axiosError.response?.data?.error || 'Une erreur est survenue'
+      );
+    },
+  });
+
   const [puzzleToSend, setPuzzleToSend] = useState<Puzzle | null>(null);
 
-  //   const handleSubmit = () => {
-  //     if (!selectedPuzzle) {
-  //       toast({
-  //         title: 'No puzzle selected',
-  //         description: 'Please select a puzzle to exchange',
-  //         variant: 'destructive',
-  //       });
-  //       return;
-  //     }
-
-  //     // Here we would actually send the exchange request to the backend
-  //     toast({
-  //       title: 'Exchange request sent!',
-  //       description: `Your request to exchange ${selectedPuzzle.title} for ${currentPuzzle.title} has been sent.`,
-  //     });
-
-  //     onClose();
-  //   };
-
-  // Update the message when a puzzle is selected
-  //   React.useEffect(() => {
-  //     if (selectedPuzzle) {
-  //       setMessage(
-  //         `Hi there! I'm interested in exchanging my puzzle "${selectedPuzzle.title}" for your "${currentPuzzle.title}". Let me know if you're interested!`
-  //       );
-  //     }
-  //   }, [selectedPuzzle, currentPuzzle.title]);
+  const handleSubmit = () => {
+    if (!message) {
+      setInternalError("Écrivez un message pour faciliter l'échange");
+      return;
+    }
+    if (!puzzleToSend) {
+      setInternalError(
+        'Vous devez choisir un de vos puzzles à proposer en échange'
+      );
+    }
+    swap.mutate({
+      message: message,
+      puzzle_asked_id: Number(selectedPuzzle.id),
+      puzzle_proposed_id: Number(puzzleToSend?.id),
+    });
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
@@ -148,11 +159,14 @@ const SwapModal = ({ selectedPuzzle, userPuzzles }: ExchangeModalProps) => {
         </div>
 
         <DialogFooter>
+          {internalError && (
+            <div className="text-red-500 text-sm">{internalError}</div>
+          )}
           <Button variant="outline" onClick={close}>
             Annuler
           </Button>
           <Button
-            // onClick={handleSubmit}
+            onClick={handleSubmit}
             disabled={!puzzleToSend}
             className="bg-gradient-to-r from-green-500 to-emerald-500 text-white"
           >
