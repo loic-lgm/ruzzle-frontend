@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MessageSquare, Package, Check, Send, Edit } from 'lucide-react';
 import SwapRequests from '@/components/SwapRequests';
+import Messages from '@/components/Messages';
 // import ExchangeRequestsList from '@/components/exchanges/ExchangeRequestsList';
 // import MessagesList from '@/components/exchanges/MessagesList';
 // import EditProfileDialog from '@/components/profile/EditProfileDialog';
@@ -169,7 +170,9 @@ const Profile = () => {
                     Conversation avec les autres membres.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>{/* <MessagesList /> */}</CardContent>
+                <CardContent>
+                  <Messages />
+                </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
