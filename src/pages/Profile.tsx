@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { MessageSquare, Package, Check, Send, Edit } from 'lucide-react';
 import SwapRequests from '@/components/SwapRequests';
 import Messages from '@/components/Messages';
+import EditProfileModal from '@/components/EditProfileModal/EditProfileModal';
 // import ExchangeRequestsList from '@/components/exchanges/ExchangeRequestsList';
 // import MessagesList from '@/components/exchanges/MessagesList';
 // import EditProfileDialog from '@/components/profile/EditProfileDialog';
@@ -178,11 +179,11 @@ const Profile = () => {
           </Tabs>
         </div>
       </main>
-      {/* <EditProfileDialog
+      <EditProfileModal
         open={isEditProfileOpen}
         onOpenChange={setIsEditProfileOpen}
         userData={mockUser}
-      /> */}
+      />
     </div>
   );
 };
