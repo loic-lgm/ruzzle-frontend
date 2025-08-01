@@ -142,7 +142,7 @@ const Profile = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {/* <ExchangeRequestsList type="sent" /> */}
+                  <SwapRequests type="sent" />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -156,7 +156,7 @@ const Profile = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {/* <ExchangeRequestsList type="completed" /> */}
+                  <SwapRequests type="completed" />
                 </CardContent>
               </Card>
             </TabsContent>

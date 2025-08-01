@@ -240,7 +240,7 @@ const SwapRequests = ({ type }: ExchangeRequestsListProps) => {
                 <div>
                   <p className="font-medium">{request.puzzle.title}</p>
                   <p className="text-sm text-gray-500">
-                    {request.puzzle.pieceCount} pieces
+                    {request.puzzle.pieceCount} pièces
                   </p>
                 </div>
               </TableCell>
@@ -248,7 +248,7 @@ const SwapRequests = ({ type }: ExchangeRequestsListProps) => {
                 <div>
                   <p className="font-medium">{request.forPuzzle.title}</p>
                   <p className="text-sm text-gray-500">
-                    {request.forPuzzle.pieceCount} pieces
+                    {request.forPuzzle.pieceCount} pièces
                   </p>
                 </div>
               </TableCell>
@@ -275,7 +275,7 @@ const SwapRequests = ({ type }: ExchangeRequestsListProps) => {
                         onClick={() => handleAccept(request.id)}
                       >
                         <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="sr-only">Accept</span>
+                        <span className="sr-only">Accepter</span>
                       </Button>
                       <Button
                         size="sm"
@@ -284,7 +284,7 @@ const SwapRequests = ({ type }: ExchangeRequestsListProps) => {
                         onClick={() => handleDecline(request.id)}
                       >
                         <XCircle className="h-4 w-4 text-red-500" />
-                        <span className="sr-only">Decline</span>
+                        <span className="sr-only">Refuser</span>
                       </Button>
                     </>
                   )}
@@ -296,7 +296,7 @@ const SwapRequests = ({ type }: ExchangeRequestsListProps) => {
                       onClick={() => handleCancel(request.id)}
                     >
                       <XCircle className="h-4 w-4 text-red-500" />
-                      <span className="sr-only">Cancel</span>
+                      <span className="sr-only">Annuler</span>
                     </Button>
                   )}
                   <Button
