@@ -43,7 +43,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
         <PopoverContent className="w-56">
           <div className="grid gap-4">
             <Link
-              to="/profile"
+              to="/profil"
               className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
             >
               <UserIcon size={16} />
