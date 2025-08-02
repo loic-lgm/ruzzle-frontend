@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { MessageSquare, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { MessageSquare, CheckCircle, XCircle } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -37,21 +36,21 @@ interface ExchangeRequestsListProps {
 
 const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
   // Handle actions
-  const handleAccept = (id: string) => {
-    console.log(id);
-  };
+  // const handleAccept = (id: string) => {
+  //   console.log(id);
+  // };
 
-  const handleDecline = (id: string) => {
-    console.log(id);
-  };
+  // const handleDecline = (id: string) => {
+  //   console.log(id);
+  // };
 
-  const handleCancel = (id: string) => {
-    console.log(id);
-  };
+  // const handleCancel = (id: string) => {
+  //   console.log(id);
+  // };
 
-  const handleMessage = (id: string) => {
-    console.log(id);
-  };
+  // const handleMessage = (id: string) => {
+  //   console.log(id);
+  // };
 
   if (swaps.length === 0) {
     return (

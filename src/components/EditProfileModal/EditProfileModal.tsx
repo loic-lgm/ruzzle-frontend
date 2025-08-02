@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Dialog,
   DialogContent,
@@ -16,22 +14,8 @@ import {
 import { Camera, User as UserIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { ChevronRight, Loader } from 'lucide-react';
-import SocialLoginButtons from '@/components/AuthModal/SocialLoginButtons';
 import { AxiosError } from 'axios';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { loginFn, signupFn } from '@/service/auth';
-import { useNavigate } from 'react-router';
-import { City } from '@/types/city';
-import { fetchCities } from '@/service/city';
-import { useAuthModalStore } from '@/stores/useAuthModalStore';
+import { useMutation } from '@tanstack/react-query';
 import { User } from '@/types/user';
 import { updateUser } from '@/service/user';
 import { toast } from 'sonner';
