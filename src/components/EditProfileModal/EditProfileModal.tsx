@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-import { Camera, User } from 'lucide-react';
+import { Camera, User as UserIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import {
@@ -32,25 +32,47 @@ import { useNavigate } from 'react-router';
 import { City } from '@/types/city';
 import { fetchCities } from '@/service/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
+import { User } from '@/types/user';
 
 interface EditProfileDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  userData: {
-    id: string;
-    name: string;
-    username: string;
-    email: string;
-    avatar: string;
-    bio?: string;
-  };
+  user: User;
 }
 
 const EditProfileModal = ({
   open,
   onOpenChange,
-  userData,
+  user,
 }: EditProfileDialogProps) => {
+  const [userData, setUserData] = useState<User>(user);
+  const [error, setError] = useState<string | null>(null);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!userData.username) {
+      setError("Vous devez renseigner un nom d'utilisateur");
+      return;
+    }
+    if (!userData.email) {
+      setError('Vous devez renseigner un email');
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      setUserData(user);
+    }
+  }, [open, user]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[525px] max-h-[90vh] overflow-y-auto">
@@ -61,70 +83,99 @@ const EditProfileModal = ({
           </DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-4">
-          {/* {error && <div className="text-red-500 text-sm">{error}</div>} */}
-
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <div className="flex flex-col items-center justify-center gap-4 py-2">
+            <Avatar
+              className="h-24 w-24 border-4 border-white shadow-md cursor-pointer group relative"
+              // onClick={handleAvatarUpload}
+            >
+              <AvatarImage
+                src={`${import.meta.env.VITE_API_URL}${user.image}`}
+                alt="Profile picture"
+                className="object-cover"
+              />
+              <AvatarFallback>
+                <UserIcon className="h-12 w-12" />
+              </AvatarFallback>
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-full">
+                <Camera className="h-8 w-8 text-white" />
+              </div>
+            </Avatar>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              // onClick={handleAvatarUpload}
+            >
+              <Camera className="mr-2 h-4 w-4" />
+              Changer l&apos;avatar
+            </Button>
+          </div>
           <div className="space-y-2">
-            <Label htmlFor="username">Nom d&apos;utilisateur</Label>
+            <Label htmlFor="username">* Nom d&apos;utilisateur</Label>
             <Input
               id="username"
               name="username"
               type="text"
-              placeholder="votrenom"
+              placeholder="Votre nom d'utilisateur"
+              value={userData.username}
+              onChange={handleChange}
               required
             />
+            <p className="text-sm text-muted-foreground">
+              Ceci est votre nom affiché publiquement.
+            </p>
           </div>
-
           <div className="space-y-2">
-            <Label>Ville</Label>
-            <Select>
-              <SelectTrigger className="w-94">
-                <SelectValue placeholder="Choisissez une ville" />
-              </SelectTrigger>
-              <SelectContent>{/* Options ici */}</SelectContent>
-            </Select>
-            <input type="hidden" name="city" />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="signup-email">Email</Label>
+            <Label htmlFor="email">* Email</Label>
             <Input
-              id="signup-email"
+              id="email"
               name="email"
               type="email"
               placeholder="votreemail@exemple.com"
+              value={userData.email}
+              onChange={handleChange}
               required
             />
           </div>
-
           <div className="space-y-2">
-            <Label htmlFor="signup-password">Mot de passe</Label>
+            <Label htmlFor="last_name">Nom</Label>
             <Input
-              id="signup-password"
-              name="password"
-              type="password"
-              placeholder="••••••••"
-              required
+              id="last_name"
+              name="last_name"
+              type="text"
+              placeholder="Nom"
+              value={userData.last_name}
+              onChange={handleChange}
             />
           </div>
-
           <div className="space-y-2">
-            <Label htmlFor="confirm-password">Confirmer le mot de passe</Label>
+            <Label htmlFor="first_name">Prénom</Label>
             <Input
-              id="confirm-password"
-              name="confirm-password"
-              type="password"
-              placeholder="••••••••"
-              required
+              id="first_name"
+              name="first_name"
+              type="text"
+              placeholder="Prénom"
+              value={userData.first_name}
+              onChange={handleChange}
             />
           </div>
-
-          <Button
-            type="submit"
-            className="w-full gradient-border-button-cta bg-white/10 text-gray-900 hover:bg-white/20 font-semibold"
-          >
-            Sauvegarder
-          </Button>
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
+              Annuler
+            </Button>
+            <Button
+              className="bg-green-500"
+              type="submit"
+            >
+              Sauvegarder
+            </Button>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>

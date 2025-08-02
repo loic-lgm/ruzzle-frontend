@@ -15,6 +15,8 @@ import { MessageSquare, Package, Check, Send, Edit } from 'lucide-react';
 import SwapRequests from '@/components/SwapRequests';
 import Messages from '@/components/Messages';
 import EditProfileModal from '@/components/EditProfileModal/EditProfileModal';
+import useUserStore from '@/stores/useUserStore';
+import { useNavigate } from 'react-router';
 // import ExchangeRequestsList from '@/components/exchanges/ExchangeRequestsList';
 // import MessagesList from '@/components/exchanges/MessagesList';
 // import EditProfileDialog from '@/components/profile/EditProfileDialog';
@@ -34,7 +36,14 @@ const mockUser = {
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('received');
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const user = useUserStore((state) => state.user);
+  const navigate = useNavigate();
 
+  if (!user) {
+    navigate('/');
+  }
+
+  console.log(user);
   // Stats summary for the profile header
   const stats = [
     { label: 'Échanges', value: mockUser.completedExchanges },
@@ -179,11 +188,13 @@ const Profile = () => {
           </Tabs>
         </div>
       </main>
-      <EditProfileModal
-        open={isEditProfileOpen}
-        onOpenChange={setIsEditProfileOpen}
-        userData={mockUser}
-      />
+      {user && (
+        <EditProfileModal
+          open={isEditProfileOpen}
+          onOpenChange={setIsEditProfileOpen}
+          user={user}
+        />
+      )}
     </div>
   );
 };
