@@ -33,6 +33,8 @@ import { City } from '@/types/city';
 import { fetchCities } from '@/service/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import { User } from '@/types/user';
+import { updateUser } from '@/service/user';
+import { toast } from 'sonner';
 
 interface EditProfileDialogProps {
   open: boolean;
@@ -47,6 +49,24 @@ const EditProfileModal = ({
 }: EditProfileDialogProps) => {
   const [userData, setUserData] = useState<User>(user);
   const [error, setError] = useState<string | null>(null);
+  const [internalError, setInternalError] = useState<string | null>(null);
+
+  const update = useMutation({
+    mutationFn: updateUser,
+    onSuccess: () => {
+      setError('');
+      setInternalError('');
+      toast.success('Profil mis à jour avec succès !');
+      onOpenChange(false);
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<{ error: string }>;
+      setInternalError(
+        axiosError.response?.data?.error || 'Une erreur est survenue'
+      );
+    },
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserData((prev) => ({
@@ -65,6 +85,16 @@ const EditProfileModal = ({
       setError('Vous devez renseigner un email');
       return;
     }
+
+    update.mutate({
+      userId: user.id,
+      payload: {
+        first_name: userData.first_name || null,
+        last_name: userData.last_name || null,
+        username: userData.username,
+        email: userData.email,
+      },
+    });
   };
 
   useEffect(() => {
@@ -145,7 +175,7 @@ const EditProfileModal = ({
               name="last_name"
               type="text"
               placeholder="Nom"
-              value={userData.last_name}
+              value={userData.last_name || ''}
               onChange={handleChange}
             />
           </div>
@@ -156,11 +186,14 @@ const EditProfileModal = ({
               name="first_name"
               type="text"
               placeholder="Prénom"
-              value={userData.first_name}
+              value={userData.first_name || ''}
               onChange={handleChange}
             />
           </div>
           {error && <div className="text-red-500 text-sm">{error}</div>}
+          {internalError && (
+            <div className="text-red-500 text-sm">{internalError}</div>
+          )}
           <DialogFooter>
             <Button
               type="button"
@@ -169,10 +202,7 @@ const EditProfileModal = ({
             >
               Annuler
             </Button>
-            <Button
-              className="bg-green-500"
-              type="submit"
-            >
+            <Button className="bg-green-500" type="submit">
               Sauvegarder
             </Button>
           </DialogFooter>

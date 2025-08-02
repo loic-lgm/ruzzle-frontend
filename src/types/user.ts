@@ -5,9 +5,9 @@ export interface User {
   username: string;
   email: string;
   city?: City;
-  first_name?: string;
+  first_name?: string | null;
   image?: string;
-  last_name?: string;
+  last_name?: string | null;
 }
 
 export interface UserStore {
