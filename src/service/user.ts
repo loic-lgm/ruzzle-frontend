@@ -36,3 +36,10 @@ export const fetchSentSwapsByUser = async (userId: number): Promise<Swap[]> => {
   );
   return res.data;
 };
+
+export const fetchCompletedSwapsByUser = async (userId: number): Promise<Swap[]> => {
+  const res = await api.get(
+    `${import.meta.env.VITE_API_URL}/users/${userId}/completed-exchanges/`
+  );
+  return res.data;
+};

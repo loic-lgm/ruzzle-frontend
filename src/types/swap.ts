@@ -1,4 +1,5 @@
 import { Puzzle } from '@/types/puzzle';
+import { User } from '@/types/user';
 
 export type SwapPuzzleData = {
   message: string;
@@ -12,4 +13,6 @@ export type Swap = {
   puzzle_proposed: Puzzle;
   message: string;
   status: string;
+  requester: User;
+  created: string;
 };

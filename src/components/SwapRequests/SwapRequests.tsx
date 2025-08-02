@@ -26,7 +26,7 @@ type SwapRow = {
     image: string;
     pieceCount: number;
   };
-  // date: string;
+  date: string;
   status: string;
 };
 
@@ -94,13 +94,13 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
               <TableCell>
                 <div className="flex items-center gap-3">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${swap.puzzle.image}`}
+                    src={`${import.meta.env.VITE_API_URL}${swap.forPuzzle.image}`}
                     alt="Miniature du puzzle"
                     className="h-12 w-12 object-cover rounded-md shadow-sm border"
                   />
                   <div>
                     <p className="text-sm text-gray-500">
-                      {swap.puzzle.pieceCount} pièces
+                      {swap.forPuzzle.pieceCount} pièces
                     </p>
                   </div>
                 </div>
@@ -119,7 +119,7 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
                   </div>
                 </div>
               </TableCell>
-              <TableCell>{swap.status}</TableCell>
+              <TableCell>{swap.date}</TableCell>
               <TableCell>
                 {swap.status === 'pending' ? (
                   <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
