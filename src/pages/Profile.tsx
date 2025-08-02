@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,9 +16,8 @@ import Messages from '@/components/Messages';
 import EditProfileModal from '@/components/EditProfileModal/EditProfileModal';
 import useUserStore from '@/stores/useUserStore';
 import { useNavigate } from 'react-router';
-// import ExchangeRequestsList from '@/components/exchanges/ExchangeRequestsList';
-// import MessagesList from '@/components/exchanges/MessagesList';
-// import EditProfileDialog from '@/components/profile/EditProfileDialog';
+import { useQuery } from '@tanstack/react-query';
+import { fetchReceivedSwapsByUser, fetchSentSwapsByUser } from '@/service/user';
 
 // Mock data for demonstration
 const mockUser = {
@@ -43,7 +41,58 @@ const Profile = () => {
     navigate('/');
   }
 
-  console.log(user);
+  const { data: receivedSwaps = [] } = useQuery({
+    queryKey: ['receveid-swaps', user?.id],
+    queryFn: () => fetchReceivedSwapsByUser(user!.id),
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: sentSwaps = [] } = useQuery({
+    queryKey: ['sent-swaps', user?.id],
+    queryFn: () => fetchSentSwapsByUser(user!.id),
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const receivedSwapsToTable = receivedSwaps.map((swap) => ({
+    id: swap.id,
+    user: {
+      avatar: swap.puzzle_proposed.owner.image ?? '',
+      username: swap.puzzle_proposed.owner.username,
+    },
+    puzzle: {
+      image: swap.puzzle_proposed.image,
+      pieceCount: swap.puzzle_proposed.piece_count,
+    },
+    forPuzzle: {
+      image: swap.puzzle_asked.image,
+      pieceCount: swap.puzzle_asked.piece_count,
+    },
+    // date: new Date(swap.created).toLocaleDateString('fr-FR'),
+    status: swap.status,
+  }));
+
+  const sentSwapsToTable = sentSwaps.map((swap) => ({
+    id: swap.id,
+    user: {
+      avatar: swap.puzzle_asked.owner.image ?? '',
+      username: swap.puzzle_asked.owner.username,
+    },
+    puzzle: {
+      image: swap.puzzle_asked.image,
+      pieceCount: swap.puzzle_asked.piece_count,
+    },
+    forPuzzle: {
+      image: swap.puzzle_proposed.image,
+      pieceCount: swap.puzzle_proposed.piece_count,
+    },
+    // date: new Date(swap.created).toLocaleDateString('fr-FR'),
+    status: swap.status,
+  }));
+
   // Stats summary for the profile header
   const stats = [
     { label: 'Échanges', value: mockUser.completedExchanges },
@@ -138,7 +187,7 @@ const Profile = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <SwapRequests type="received" />
+                  <SwapRequests type="received" swaps={receivedSwapsToTable} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -153,7 +202,7 @@ const Profile = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <SwapRequests type="sent" />
+                  <SwapRequests type="sent" swaps={sentSwapsToTable} />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -167,7 +216,7 @@ const Profile = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <SwapRequests type="completed" />
+                  <SwapRequests type="completed" swaps={receivedSwapsToTable} />
                 </CardContent>
               </Card>
             </TabsContent>

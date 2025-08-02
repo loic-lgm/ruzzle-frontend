@@ -1,3 +1,4 @@
+import { Swap } from '@/types/swap';
 import { User } from '@/types/user';
 import api from '@/utils/apiClient';
 
@@ -16,6 +17,22 @@ export const updateUser = async ({
   const res = await api.put(
     `${import.meta.env.VITE_API_URL}/users/${userId}/`,
     payload
+  );
+  return res.data;
+};
+
+export const fetchReceivedSwapsByUser = async (
+  userId: number
+): Promise<Swap[]> => {
+  const res = await api.get(
+    `${import.meta.env.VITE_API_URL}/users/${userId}/requested-exchanges/`
+  );
+  return res.data;
+};
+
+export const fetchSentSwapsByUser = async (userId: number): Promise<Swap[]> => {
+  const res = await api.get(
+    `${import.meta.env.VITE_API_URL}/users/${userId}/requester-exchanges/`
   );
   return res.data;
 };
