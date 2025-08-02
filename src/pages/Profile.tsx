@@ -23,17 +23,6 @@ import {
   fetchSentSwapsByUser,
 } from '@/service/user';
 
-// Mock data for demonstration
-const mockUser = {
-  id: '1',
-  name: 'Alex Johnson',
-  username: 'alexj',
-  email: 'alex@example.com',
-  avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Alex',
-  joinedDate: 'Janvier 2025',
-  completedExchanges: 8,
-  bio: 'Puzzle enthusiast and collector. I love trading puzzles with others to discover new challenges!',
-};
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('received');
@@ -131,13 +120,6 @@ const Profile = () => {
     };
   });
 
-  // Stats summary for the profile header
-  const stats = [
-    { label: 'Échanges', value: mockUser.completedExchanges },
-    { label: 'En cours', value: 3 },
-    { label: 'Note', value: '4.8/5' },
-  ];
-
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 pt-24 pb-12 bg-gray-50">
@@ -145,30 +127,47 @@ const Profile = () => {
           <div className="mb-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               <Avatar className="h-24 w-24 border-4 border-white shadow-md">
-                <AvatarImage src={mockUser.avatar} alt={mockUser.name} />
-                <AvatarFallback>{mockUser.name.substring(0, 2)}</AvatarFallback>
+                <AvatarImage
+                  src={`${import.meta.env.VITE_API_URL}${user?.image}`}
+                  alt={user?.username}
+                  className="object-cover"
+                />
+                <AvatarFallback>
+                  {user?.username.substring(0, 2)}
+                </AvatarFallback>
               </Avatar>
 
               <div className="flex-1 text-center md:text-left">
                 <h1 className="text-3xl font-bold text-gray-900">
-                  {mockUser.name}
+                  {user?.first_name} {user?.last_name}
                 </h1>
-                <p className="text-gray-500">@{mockUser.username}</p>
-                <p className="text-sm text-gray-500 mt-1">
-                  Membre depuis {mockUser.joinedDate}
-                </p>
+                <p className="text-gray-500">@{user?.username}</p>
+                {user?.created_at && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    Membre depuis{' '}
+                    {new Date(user?.created_at).toLocaleDateString('fr-FR', {
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </p>
+                )}
                 <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
-                  {stats.map((stat, index) => (
-                    <div
-                      key={index}
-                      className="text-center px-4 py-2 bg-white rounded-lg shadow-sm"
-                    >
-                      <div className="text-2xl font-bold text-gray-900">
-                        {stat.value}
-                      </div>
-                      <div className="text-xs text-gray-500">{stat.label}</div>
+                  <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
+                    <div className="text-2xl font-bold text-gray-900">
+                      {completedSwaps.length}
                     </div>
-                  ))}
+                    <div className="text-xs text-gray-500">Échanges</div>
+                  </div>
+                  <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
+                    <div className="text-2xl font-bold text-gray-900">
+                      {sentSwaps.length + receivedSwaps.length}
+                    </div>
+                    <div className="text-xs text-gray-500">En cours</div>
+                  </div>
+                  <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
+                    <div className="text-2xl font-bold text-gray-900">5/5</div>
+                    <div className="text-xs text-gray-500">Note</div>
+                  </div>
                 </div>
               </div>
 

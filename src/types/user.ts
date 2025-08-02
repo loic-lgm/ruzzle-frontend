@@ -8,6 +8,7 @@ export interface User {
   first_name?: string | null;
   image?: string;
   last_name?: string | null;
+  created_at?: string
 }
 
 export interface UserStore {
