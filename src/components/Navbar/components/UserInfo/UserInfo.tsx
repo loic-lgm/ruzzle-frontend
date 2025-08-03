@@ -37,7 +37,10 @@ const UserInfo = ({ user }: UserInfoProps) => {
       <Popover>
         <PopoverTrigger>
           <Avatar className="cursor-pointer">
-            <AvatarImage src="https://cdn.britannica.com/06/122506-050-C8E03A8A/Pyramid-of-Khafre-Giza-Egypt.jpg" />
+            <AvatarImage
+              src={`${import.meta.env.VITE_API_URL}${user.image}`}
+              className="object-cover"
+            />
           </Avatar>
         </PopoverTrigger>
         <PopoverContent className="w-56">

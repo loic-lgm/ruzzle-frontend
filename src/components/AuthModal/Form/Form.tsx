@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router';
 import { City } from '@/types/city';
 import { fetchCities } from '@/service/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
+import useUserStore from '@/stores/useUserStore';
 
 interface FormProps {
   close?: () => void;
@@ -28,6 +29,7 @@ const Form = ({ close }: FormProps) => {
   const navigate = useNavigate();
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [error, setError] = useState<string | null>('');
+  const setUser = useUserStore((state) => state.setUser);
 
   const { data: cities } = useQuery({
     queryKey: ['cities'],
@@ -39,8 +41,9 @@ const Form = ({ close }: FormProps) => {
 
   const login = useMutation({
     mutationFn: loginFn,
-    onSuccess: () => {
+    onSuccess: (data) => {
       setError(null);
+      setUser(data.user);
       navigate('/puzzles');
       close?.();
     },

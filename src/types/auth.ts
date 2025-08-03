@@ -1,3 +1,5 @@
+import { User } from '@/types/user';
+
 export type LoginData = {
   email: string;
   password: string;
@@ -5,10 +7,7 @@ export type LoginData = {
 
 export type LoginResponse = {
   token: string;
-  user: {
-    id: number;
-    username: string;
-  };
+  user: User;
 };
 
 export type SignupData = {
