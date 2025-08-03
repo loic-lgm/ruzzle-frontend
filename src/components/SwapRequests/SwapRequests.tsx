@@ -10,27 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
-type SwapRow = {
-  id: number;
-  user: {
-    avatar: string;
-    username: string;
-  };
-  puzzle: {
-    image: string;
-    pieceCount: number;
-  };
-  forPuzzle: {
-    image: string;
-    pieceCount: number;
-  };
-  date: string;
-  status: string;
-};
+import { SwapRow, SwapType } from '@/types/swap';
 
 interface ExchangeRequestsListProps {
-  type: 'received' | 'sent' | 'completed';
+  type: SwapType;
   swaps: SwapRow[];
 }
 
@@ -93,7 +76,9 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
               <TableCell>
                 <div className="flex items-center gap-3">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${swap.forPuzzle.image}`}
+                    src={`${import.meta.env.VITE_API_URL}${
+                      swap.forPuzzle.image
+                    }`}
                     alt="Miniature du puzzle"
                     className="h-12 w-12 object-cover rounded-md shadow-sm border"
                   />

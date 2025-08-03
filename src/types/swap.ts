@@ -16,3 +16,23 @@ export type Swap = {
   requester: User;
   created: string;
 };
+
+export type SwapRow = {
+  id: number;
+  user: {
+    avatar: string;
+    username: string;
+  };
+  puzzle: {
+    image: string;
+    pieceCount: number;
+  };
+  forPuzzle: {
+    image: string;
+    pieceCount: number;
+  };
+  date: string;
+  status: string;
+};
+
+export type SwapType = 'sent' | 'received' | 'completed';

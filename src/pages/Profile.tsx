@@ -22,7 +22,7 @@ import {
   fetchReceivedSwapsByUser,
   fetchSentSwapsByUser,
 } from '@/service/user';
-
+import { mapSwapToRow } from '@/components/SwapRequests/helpers';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('received');
@@ -58,67 +58,17 @@ const Profile = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  const receivedSwapsToTable = receivedSwaps.map((swap) => ({
-    id: swap.id,
-    user: {
-      avatar: swap.puzzle_proposed.owner.image ?? '',
-      username: swap.puzzle_proposed.owner.username,
-    },
-    puzzle: {
-      image: swap.puzzle_asked.image,
-      pieceCount: swap.puzzle_asked.piece_count,
-    },
-    forPuzzle: {
-      image: swap.puzzle_proposed.image,
-      pieceCount: swap.puzzle_proposed.piece_count,
-    },
-    date: new Date(swap.created).toLocaleDateString('fr-FR'),
-    status: swap.status,
-  }));
+  const receivedSwapsToTable = receivedSwaps.map((swap) =>
+    mapSwapToRow(swap, user?.id, 'received')
+  );
 
-  const sentSwapsToTable = sentSwaps.map((swap) => ({
-    id: swap.id,
-    user: {
-      avatar: swap.puzzle_asked.owner.image ?? '',
-      username: swap.puzzle_asked.owner.username,
-    },
-    puzzle: {
-      image: swap.puzzle_proposed.image,
-      pieceCount: swap.puzzle_proposed.piece_count,
-    },
-    forPuzzle: {
-      image: swap.puzzle_asked.image,
-      pieceCount: swap.puzzle_asked.piece_count,
-    },
-    date: new Date(swap.created).toLocaleDateString('fr-FR'),
-    status: swap.status,
-  }));
+  const sentSwapsToTable = sentSwaps.map((swap) =>
+    mapSwapToRow(swap, user?.id, 'sent')
+  );
 
-  const completedSwapsToTable = completedSwaps.map((swap) => {
-    const isRequester = swap.requester.id === user?.id;
-
-    return {
-      id: swap.id,
-      user: {
-        avatar: isRequester
-          ? swap.puzzle_asked.owner.image ?? ''
-          : swap.puzzle_proposed.owner.image ?? '',
-        username: isRequester
-          ? swap.puzzle_asked.owner.username
-          : swap.puzzle_proposed.owner.username,
-      },
-      puzzle: {
-        image: swap.puzzle_proposed.image,
-        pieceCount: swap.puzzle_proposed.piece_count,
-      },
-      forPuzzle: {
-        image: swap.puzzle_asked.image,
-        pieceCount: swap.puzzle_asked.piece_count,
-      },
-      date: new Date(swap.created).toLocaleDateString('fr-FR'),
-      status: swap.status,
-    };
-  });
+  const completedSwapsToTable = completedSwaps.map((swap) =>
+    mapSwapToRow(swap, user?.id, 'completed')
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
