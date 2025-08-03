@@ -10,16 +10,21 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { SwapRow, SwapStatus, SwapType } from '@/types/swap';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateSwap } from '@/service/swap';
 import { toast } from 'sonner';
+import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
+import { User } from '@/types/user';
 
 interface ExchangeRequestsListProps {
   type: SwapType;
   swaps: SwapRow[];
+  user: User;
 }
 
-const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
+const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
+  const { refreshSwaps } = useSwapsRefresh();
+  const queryClient = useQueryClient();
   const update = useMutation({
     mutationFn: ({
       payload,
@@ -27,17 +32,31 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
     }: {
       payload: SwapStatus;
       exchangeId: number;
+      type: 'sent' | 'received';
     }) => updateSwap({ payload, exchangeId }),
-    onSuccess: () => {
-      toast.success('Profil mis à jour avec succès !');
+    onSuccess: (_, variables) => {
+      if (variables.payload == 'denied') {
+        toast.success('Échange annulé !');
+      }
+      if (variables.payload == 'accepted') {
+        toast.success('Échange accepté !');
+        queryClient.invalidateQueries({
+          queryKey: ['completed-swaps', user.id],
+        });
+      }
+      refreshSwaps(variables.type, user.id);
     },
     onError: (error) => {
       console.log(error);
     },
   });
 
-  const handleUpdateStatus = (id: number, status: 'accepted' | 'denied') => {
-    update.mutate({ exchangeId: id, payload: status });
+  const handleUpdateStatus = (
+    id: number,
+    status: 'accepted' | 'denied',
+    type: 'sent' | 'received'
+  ) => {
+    update.mutate({ exchangeId: id, payload: status, type: type });
   };
 
   if (swaps.length === 0) {
@@ -128,7 +147,9 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
                         size="sm"
                         variant="outline"
                         className="h-8 w-8 p-0"
-                        onClick={() => handleUpdateStatus(swap.id, 'accepted')}
+                        onClick={() =>
+                          handleUpdateStatus(swap.id, 'accepted', type)
+                        }
                       >
                         <CheckCircle className="h-4 w-4 text-green-500" />
                         <span className="sr-only">Accepter</span>
@@ -137,7 +158,9 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
                         size="sm"
                         variant="outline"
                         className="h-8 w-8 p-0"
-                        onClick={() => handleUpdateStatus(swap.id, 'denied')}
+                        onClick={() =>
+                          handleUpdateStatus(swap.id, 'denied', type)
+                        }
                       >
                         <XCircle className="h-4 w-4 text-red-500" />
                         <span className="sr-only">Refuser</span>
@@ -149,7 +172,9 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      onClick={() => handleUpdateStatus(swap.id, 'denied')}
+                      onClick={() =>
+                        handleUpdateStatus(swap.id, 'denied', type)
+                      }
                     >
                       <XCircle className="h-4 w-4 text-red-500" />
                       <span className="sr-only">Annuler</span>

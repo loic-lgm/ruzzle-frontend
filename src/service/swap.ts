@@ -16,7 +16,7 @@ export const updateSwap = async ({
 }: {
   payload: SwapStatus;
   exchangeId: number;
-}): Promise<Puzzle> => {
+}): Promise<SwapPuzzleData> => {
   const response = await api.patch(
     `${import.meta.env.VITE_API_URL}/exchanges/${exchangeId}/`,
     { status: payload }

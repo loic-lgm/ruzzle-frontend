@@ -37,7 +37,7 @@ const Profile = () => {
   }, [user, navigate]);
 
   const { data: receivedSwaps = [] } = useQuery({
-    queryKey: ['receveid-swaps', user?.id],
+    queryKey: ['received-swaps', user?.id],
     queryFn: () => fetchReceivedSwapsByUser(user!.id),
     refetchOnWindowFocus: false,
     retry: false,
@@ -76,157 +76,181 @@ const Profile = () => {
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 pt-24 pb-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-              <Avatar className="h-24 w-24 border-4 border-white shadow-md">
-                <AvatarImage
-                  src={`${import.meta.env.VITE_API_URL}${user?.image}`}
-                  alt={user?.username}
-                  className="object-cover"
-                />
-                <AvatarFallback>
-                  {user?.username.substring(0, 2)}
-                </AvatarFallback>
-              </Avatar>
+          {user && (
+            <>
+              <div className="mb-8">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                  <Avatar className="h-24 w-24 border-4 border-white shadow-md">
+                    <AvatarImage
+                      src={`${import.meta.env.VITE_API_URL}${user?.image}`}
+                      alt={user?.username}
+                      className="object-cover"
+                    />
+                    <AvatarFallback>
+                      {user?.username.substring(0, 2)}
+                    </AvatarFallback>
+                  </Avatar>
 
-              <div className="flex-1 text-center md:text-left">
-                <h1 className="text-3xl font-bold text-gray-900">
-                  {user?.first_name} {user?.last_name}
-                </h1>
-                <p className="text-gray-500">@{user?.username}</p>
-                {user?.created_at && (
-                  <p className="text-sm text-gray-500 mt-1">
-                    Membre depuis{' '}
-                    {new Date(user?.created_at).toLocaleDateString('fr-FR', {
-                      month: 'long',
-                      year: 'numeric',
-                    })}
-                  </p>
-                )}
-                <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
-                  <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
-                    <div className="text-2xl font-bold text-gray-900">
-                      {completedSwaps.length}
+                  <div className="flex-1 text-center md:text-left">
+                    <h1 className="text-3xl font-bold text-gray-900">
+                      {user?.first_name} {user?.last_name}
+                    </h1>
+                    <p className="text-gray-500">@{user?.username}</p>
+                    {user?.created_at && (
+                      <p className="text-sm text-gray-500 mt-1">
+                        Membre depuis{' '}
+                        {new Date(user?.created_at).toLocaleDateString(
+                          'fr-FR',
+                          {
+                            month: 'long',
+                            year: 'numeric',
+                          }
+                        )}
+                      </p>
+                    )}
+                    <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
+                      <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
+                        <div className="text-2xl font-bold text-gray-900">
+                          {completedSwaps.length}
+                        </div>
+                        <div className="text-xs text-gray-500">Échanges</div>
+                      </div>
+                      <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
+                        <div className="text-2xl font-bold text-gray-900">
+                          {sentSwaps.length + receivedSwaps.length}
+                        </div>
+                        <div className="text-xs text-gray-500">En cours</div>
+                      </div>
+                      <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
+                        <div className="text-2xl font-bold text-gray-900">
+                          5/5
+                        </div>
+                        <div className="text-xs text-gray-500">Note</div>
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-500">Échanges</div>
                   </div>
-                  <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
-                    <div className="text-2xl font-bold text-gray-900">
-                      {sentSwaps.length + receivedSwaps.length}
-                    </div>
-                    <div className="text-xs text-gray-500">En cours</div>
-                  </div>
-                  <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
-                    <div className="text-2xl font-bold text-gray-900">5/5</div>
-                    <div className="text-xs text-gray-500">Note</div>
+
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      variant="outline"
+                      className="flex gap-2"
+                      onClick={() => setIsEditProfileOpen(true)}
+                    >
+                      <Edit size={16} />
+                      Éditer son profil
+                    </Button>
                   </div>
                 </div>
               </div>
-
-              <div className="flex flex-col gap-2">
-                <Button
-                  variant="outline"
-                  className="flex gap-2"
-                  onClick={() => setIsEditProfileOpen(true)}
-                >
-                  <Edit size={16} />
-                  Éditer son profil
-                </Button>
-              </div>
-            </div>
-          </div>
-          <Tabs
-            defaultValue="received"
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="w-full"
-          >
-            <TabsList className="grid grid-cols-4 mb-8 w-full">
-              <TabsTrigger value="received" className="flex items-center gap-2">
-                <Package size={16} />
-                <span className="hidden sm:inline">Reçu</span>
-                <Badge className="ml-1 bg-emerald-500">2</Badge>
-              </TabsTrigger>
-              <TabsTrigger value="sent" className="flex items-center gap-2">
-                <Send size={16} />
-                <span className="hidden sm:inline">Envoyé</span>
-                <Badge className="ml-1 bg-emerald-500">1</Badge>
-              </TabsTrigger>
-              <TabsTrigger
-                value="completed"
-                className="flex items-center gap-2"
+              <Tabs
+                defaultValue="received"
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
               >
-                <Check size={16} />
-                <span className="hidden sm:inline">Terminé</span>
-              </TabsTrigger>
-              <TabsTrigger value="messages" className="flex items-center gap-2">
-                <MessageSquare size={16} />
-                <span className="hidden sm:inline">Messages</span>
-                <Badge className="ml-1 bg-blue-500">3</Badge>
-              </TabsTrigger>
-            </TabsList>
+                <TabsList className="grid grid-cols-4 mb-8 w-full">
+                  <TabsTrigger
+                    value="received"
+                    className="flex items-center gap-2"
+                  >
+                    <Package size={16} />
+                    <span className="hidden sm:inline">Reçu</span>
+                    <Badge className="ml-1 bg-emerald-500">2</Badge>
+                  </TabsTrigger>
+                  <TabsTrigger value="sent" className="flex items-center gap-2">
+                    <Send size={16} />
+                    <span className="hidden sm:inline">Envoyé</span>
+                    <Badge className="ml-1 bg-emerald-500">1</Badge>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="completed"
+                    className="flex items-center gap-2"
+                  >
+                    <Check size={16} />
+                    <span className="hidden sm:inline">Terminé</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="messages"
+                    className="flex items-center gap-2"
+                  >
+                    <MessageSquare size={16} />
+                    <span className="hidden sm:inline">Messages</span>
+                    <Badge className="ml-1 bg-blue-500">3</Badge>
+                  </TabsTrigger>
+                </TabsList>
 
-            <TabsContent value="received">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Demandes d&apos;échange reçues</CardTitle>
-                  <CardDescription>
-                    Les demandes d&apos;échange que vous avez reçu des autres
-                    membres.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <SwapRequests type="received" swaps={receivedSwapsToTable} />
-                </CardContent>
-              </Card>
-            </TabsContent>
+                <TabsContent value="received">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Demandes d&apos;échange reçues</CardTitle>
+                      <CardDescription>
+                        Les demandes d&apos;échange que vous avez reçu des
+                        autres membres.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <SwapRequests
+                        type="received"
+                        swaps={receivedSwapsToTable}
+                        user={user}
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
-            <TabsContent value="sent">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Demandes d&apos;échange envoyées</CardTitle>
-                  <CardDescription>
-                    Demande d&apos;échange que vous avez envoyées aux autres
-                    membres.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <SwapRequests type="sent" swaps={sentSwapsToTable} />
-                </CardContent>
-              </Card>
-            </TabsContent>
+                <TabsContent value="sent">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Demandes d&apos;échange envoyées</CardTitle>
+                      <CardDescription>
+                        Demande d&apos;échange que vous avez envoyées aux autres
+                        membres.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <SwapRequests
+                        type="sent"
+                        swaps={sentSwapsToTable}
+                        user={user}
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
-            <TabsContent value="completed">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Échanges terminés</CardTitle>
-                  <CardDescription>
-                    Votre historique d&apos;échanges conclus.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <SwapRequests
-                    type="completed"
-                    swaps={completedSwapsToTable}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent>
+                <TabsContent value="completed">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Échanges terminés</CardTitle>
+                      <CardDescription>
+                        Votre historique d&apos;échanges conclus.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <SwapRequests
+                        type="completed"
+                        swaps={completedSwapsToTable}
+                        user={user}
+                      />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
-            <TabsContent value="messages">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Messages</CardTitle>
-                  <CardDescription>
-                    Conversation avec les autres membres.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Messages />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                <TabsContent value="messages">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Messages</CardTitle>
+                      <CardDescription>
+                        Conversation avec les autres membres.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Messages />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </>
+          )}
         </div>
       </main>
       {user && (
