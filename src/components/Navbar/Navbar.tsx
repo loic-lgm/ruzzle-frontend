@@ -50,7 +50,7 @@ const Navbar = () => {
             <UserInfo user={user} />
           ) : (
             <Button
-              className="border-2 border-green-400 bg-tranparent text-gray-900 hover:border-green-500 hover:bg-transparent"
+              className="gradient-border-button-cta bg-tranparent text-gray-900 hover:bg-transparent"
               onClick={() => open('login')}
             >
               <LogIn />

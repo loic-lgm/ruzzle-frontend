@@ -159,7 +159,7 @@ const Form = ({ close }: FormProps) => {
           <div className="space-y-2">
             <Label>City</Label>
             <Select onValueChange={setSelectedCity}>
-              <SelectTrigger className="w-94">
+              <SelectTrigger className="w-94 bg-transparent">
                 <SelectValue placeholder="Choississez une ville" />
               </SelectTrigger>
               <SelectContent>
