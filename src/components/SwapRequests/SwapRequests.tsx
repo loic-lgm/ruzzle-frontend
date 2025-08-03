@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MessageSquare, CheckCircle, XCircle } from 'lucide-react';
@@ -10,7 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { SwapRow, SwapType } from '@/types/swap';
+import { SwapRow, SwapStatus, SwapType } from '@/types/swap';
+import { useMutation } from '@tanstack/react-query';
+import { updateSwap } from '@/service/swap';
+import { toast } from 'sonner';
 
 interface ExchangeRequestsListProps {
   type: SwapType;
@@ -18,22 +20,25 @@ interface ExchangeRequestsListProps {
 }
 
 const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
-  // Handle actions
-  // const handleAccept = (id: string) => {
-  //   console.log(id);
-  // };
+  const update = useMutation({
+    mutationFn: ({
+      payload,
+      exchangeId,
+    }: {
+      payload: SwapStatus;
+      exchangeId: number;
+    }) => updateSwap({ payload, exchangeId }),
+    onSuccess: () => {
+      toast.success('Profil mis à jour avec succès !');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-  // const handleDecline = (id: string) => {
-  //   console.log(id);
-  // };
-
-  // const handleCancel = (id: string) => {
-  //   console.log(id);
-  // };
-
-  // const handleMessage = (id: string) => {
-  //   console.log(id);
-  // };
+  const handleUpdateStatus = (id: number, status: 'accepted' | 'denied') => {
+    update.mutate({ exchangeId: id, payload: status });
+  };
 
   if (swaps.length === 0) {
     return (
@@ -123,7 +128,7 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
                         size="sm"
                         variant="outline"
                         className="h-8 w-8 p-0"
-                        // onClick={() => handleAccept(request.id)}
+                        onClick={() => handleUpdateStatus(swap.id, 'accepted')}
                       >
                         <CheckCircle className="h-4 w-4 text-green-500" />
                         <span className="sr-only">Accepter</span>
@@ -132,7 +137,7 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
                         size="sm"
                         variant="outline"
                         className="h-8 w-8 p-0"
-                        // onClick={() => handleDecline(request.id)}
+                        onClick={() => handleUpdateStatus(swap.id, 'denied')}
                       >
                         <XCircle className="h-4 w-4 text-red-500" />
                         <span className="sr-only">Refuser</span>
@@ -144,7 +149,7 @@ const SwapRequests = ({ type, swaps }: ExchangeRequestsListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      // onClick={() => handleCancel(request.id)}
+                      onClick={() => handleUpdateStatus(swap.id, 'denied')}
                     >
                       <XCircle className="h-4 w-4 text-red-500" />
                       <span className="sr-only">Annuler</span>

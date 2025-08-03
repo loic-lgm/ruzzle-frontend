@@ -36,3 +36,5 @@ export type SwapRow = {
 };
 
 export type SwapType = 'sent' | 'received' | 'completed';
+
+export type SwapStatus = 'pending' | 'accepted' | 'denied';

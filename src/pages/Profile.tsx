@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -30,9 +30,11 @@ const Profile = () => {
   const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
 
-  if (!user) {
-    navigate('/');
-  }
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const { data: receivedSwaps = [] } = useQuery({
     queryKey: ['receveid-swaps', user?.id],
