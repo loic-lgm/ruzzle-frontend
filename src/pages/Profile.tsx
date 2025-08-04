@@ -10,7 +10,14 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MessageSquare, Package, Check, Send, Edit } from 'lucide-react';
+import {
+  MessageSquare,
+  Package,
+  Check,
+  Send,
+  Edit,
+  Puzzle,
+} from 'lucide-react';
 import SwapRequests from '@/components/SwapRequests';
 import Messages from '@/components/Messages';
 import EditProfileModal from '@/components/EditProfileModal/EditProfileModal';
@@ -23,9 +30,11 @@ import {
   fetchSentSwapsByUser,
 } from '@/service/user';
 import { mapSwapToRow } from '@/components/SwapRequests/helpers';
+import PuzzlesList from '@/components/PuzzlesList';
+import { fetchPuzzlesByUser } from '@/service/puzzle';
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState('received');
+  const [activeTab, setActiveTab] = useState('puzzles');
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
@@ -60,6 +69,14 @@ const Profile = () => {
     staleTime: 5 * 60 * 1000,
   });
 
+  const { data: userPuzzles } = useQuery({
+    queryKey: ['userPuzzles'],
+    queryFn: fetchPuzzlesByUser,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
   const receivedSwapsToTable = receivedSwaps.map((swap) =>
     mapSwapToRow(swap, user?.id, 'received')
   );
@@ -76,7 +93,7 @@ const Profile = () => {
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 pt-24 pb-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {user && (
+          {user && userPuzzles && (
             <>
               <div className="mb-8">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
@@ -148,7 +165,14 @@ const Profile = () => {
                 onValueChange={setActiveTab}
                 className="w-full"
               >
-                <TabsList className="grid grid-cols-4 mb-8 w-full">
+                <TabsList className="grid grid-cols-4 mb-8 w-full flex flex-nowrap">
+                  <TabsTrigger
+                    value="puzzles"
+                    className="flex items-center gap-2"
+                  >
+                    <Puzzle size={16} />
+                    <span className="hidden sm:inline">Mes Puzzles</span>
+                  </TabsTrigger>
                   <TabsTrigger
                     value="received"
                     className="flex items-center gap-2"
@@ -178,7 +202,19 @@ const Profile = () => {
                     <Badge className="ml-1 bg-blue-500">3</Badge>
                   </TabsTrigger>
                 </TabsList>
-
+                <TabsContent value="puzzles">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Liste de tous vos puzzles</CardTitle>
+                      <CardDescription>
+                        Vous pouvez gérer tous vos puzzles ici.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <PuzzlesList puzzles={userPuzzles} />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
                 <TabsContent value="received">
                   <Card>
                     <CardHeader>
@@ -197,7 +233,6 @@ const Profile = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
-
                 <TabsContent value="sent">
                   <Card>
                     <CardHeader>
@@ -216,7 +251,6 @@ const Profile = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
-
                 <TabsContent value="completed">
                   <Card>
                     <CardHeader>
@@ -234,7 +268,6 @@ const Profile = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
-
                 <TabsContent value="messages">
                   <Card>
                     <CardHeader>

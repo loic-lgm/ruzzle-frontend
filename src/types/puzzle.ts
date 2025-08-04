@@ -1,3 +1,4 @@
+import { Brand } from '@/types/brand';
 import { Category } from '@/types/category';
 import { User } from '@/types/user';
 
@@ -7,11 +8,13 @@ export interface Puzzle {
   image: string;
   piece_count: number;
   category: Category;
-  brand: string;
+  brand: Brand;
   owner: User;
+  condition?: string;
+  created?: string;
 }
 
-export type Puzzles = [Puzzle];
+export type Puzzles = Puzzle[];
 
 export interface FilterTypes {
   category: string;

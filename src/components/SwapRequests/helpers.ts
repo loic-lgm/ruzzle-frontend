@@ -40,10 +40,7 @@ export function mapSwapToRow(
       image: forPuzzle.image,
       pieceCount: forPuzzle.piece_count,
     },
-    date: new Date(swap.created).toLocaleDateString('fr-FR', {
-      month: 'long',
-      year: 'numeric',
-    }),
+    date: new Date(swap.created).toLocaleDateString('fr-FR'),
     status: swap.status,
   };
 }
