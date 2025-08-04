@@ -19,6 +19,7 @@ import { useMutation } from '@tanstack/react-query';
 import { User } from '@/types/user';
 import { updateUser } from '@/service/user';
 import { toast } from 'sonner';
+import { useFetchUser } from '@/hooks/useFetchUser';
 
 interface EditProfileDialogProps {
   open: boolean;
@@ -34,6 +35,7 @@ const EditProfileModal = ({
   const [userData, setUserData] = useState<User>(user);
   const [error, setError] = useState<string | null>(null);
   const [internalError, setInternalError] = useState<string | null>(null);
+  const { refetch } = useFetchUser();
 
   const update = useMutation({
     mutationFn: updateUser,
@@ -42,6 +44,7 @@ const EditProfileModal = ({
       setInternalError('');
       toast.success('Profil mis à jour avec succès !');
       onOpenChange(false);
+      refetch();
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
