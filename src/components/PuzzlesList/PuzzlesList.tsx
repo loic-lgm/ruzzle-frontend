@@ -10,12 +10,32 @@ import {
 } from '@/components/ui/table';
 import { SquarePen, XCircle } from 'lucide-react';
 import { Puzzles } from '@/types/puzzle';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deletePuzzleFn } from '@/service/puzzle';
+import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { toast } from 'sonner';
 
 interface PuzzleListProps {
   puzzles: Puzzles;
 }
 
 const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
+  const [error, setError] = useState<string>('');
+  const queryClient = useQueryClient();
+
+  const deletePuzzle = useMutation({
+    mutationFn: deletePuzzleFn,
+    onSuccess: () => {
+      toast.success('Puzzle supprimé avec succès !');
+      queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<{ error: string }>;
+      toast.success('Une erreur est survenue !');
+      setError(axiosError.response?.data?.error || 'Une erreur est survenue');
+    },
+  });
   //   const { toast } = useToast();
 
   //   const handleEdit = (puzzleId: string) => {
@@ -25,15 +45,17 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
   // });
   //   };
 
-  //   const handleDelete = (puzzleId: string) => {
-  // toast({
-  //   title: 'Puzzle supprimé',
-  //   description: 'Le puzzle a été retiré de votre collection',
-  // });
-  //   };
+  const handleDelete = (hashId: string) => {
+    deletePuzzle.mutate(hashId);
+    //   toast({
+    //     title: 'Puzzle supprimé',
+    //     description: 'Le puzzle a été retiré de votre collection',
+    //   });
+  };
 
   return (
     <div className="space-y-4">
+      {error && <div className="text-red-500 text-sm">{error}</div>}
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
@@ -89,9 +111,7 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      //   onClick={() =>
-                      //     handleUpdateStatus(swap.id, 'denied', type)
-                      //   }
+                      onClick={() => handleDelete(puzzle.hashid!)}
                     >
                       <XCircle className="h-4 w-4 text-red-500" />
                       <span className="sr-only">Supprimer</span>

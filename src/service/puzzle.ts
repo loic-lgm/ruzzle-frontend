@@ -40,3 +40,10 @@ export const publishPuzzle = async (
   );
   return response.data;
 };
+
+export const deletePuzzleFn = async (hashid: string): Promise<Puzzle> => {
+  const response = await api.delete(
+    `${import.meta.env.VITE_API_URL}/puzzles/${hashid}/`
+  );
+  return response.data;
+};

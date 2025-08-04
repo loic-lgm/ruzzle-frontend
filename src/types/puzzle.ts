@@ -12,6 +12,7 @@ export interface Puzzle {
   owner: User;
   condition?: string;
   created?: string;
+  hashid?: string;
 }
 
 export type Puzzles = Puzzle[];
