@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Check, MessageSquare } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Puzzle, Puzzles } from '@/types/puzzle';
-import { useSwapModalStore } from '@/stores/useSwapModalStore';
+import { useModalStore } from '@/stores/useModalStore';
 import { AxiosError } from 'axios';
 import { swapPuzzle } from '@/service/swap';
 import { useMutation } from '@tanstack/react-query';
@@ -27,7 +27,7 @@ const SwapModal = ({ selectedPuzzle, userPuzzles }: ExchangeModalProps) => {
   const [message, setMessage] = useState<string>(
     'Bonjour, je suis intéressé pour échanger votre puzzle.'
   );
-  const { isOpen, close } = useSwapModalStore();
+  const { isOpen, close } = useModalStore();
 
   const swap = useMutation({
     mutationFn: swapPuzzle,

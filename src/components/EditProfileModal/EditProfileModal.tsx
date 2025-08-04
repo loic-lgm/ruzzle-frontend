@@ -3,14 +3,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
-  Dialog,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
 } from '@/components/ui/dialog';
-
+import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog';
 import { Camera, User as UserIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';

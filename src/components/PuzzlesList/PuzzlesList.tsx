@@ -15,6 +15,7 @@ import { deletePuzzleFn } from '@/service/puzzle';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
+import EditPuzzleModal from '@/components/EditPuzzleModal';
 
 interface PuzzleListProps {
   puzzles: Puzzles;
@@ -23,6 +24,7 @@ interface PuzzleListProps {
 const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
   const [error, setError] = useState<string>('');
   const queryClient = useQueryClient();
+  const [isEditPuzzleOpen, setIsEditPuzzleOpen] = useState<boolean>(false);
 
   const deletePuzzle = useMutation({
     mutationFn: deletePuzzleFn,
@@ -45,12 +47,14 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
   // });
   //   };
 
-  const handleDelete = (hashId: string) => {
-    deletePuzzle.mutate(hashId);
-    //   toast({
-    //     title: 'Puzzle supprimé',
-    //     description: 'Le puzzle a été retiré de votre collection',
-    //   });
+  const handleActions = (hashId: string, type: string) => {
+    if (type === 'delete') {
+      deletePuzzle.mutate(hashId);
+    }
+    if (type === 'update') {
+      setIsEditPuzzleOpen(true);
+      // deletePuzzle.mutate(hashId);
+    }
   };
 
   return (
@@ -100,9 +104,7 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      //   onClick={() =>
-                      //     handleUpdateStatus(swap.id, 'denied', type)
-                      //   }
+                      onClick={() => handleActions(puzzle.hashid!, 'update')}
                     >
                       <SquarePen className="h-4 w-4 text-green-500" />
                       <span className="sr-only">Annuler</span>
@@ -111,7 +113,7 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      onClick={() => handleDelete(puzzle.hashid!)}
+                      onClick={() => handleActions(puzzle.hashid!, 'delete')}
                     >
                       <XCircle className="h-4 w-4 text-red-500" />
                       <span className="sr-only">Supprimer</span>
@@ -123,11 +125,16 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
           </TableBody>
         </Table>
       </div>
-
       {puzzles.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
           Vous n&apos;avez pas encore ajouté de puzzles à votre collection.
         </div>
+      )}
+      {isEditPuzzleOpen && (
+        <EditPuzzleModal
+          open={isEditPuzzleOpen}
+          onOpenChange={setIsEditPuzzleOpen}
+        />
       )}
     </div>
   );

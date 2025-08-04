@@ -6,7 +6,7 @@ import { Puzzle } from '@/types/puzzle';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import React from 'react';
 import { User as UserType } from '@/types/user';
-import { useSwapModalStore } from '@/stores/useSwapModalStore';
+import { useModalStore } from '@/stores/useModalStore';
 import { toast } from 'sonner';
 
 interface PuzzleCardProps {
@@ -17,7 +17,7 @@ interface PuzzleCardProps {
 
 const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
   const { open } = useAuthModalStore();
-  const { open: openSwap } = useSwapModalStore();
+  const { open: openSwap } = useModalStore();
   const handleSwap = () => {
     if (user && puzzle.owner.id == user.id) {
       toast.error('Vous ne pouvez pas échanger vos propres puzzles.');
