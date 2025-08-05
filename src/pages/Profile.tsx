@@ -32,6 +32,8 @@ import {
 import { mapSwapToRow } from '@/components/SwapRequests/helpers';
 import PuzzlesList from '@/components/PuzzlesList';
 import { fetchPuzzlesByUser } from '@/service/puzzle';
+import { fetchBrands } from '@/service/brand';
+import { fetchCategories } from '@/service/category';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('puzzles');
@@ -72,6 +74,22 @@ const Profile = () => {
   const { data: userPuzzles } = useQuery({
     queryKey: ['userPuzzles'],
     queryFn: fetchPuzzlesByUser,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: brands } = useQuery({
+    queryKey: ['brands'],
+    queryFn: fetchBrands,
+    refetchOnWindowFocus: false,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: categories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
     refetchOnWindowFocus: false,
     retry: false,
     staleTime: 5 * 60 * 1000,
@@ -211,7 +229,13 @@ const Profile = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <PuzzlesList puzzles={userPuzzles} />
+                      {categories && brands && (
+                        <PuzzlesList
+                          puzzles={userPuzzles}
+                          categories={categories}
+                          brands={brands}
+                        />
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>

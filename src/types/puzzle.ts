@@ -35,12 +35,12 @@ export type Condition = {
   name: string;
 };
 
-export type PublishPuzzleData = {
+export type PublishOrEditPuzzleData = {
   category_id: number;
   brand_id: number;
   piece_count: number;
   condition: string;
-  image: File | null;
+  image?: File | null;
   owner: number;
 };
 

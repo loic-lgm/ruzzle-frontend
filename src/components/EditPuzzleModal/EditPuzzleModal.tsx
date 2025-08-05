@@ -1,3 +1,4 @@
+import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -9,21 +10,94 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { editPuzzle } from '@/service/puzzle';
+import { Brand } from '@/types/brand';
+import { Category } from '@/types/category';
+import { PublishOrEditPuzzleData, Puzzle } from '@/types/puzzle';
+import { CONDITION, PIECE_COUNT } from '@/utils/constants';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface EditPuzzleModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  puzzle: Puzzle;
+  categories: Category[];
+  brands: Brand[];
 }
 
-const EditPuzzleModal = ({ open, onOpenChange }: EditPuzzleModalProps) => {
-  console.log(open);
+export type FormData = {
+  category: number;
+  brand: number;
+  pieceCount: number;
+  condition: string;
+  image: File | null;
+};
+
+type ConditionType = 'used' | 'new' | 'damage';
+
+const EditPuzzleModal = ({
+  open,
+  onOpenChange,
+  puzzle,
+  brands,
+  categories,
+}: EditPuzzleModalProps) => {
+  const [formData, setFormData] = useState<FormData>({
+    category: puzzle.category.id,
+    brand: puzzle.brand.id,
+    pieceCount: puzzle.piece_count,
+    condition: puzzle.condition!,
+    image: null,
+  });
+  const queryClient = useQueryClient();
+
+  const conditionLabels: Record<ConditionType, string> = {
+    used: 'Usé',
+    new: 'Neuf',
+    damage: 'Abîmé',
+  };
+
+  const handleChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const update = useMutation({
+    mutationFn: ({
+      hashid,
+      data,
+    }: {
+      hashid: string;
+      data: PublishOrEditPuzzleData;
+    }) => editPuzzle(hashid, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
+      onOpenChange(false);
+      toast.success('Puzzle mis à jour avec succès !');
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const handleEdit = () => {
+    update.mutate({
+      hashid: puzzle.hashid!,
+      data: {
+        brand_id: formData.brand,
+        category_id: formData.category,
+        piece_count: formData.pieceCount,
+        condition: formData.condition,
+        owner: puzzle.owner.id,
+        ...(formData.image && { image: formData.image }),
+      },
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
@@ -38,15 +112,13 @@ const EditPuzzleModal = ({ open, onOpenChange }: EditPuzzleModalProps) => {
           <div className="grid gap-2">
             <Label>Image du puzzle</Label>
             <div className="flex items-center gap-4">
-              {/* {previewUrl && ( */}
               <div className="relative">
                 <img
-                  // src={previewUrl}
+                  src={puzzle.image}
                   alt="Aperçu"
                   className="w-20 h-20 object-cover rounded border"
                 />
               </div>
-              {/* )} */}
               <div className="flex-1">
                 <Input
                   type="file"
@@ -61,68 +133,63 @@ const EditPuzzleModal = ({ open, onOpenChange }: EditPuzzleModalProps) => {
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="brand">Marque</Label>
-            <Input
-              id="brand"
-              //   value={formData.brand}
-              //   onChange={(e) =>
-              //     setFormData({ ...formData, brand: e.target.value })
-              //   }
-            />
+            <div className="space-y-2">
+              <Label htmlFor="condition">Nombre de pièces</Label>
+              <SelectCustom
+                label={puzzle.piece_count.toString()}
+                onlyLabel={true}
+                data={PIECE_COUNT}
+                type="pieceCount"
+                onChange={(_, value) => handleChange('pieceCount', value)}
+                className="focus:border-green-500"
+              />
+            </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="category">Catégorie</Label>
-            <Input
-              id="category"
-              //   value={formData.category}
-              //   onChange={(e) =>
-              //     setFormData({ ...formData, category: e.target.value })
-              //   }
-            />
+            <div className="space-y-2">
+              <Label htmlFor="condition">État</Label>
+              <SelectCustom
+                label={conditionLabels[puzzle.condition as ConditionType]}
+                onlyLabel={true}
+                data={CONDITION}
+                type="condition"
+                onChange={(_, value) => handleChange('condition', value)}
+                className="focus:border-green-500"
+              />
+            </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="pieceCount">Nombre de pièces</Label>
-            <Input
-              id="pieceCount"
-              type="number"
-              //   value={formData.pieceCount}
-              //   onChange={(e) =>
-              //     setFormData({
-              //       ...formData,
-              //       pieceCount: parseInt(e.target.value),
-              //     })
-              //   }
-            />
+            <div className="space-y-2">
+              <Label htmlFor="brand">Marque</Label>
+              <SelectCustom
+                label={puzzle.brand.name}
+                onlyLabel={true}
+                data={brands}
+                type="brand"
+                onChange={(_, value) => handleChange('brand', value)}
+                className="focus:border-green-500"
+              />
+            </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="condition">État</Label>
-            <Select
-            //   value={formData.condition}
-            //   onValueChange={(value: 'Excellent' | 'Good' | 'Fair') =>
-            //     setFormData({ ...formData, condition: value })
-            //   }
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Excellent">Excellent</SelectItem>
-                <SelectItem value="Good">Bon</SelectItem>
-                <SelectItem value="Fair">Correct</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-2">
+              <Label htmlFor="category">Catégorie</Label>
+              <SelectCustom
+                label={puzzle.category.name}
+                onlyLabel={true}
+                data={categories}
+                type="brand"
+                onChange={(_, value) => handleChange('category', value)}
+                className="focus:border-green-500"
+              />
+            </div>
           </div>
         </div>
         <DialogFooter>
-          <Button
-            variant="outline"
-            //   onClick={onOpenChange}
-          >
+          <Button variant="outline" onClick={() => onOpenChange(!open)}>
             Annuler
           </Button>
-          <Button
-          //   onClick={handleSave}
-          >
+          <Button className="bg-green-500" onClick={handleEdit}>
             Enregistrer
           </Button>
         </DialogFooter>

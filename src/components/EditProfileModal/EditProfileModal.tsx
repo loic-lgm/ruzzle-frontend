@@ -182,7 +182,7 @@ const EditProfileModal = ({
             <Button
               type="button"
               variant="outline"
-              onClick={() => onOpenChange(false)}
+              onClick={() => onOpenChange(!open)}
             >
               Annuler
             </Button>

@@ -9,22 +9,27 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { SquarePen, XCircle } from 'lucide-react';
-import { Puzzles } from '@/types/puzzle';
+import { Puzzle, Puzzles } from '@/types/puzzle';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deletePuzzleFn } from '@/service/puzzle';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import EditPuzzleModal from '@/components/EditPuzzleModal';
+import { Category } from '@/types/category';
+import { Brand } from '@/types/brand';
 
 interface PuzzleListProps {
   puzzles: Puzzles;
+  categories: Category[]
+  brands: Brand[]
 }
 
-const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
+const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
   const [error, setError] = useState<string>('');
-  const queryClient = useQueryClient();
   const [isEditPuzzleOpen, setIsEditPuzzleOpen] = useState<boolean>(false);
+  const [selectedPuzzle, setSelectedPuzzle] = useState<Puzzle | null>();
+  const queryClient = useQueryClient();
 
   const deletePuzzle = useMutation({
     mutationFn: deletePuzzleFn,
@@ -47,12 +52,13 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
   // });
   //   };
 
-  const handleActions = (hashId: string, type: string) => {
+  const handleActions = (hashId: string, type: string, puzzle?: Puzzle) => {
     if (type === 'delete') {
       deletePuzzle.mutate(hashId);
     }
     if (type === 'update') {
       setIsEditPuzzleOpen(true);
+      setSelectedPuzzle(puzzle);
       // deletePuzzle.mutate(hashId);
     }
   };
@@ -104,10 +110,10 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      onClick={() => handleActions(puzzle.hashid!, 'update')}
+                      onClick={() => handleActions(puzzle.hashid!, 'update', puzzle)}
                     >
                       <SquarePen className="h-4 w-4 text-green-500" />
-                      <span className="sr-only">Annuler</span>
+                      <span className="sr-only">Éditer</span>
                     </Button>
                     <Button
                       size="sm"
@@ -130,10 +136,13 @@ const PuzzlesList = ({ puzzles }: PuzzleListProps) => {
           Vous n&apos;avez pas encore ajouté de puzzles à votre collection.
         </div>
       )}
-      {isEditPuzzleOpen && (
+      {isEditPuzzleOpen && selectedPuzzle && (
         <EditPuzzleModal
           open={isEditPuzzleOpen}
           onOpenChange={setIsEditPuzzleOpen}
+          puzzle={selectedPuzzle}
+          categories={categories}
+          brands={brands}
         />
       )}
     </div>

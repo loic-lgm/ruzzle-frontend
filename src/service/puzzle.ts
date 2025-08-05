@@ -1,6 +1,6 @@
 import {
   FilterTypes,
-  PublishPuzzleData,
+  PublishOrEditPuzzleData,
   Puzzle,
   Puzzles,
 } from '@/types/puzzle';
@@ -27,10 +27,26 @@ export const fetchPuzzlesByUser = async (): Promise<Puzzles> => {
 };
 
 export const publishPuzzle = async (
-  data: PublishPuzzleData
+  data: PublishOrEditPuzzleData
 ): Promise<Puzzle> => {
   const response = await api.post(
     `${import.meta.env.VITE_API_URL}/puzzles/`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data', // obligatoire pour upload
+      },
+    }
+  );
+  return response.data;
+};
+
+export const editPuzzle = async (
+  hashid: string,
+  data: PublishOrEditPuzzleData
+): Promise<Puzzle> => {
+  const response = await api.put(
+    `${import.meta.env.VITE_API_URL}/puzzles/${hashid}/`,
     data,
     {
       headers: {
