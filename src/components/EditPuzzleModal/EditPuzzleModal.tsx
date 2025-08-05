@@ -44,6 +44,7 @@ const EditPuzzleModal = ({
   brands,
   categories,
 }: EditPuzzleModalProps) => {
+  const [imageURL, setImageURL] = useState('');
   const [formData, setFormData] = useState<FormData>({
     category: puzzle.category.id,
     brand: puzzle.brand.id,
@@ -59,10 +60,21 @@ const EditPuzzleModal = ({
     damage: 'Abîmé',
   };
 
-  const handleChange = (field: keyof typeof formData, value: string) => {
+  const handleChange = (field: keyof typeof formData, value: string | File) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
+    }));
+  };
+
+  const handleFiles = (fileList: FileList | null) => {
+    if (!fileList) return;
+    if (!fileList[0].type.startsWith('image/')) return;
+    setImageURL(URL.createObjectURL(fileList[0]));
+
+    setFormData((prev) => ({
+      ...prev,
+      image: fileList[0],
     }));
   };
 
@@ -80,6 +92,7 @@ const EditPuzzleModal = ({
       toast.success('Puzzle mis à jour avec succès !');
     },
     onError: (error) => {
+      toast.error('Une erreur est survenue');
       console.log(error);
     },
   });
@@ -114,7 +127,7 @@ const EditPuzzleModal = ({
             <div className="flex items-center gap-4">
               <div className="relative">
                 <img
-                  src={puzzle.image}
+                  src={imageURL || puzzle.image}
                   alt="Aperçu"
                   className="w-20 h-20 object-cover rounded border"
                 />
@@ -123,7 +136,7 @@ const EditPuzzleModal = ({
                 <Input
                   type="file"
                   accept="image/*"
-                  //   onChange={handleFileChange}
+                  onChange={(e) => handleFiles(e.target.files)}
                   className="cursor-pointer"
                 />
                 <p className="text-xs text-muted-foreground mt-1">

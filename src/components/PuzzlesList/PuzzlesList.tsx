@@ -43,14 +43,6 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
       setError(axiosError.response?.data?.error || 'Une erreur est survenue');
     },
   });
-  //   const { toast } = useToast();
-
-  //   const handleEdit = (puzzleId: string) => {
-  // toast({
-  //   title: 'Modifier le puzzle',
-  //   description: "Fonctionnalité d'édition à venir",
-  // });
-  //   };
 
   const handleActions = (hashId: string, type: string, puzzle?: Puzzle) => {
     if (type === 'delete') {
@@ -59,7 +51,6 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
     if (type === 'update') {
       setIsEditPuzzleOpen(true);
       setSelectedPuzzle(puzzle);
-      // deletePuzzle.mutate(hashId);
     }
   };
 
