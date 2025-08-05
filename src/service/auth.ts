@@ -1,5 +1,10 @@
 import api from '@/utils/apiClient';
-import { LoginData, LoginResponse, SignupData, SignupResponse } from '@/types/auth';
+import {
+  LoginData,
+  LoginResponse,
+  SignupData,
+  SignupResponse,
+} from '@/types/auth';
 
 export const loginFn = async (data: LoginData): Promise<LoginResponse> => {
   const response = await api.post(
@@ -9,6 +14,12 @@ export const loginFn = async (data: LoginData): Promise<LoginResponse> => {
   return response.data;
 };
 
+export const logoutFn = async (): Promise<LoginResponse> => {
+  const response = await api.post(
+    `${import.meta.env.VITE_API_URL}/users/logout/`
+  );
+  return response.data;
+};
 
 export const signupFn = async (data: SignupData): Promise<SignupResponse> => {
   const response = await api.post(
@@ -16,4 +27,4 @@ export const signupFn = async (data: SignupData): Promise<SignupResponse> => {
     data
   );
   return response.data;
-}
+};

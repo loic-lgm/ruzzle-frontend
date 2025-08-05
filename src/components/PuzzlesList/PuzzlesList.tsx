@@ -103,7 +103,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                       className="h-8 w-8 p-0"
                       onClick={() => handleActions(puzzle.hashid!, 'update', puzzle)}
                     >
-                      <SquarePen className="h-4 w-4 text-green-500" />
+                      <SquarePen className="h-4 w-4" />
                       <span className="sr-only">Éditer</span>
                     </Button>
                     <Button

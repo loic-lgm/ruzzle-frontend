@@ -12,14 +12,35 @@ import {
   Package,
   User as UserIcon,
 } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { User } from '@/types/user';
+import { toast } from 'sonner';
+import { logoutFn } from '@/service/auth';
+import { useMutation } from '@tanstack/react-query';
+import useUserStore from '@/stores/useUserStore';
 
 interface UserInfoProps {
   user: User;
 }
 
 const UserInfo = ({ user }: UserInfoProps) => {
+  const setUser = useUserStore((state) => state.setUser);
+  const navigate = useNavigate();
+  const logout = useMutation({
+    mutationFn: logoutFn,
+    onSuccess: () => {
+      setUser(null);
+      navigate('/');
+    },
+    onError: (error) => {
+      toast.error('Une erreur est survenue');
+      console.log(error);
+    },
+  });
+
+  const handleLogout = () => {
+    logout.mutate();
+  };
   return (
     <div className="flex gap-4">
       <Button
@@ -67,7 +88,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
               <span>Messages</span>
             </Link>
             <hr />
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" onClick={handleLogout}>
               Déconnexion
             </Button>
           </div>
