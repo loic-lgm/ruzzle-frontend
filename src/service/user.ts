@@ -7,6 +7,11 @@ export const fetchUser = async (): Promise<User> => {
   return res.data;
 };
 
+export const fetchUserByUsername = async (username: string): Promise<User> => {
+  const res = await api.get(`${import.meta.env.VITE_API_URL}/users/${username}/`);
+  return res.data;
+};
+
 export const updateUser = async ({
   userId,
   payload,
@@ -37,7 +42,9 @@ export const fetchSentSwapsByUser = async (userId: number): Promise<Swap[]> => {
   return res.data;
 };
 
-export const fetchCompletedSwapsByUser = async (userId: number): Promise<Swap[]> => {
+export const fetchCompletedSwapsByUser = async (
+  userId: number
+): Promise<Swap[]> => {
   const res = await api.get(
     `${import.meta.env.VITE_API_URL}/users/${userId}/completed-exchanges/`
   );

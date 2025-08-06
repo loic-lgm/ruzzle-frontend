@@ -67,21 +67,21 @@ const UserInfo = ({ user }: UserInfoProps) => {
         <PopoverContent className="w-56">
           <div className="grid gap-4">
             <Link
-              to="/profil"
+              to="/mon-espace"
               className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
             >
               <UserIcon size={16} />
               <span>Mon profil</span>
             </Link>
             <Link
-              to="/profile?tab=exchanges"
+              to="/mon-espace?tab=exchanges"
               className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
             >
               <Package size={16} />
               <span>Mes Échanges</span>
             </Link>
             <Link
-              to="/profile?tab=messages"
+              to="/mon-espace?tab=messages"
               className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
             >
               <MessageSquare size={16} />

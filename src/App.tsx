@@ -7,6 +7,7 @@ import Layout from '@/Layout';
 import Publish from '@/pages/Publish';
 import { Toaster } from 'sonner';
 import Profile from '@/pages/Profile';
+import PublicProfilePage from '@/pages/PublicProfile';
 
 const App = () => {
   const { isLoading } = useFetchUser();
@@ -26,7 +27,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/puzzles" element={<Puzzles />} />
             <Route path="/ajouter-un-puzzle" element={<Publish />} />
-            <Route path="/profil" element={<Profile />} />
+            <Route path="/mon-espace" element={<Profile />} />
+            <Route path="/profil/:username" element={<PublicProfilePage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             {/* <Route path="*" element={<NotFound />} /> */}
           </Route>
