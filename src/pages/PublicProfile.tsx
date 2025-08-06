@@ -48,12 +48,9 @@ const PublicProfilePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {publicUser && (
             <div className="mb-8">
-              <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-10">
                 <Avatar className="h-24 w-24 border-4 border-white shadow-md">
-                  <AvatarImage
-                    src={publicUser.image}
-                    alt={`@${username}`}
-                  />
+                  <AvatarImage src={publicUser.image} alt={`@${username}`} />
                   <AvatarFallback>
                     {username?.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
@@ -90,7 +87,7 @@ const PublicProfilePage = () => {
                     </div>
                     <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
                       <div className="text-2xl font-bold text-gray-900">
-                        {userPuzzles?.length}
+                        {publicUser.puzzles?.length}
                       </div>
                       <div className="text-xs text-gray-500">Puzzles</div>
                     </div>
@@ -101,47 +98,44 @@ const PublicProfilePage = () => {
                       <div className="text-xs text-gray-500">Note</div>
                     </div>
                   </div>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Collection de puzzles</CardTitle>
-                      <CardDescription>
-                        {publicUser.puzzles?.length}{' '}
-                        {publicUser.puzzles?.length === 1
-                          ? 'puzzle'
-                          : 'puzzles'}{' '}
-                        dans la collection de @{publicUser.username}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {publicUser.puzzles && publicUser.puzzles?.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                          {publicUser.puzzles?.map((puzzle) => (
-                            <PuzzleCard
-                              key={puzzle.id}
-                              user={publicUser}
-                              puzzle={puzzle}
-                              setSelectedPuzzle={setSelectedPuzzle}
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-12">
-                          <p className="text-gray-500">
-                            Aucun puzzle trouvé dans cette collection.
-                          </p>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                  {selectedPuzzle && user && userPuzzles && (
-                    <SwapModal
-                      selectedPuzzle={selectedPuzzle}
-                      userPuzzles={userPuzzles}
-                    />
-                  )}
                 </div>
               </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Collection de puzzles</CardTitle>
+                  <CardDescription>
+                    {publicUser.puzzles?.length}{' '}
+                    {publicUser.puzzles?.length === 1 ? 'puzzle' : 'puzzles'}{' '}
+                    dans la collection de @{publicUser.username}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {publicUser.puzzles && publicUser.puzzles?.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                      {publicUser.puzzles?.map((puzzle) => (
+                        <PuzzleCard
+                          key={puzzle.id}
+                          user={user}
+                          puzzle={puzzle}
+                          setSelectedPuzzle={setSelectedPuzzle}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-gray-500">
+                        Aucun puzzle trouvé dans cette collection.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+              {selectedPuzzle && user && userPuzzles && (
+                <SwapModal
+                  selectedPuzzle={selectedPuzzle}
+                  userPuzzles={userPuzzles}
+                />
+              )}
             </div>
           )}
         </div>
