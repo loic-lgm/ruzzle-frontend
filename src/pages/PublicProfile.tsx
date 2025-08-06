@@ -14,13 +14,23 @@ import useUserStore from '@/stores/useUserStore';
 import { Puzzle } from '@/types/puzzle';
 import { useQuery } from '@tanstack/react-query';
 import { MapPin } from 'lucide-react';
-import { useState } from 'react';
-import { useParams } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 
 const PublicProfilePage = () => {
   const [selectedPuzzle, setSelectedPuzzle] = useState<Puzzle | null>(null);
   const user = useUserStore((state) => state.user);
   const { username } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+    if (user?.username == username) {
+      navigate('/mon-espace');
+    }
+  }, [user, navigate, username]);
   const { data: publicUser } = useQuery({
     queryKey: ['public-user', username],
     queryFn: () => fetchUserByUsername(username!),
