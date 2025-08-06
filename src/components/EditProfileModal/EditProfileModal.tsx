@@ -104,7 +104,7 @@ const EditProfileModal = ({
               // onClick={handleAvatarUpload}
             >
               <AvatarImage
-                src={`${import.meta.env.VITE_API_URL}${user.image}`}
+                src={user.image}
                 alt="Profile picture"
                 className="object-cover"
               />

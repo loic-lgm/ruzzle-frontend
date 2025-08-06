@@ -1,4 +1,5 @@
 import { City } from '@/types/city';
+import { Puzzle } from '@/types/puzzle';
 
 export interface User {
   id: number;
@@ -9,6 +10,7 @@ export interface User {
   image?: string;
   last_name?: string | null;
   created_at?: string
+  puzzles?: Puzzle[]
 }
 
 export interface UserStore {

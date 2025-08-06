@@ -87,7 +87,7 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
                     <AvatarImage
-                      src={`${import.meta.env.VITE_API_URL}${swap.user.avatar}`}
+                      src={swap.user.avatar}
                       alt={swap.user.username}
                     />
                     <AvatarFallback>
@@ -100,9 +100,7 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
               <TableCell>
                 <div className="flex items-center gap-3">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${
-                      swap.forPuzzle.image
-                    }`}
+                    src={swap.forPuzzle.image}
                     alt="Miniature du puzzle"
                     className="h-12 w-12 object-cover rounded-md shadow-sm border"
                   />
@@ -116,7 +114,7 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
               <TableCell>
                 <div className="flex items-center gap-3">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}${swap.puzzle.image}`}
+                    src={swap.puzzle.image}
                     alt="Miniature du puzzle"
                     className="h-12 w-12 object-cover rounded-md shadow-sm border"
                   />

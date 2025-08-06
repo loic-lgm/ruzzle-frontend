@@ -59,7 +59,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
         <PopoverTrigger>
           <Avatar className="cursor-pointer">
             <AvatarImage
-              src={`${import.meta.env.VITE_API_URL}${user.image}`}
+              src={user.image}
               className="object-cover"
             />
           </Avatar>
