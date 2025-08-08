@@ -43,6 +43,9 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
         queryClient.invalidateQueries({
           queryKey: ['completed-swaps', user.id],
         });
+        queryClient.invalidateQueries({
+          queryKey: ['userPuzzles'],
+        });
       }
       refreshSwaps(variables.type, user.id);
     },
