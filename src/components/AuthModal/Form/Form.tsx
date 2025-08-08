@@ -14,7 +14,7 @@ import SocialLoginButtons from '@/components/AuthModal/SocialLoginButtons';
 import { AxiosError } from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { loginFn, signupFn } from '@/service/auth';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { City } from '@/types/city';
 import { fetchCities } from '@/service/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
@@ -30,6 +30,7 @@ const Form = ({ close }: FormProps) => {
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [error, setError] = useState<string | null>('');
   const setUser = useUserStore((state) => state.setUser);
+  const location = useLocation();
 
   const { data: cities } = useQuery({
     queryKey: ['cities'],
@@ -44,8 +45,10 @@ const Form = ({ close }: FormProps) => {
     onSuccess: (data) => {
       setError(null);
       setUser(data.user);
-      navigate('/puzzles');
       close?.();
+      if (location.pathname == '/') {
+        navigate('/puzzles');
+      }
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
