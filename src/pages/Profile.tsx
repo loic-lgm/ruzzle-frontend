@@ -41,6 +41,8 @@ const Profile = () => {
   const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
 
+  console.log('isEditProfileOpen: ', isEditProfileOpen);
+
   useEffect(() => {
     if (!user) {
       navigate('/');
