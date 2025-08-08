@@ -103,8 +103,11 @@ const Form = ({ close }: FormProps) => {
         );
         return;
       }
+      if (/\s/.test(username)) {
+        setError("Le nom d'utlisateur ne doit pas contenir d'espace.");
+      }
       if (!city) {
-        setError('Vous devez renseigner une ville>');
+        setError('Vous devez renseigner une ville');
         return;
       }
       signup.mutate({ username, email, password, city_id: city });
@@ -152,9 +155,12 @@ const Form = ({ close }: FormProps) => {
               id="username"
               name="username"
               type="text"
-              placeholder="votrenom"
+              placeholder="Nom d'utilisateur"
               required
             />
+            <p className="text-xs text-muted-foreground mt-1">
+              Votre nom d&apos;utilisateur ne doit pas comporter d&apos;espace
+            </p>
           </div>
           <div className="space-y-2">
             <Label>City</Label>
@@ -183,7 +189,7 @@ const Form = ({ close }: FormProps) => {
               id="signup-email"
               name="email"
               type="email"
-              placeholder="votreemail@exemple.com"
+              placeholder="email@exemple.com"
               required
             />
           </div>
