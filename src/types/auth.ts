@@ -15,6 +15,7 @@ export type SignupData = {
   username: string;
   password: string;
   city_id: string;
+  image: string;
 };
 
 export type SignupResponse = {

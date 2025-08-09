@@ -36,6 +36,4 @@ export const AVATARS = [
   'https://api.dicebear.com/9.x/adventurer/svg?seed=Maria&glassesProbability=0&hair=long03,long05,long06,long07,short01,short02,short03,short04,short05,short06,short07,short08,short09,short10,short11,short12,short13,short14,short15,short16,short17,short18,short19&skinColor=ecad80,f2d3b1,9e5622,763900',
   'https://api.dicebear.com/9.x/adventurer/svg?seed=Jocelyn&glassesProbability=0&hair=long05,long06,long07,long10&skinColor=ecad80,f2d3b1,9e5622,763900',
   'https://api.dicebear.com/9.x/adventurer/svg?seed=Brooklynn',
-  'https://api.dicebear.com/9.x/adventurer/svg?seed=Jude',
-  'https://api.dicebear.com/9.x/adventurer/svg?seed=Jude',
 ];

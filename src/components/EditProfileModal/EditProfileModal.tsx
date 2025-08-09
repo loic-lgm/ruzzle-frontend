@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,7 @@ import { User } from '@/types/user';
 import { updateUser } from '@/service/user';
 import { toast } from 'sonner';
 import { useFetchUser } from '@/hooks/useFetchUser';
+import SelectAvatar from '@/components/SelectAvatar';
 
 interface EditProfileDialogProps {
   open: boolean;
@@ -33,6 +34,7 @@ const EditProfileModal = ({
 }: EditProfileDialogProps) => {
   const [userData, setUserData] = useState<User>(user);
   const [error, setError] = useState<string | null>(null);
+  const [showAvatarSelector, setShowAvatarSelector] = useState<boolean>(false);
   const [internalError, setInternalError] = useState<string | null>(null);
   const { refetch } = useFetchUser();
 
@@ -53,13 +55,13 @@ const EditProfileModal = ({
     },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setUserData((prev) => ({ ...prev, [name]: value }));
+    },
+    [setUserData]
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -79,6 +81,7 @@ const EditProfileModal = ({
         last_name: userData.last_name || null,
         username: userData.username,
         email: userData.email,
+        ...(userData.image && { image: userData.image }),
       },
     });
   };
@@ -103,10 +106,10 @@ const EditProfileModal = ({
           <div className="flex flex-col items-center justify-center gap-4 py-2">
             <Avatar
               className="h-24 w-24 border-4 border-white shadow-md cursor-pointer group relative"
-              // onClick={handleAvatarUpload}
+              onClick={() => setShowAvatarSelector(!showAvatarSelector)}
             >
               <AvatarImage
-                src={user.image}
+                src={userData.image || user.image}
                 alt="Profile picture"
                 className="object-cover"
               />
@@ -121,11 +124,19 @@ const EditProfileModal = ({
               type="button"
               variant="outline"
               size="sm"
-              // onClick={handleAvatarUpload}
+              onClick={() => setShowAvatarSelector(!showAvatarSelector)}
             >
               <Camera className="mr-2 h-4 w-4" />
               Changer l&apos;avatar
             </Button>
+            {showAvatarSelector && (
+              <div className="space-y-2">
+                <SelectAvatar
+                  setShowAvatarSelector={setShowAvatarSelector}
+                  setUserData={setUserData}
+                />
+              </div>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="username">* Nom d&apos;utilisateur</Label>

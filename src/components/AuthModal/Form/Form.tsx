@@ -19,6 +19,7 @@ import { City } from '@/types/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import useUserStore from '@/stores/useUserStore';
 import { useCities } from '@/hooks/useCities';
+import { AVATARS } from '@/utils/constants';
 
 interface FormProps {
   close?: () => void;
@@ -106,7 +107,13 @@ const Form = ({ close }: FormProps) => {
         setError('Vous devez renseigner une ville');
         return;
       }
-      signup.mutate({ username, email, password, city_id: city });
+      signup.mutate({
+        username,
+        email,
+        password,
+        city_id: city,
+        image: AVATARS[Math.floor(Math.random() * AVATARS.length)],
+      });
     }
   };
 

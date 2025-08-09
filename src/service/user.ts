@@ -8,7 +8,7 @@ export const fetchUser = async (): Promise<User> => {
 };
 
 export const fetchUserByUsername = async (username: string): Promise<User> => {
-  const res = await api.get(`${import.meta.env.VITE_API_URL}/users/${username}/`);
+  const res = await api.get(`${import.meta.env.VITE_API_URL}/users/profile/${username}/`);
   return res.data;
 };
 
