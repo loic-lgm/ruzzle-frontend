@@ -8,11 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { fetchPuzzlesByUser } from '@/service/puzzle';
-import { fetchCompletedSwapsByUser, fetchUserByUsername } from '@/service/user';
+import { usePublicUser } from '@/hooks/usePublicUser';
+import { useUserPuzzles } from '@/hooks/useUserPuzzles';
+import { useUserSwaps } from '@/hooks/useUserSwaps';
 import useUserStore from '@/stores/useUserStore';
 import { Puzzle } from '@/types/puzzle';
-import { useQuery } from '@tanstack/react-query';
 import { MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -22,6 +22,9 @@ const PublicProfilePage = () => {
   const user = useUserStore((state) => state.user);
   const { username } = useParams();
   const navigate = useNavigate();
+  const { data: userPuzzles } = useUserPuzzles();
+  const { completedSwaps } = useUserSwaps(user!.id);
+  const { data: publicUser } = usePublicUser(username!);
 
   useEffect(() => {
     if (!user) {
@@ -31,27 +34,7 @@ const PublicProfilePage = () => {
       navigate('/mon-espace');
     }
   }, [user, navigate, username]);
-  const { data: publicUser } = useQuery({
-    queryKey: ['public-user', username],
-    queryFn: () => fetchUserByUsername(username!),
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-  const { data: userPuzzles } = useQuery({
-    queryKey: ['userPuzzles'],
-    queryFn: fetchPuzzlesByUser,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-  const { data: completedSwaps = [] } = useQuery({
-    queryKey: ['completed-swaps', user?.id],
-    queryFn: () => fetchCompletedSwapsByUser(user!.id),
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
+
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 pt-24 pb-12 bg-gray-50">

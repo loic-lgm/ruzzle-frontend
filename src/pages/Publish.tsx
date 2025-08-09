@@ -1,27 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchBrands } from '@/service/brand';
-import { fetchCategories } from '@/service/category';
 import { Loader } from 'lucide-react';
 import PublishForm from '@/components/PublishForm';
 import useUserStore from '@/stores/useUserStore';
+import { useBrands } from '@/hooks/useBrands';
+import { useCategories } from '@/hooks/useCategories';
 
 const Publish = () => {
   const { user } = useUserStore();
-  const { data: brands } = useQuery({
-    queryKey: ['brands'],
-    queryFn: fetchBrands,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: categories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: fetchCategories,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
+  const { data: brands } = useBrands();
+  const { data: categories } = useCategories();
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">

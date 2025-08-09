@@ -12,13 +12,13 @@ import {
 import { ChevronRight, Loader } from 'lucide-react';
 import SocialLoginButtons from '@/components/AuthModal/SocialLoginButtons';
 import { AxiosError } from 'axios';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { loginFn, signupFn } from '@/service/auth';
 import { useLocation, useNavigate } from 'react-router';
 import { City } from '@/types/city';
-import { fetchCities } from '@/service/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import useUserStore from '@/stores/useUserStore';
+import { useCities } from '@/hooks/useCities';
 
 interface FormProps {
   close?: () => void;
@@ -31,14 +31,7 @@ const Form = ({ close }: FormProps) => {
   const [error, setError] = useState<string | null>('');
   const setUser = useUserStore((state) => state.setUser);
   const location = useLocation();
-
-  const { data: cities } = useQuery({
-    queryKey: ['cities'],
-    queryFn: fetchCities,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
+  const { data: cities } = useCities();
 
   const login = useMutation({
     mutationFn: loginFn,

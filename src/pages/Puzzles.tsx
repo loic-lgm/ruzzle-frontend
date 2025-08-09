@@ -3,12 +3,8 @@ import Explore from '@/components/Explore';
 import {
   InfiniteData,
   useInfiniteQuery,
-  useQuery,
 } from '@tanstack/react-query';
-import { fetchCities } from '@/service/city';
-import { fetchBrands } from '@/service/brand';
-import { fetchCategories } from '@/service/category';
-import { fetchPuzzles, fetchPuzzlesByUser } from '@/service/puzzle';
+import { fetchPuzzles } from '@/service/puzzle';
 import { useEffect, useState } from 'react';
 import PuzzlesResult from '@/components/PuzzlesResult';
 import { FilterTypes, PaginatedResponse, Puzzle } from '@/types/puzzle';
@@ -16,6 +12,10 @@ import { Loader } from 'lucide-react';
 import SwapModal from '@/components/SwapModal';
 import useUserStore from '@/stores/useUserStore';
 import { useInView } from 'react-intersection-observer';
+import { useCities } from '@/hooks/useCities';
+import { useBrands } from '@/hooks/useBrands';
+import { useCategories } from '@/hooks/useCategories';
+import { useUserPuzzles } from '@/hooks/useUserPuzzles';
 
 const Puzzles = () => {
   const user = useUserStore((state) => state.user);
@@ -27,31 +27,11 @@ const Puzzles = () => {
     brand: '',
     city: '',
   });
+  const { data: cities } = useCities();
+  const { data: brands } = useBrands();
+  const { data: categories } = useCategories();
+  const { data: userPuzzles } = useUserPuzzles();
   const { ref, inView } = useInView();
-
-  const { data: cities } = useQuery({
-    queryKey: ['cities'],
-    queryFn: fetchCities,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: brands } = useQuery({
-    queryKey: ['brands'],
-    queryFn: fetchBrands,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: categories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: fetchCategories,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
 
   const {
     data: puzzles,
@@ -91,14 +71,6 @@ const Puzzles = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const { data: userPuzzles } = useQuery({
-    queryKey: ['userPuzzles'],
-    queryFn: fetchPuzzlesByUser,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
 
   return (
     <div className="bg-gray-50">

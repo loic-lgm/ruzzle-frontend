@@ -23,25 +23,21 @@ import Messages from '@/components/Messages';
 import EditProfileModal from '@/components/EditProfileModal/EditProfileModal';
 import useUserStore from '@/stores/useUserStore';
 import { useNavigate } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
-import {
-  fetchCompletedSwapsByUser,
-  fetchReceivedSwapsByUser,
-  fetchSentSwapsByUser,
-} from '@/service/user';
 import { mapSwapToRow } from '@/components/SwapRequests/helpers';
 import PuzzlesList from '@/components/PuzzlesList';
-import { fetchPuzzlesByUser } from '@/service/puzzle';
-import { fetchBrands } from '@/service/brand';
-import { fetchCategories } from '@/service/category';
+import { useBrands } from '@/hooks/useBrands';
+import { useCategories } from '@/hooks/useCategories';
+import { useUserPuzzles } from '@/hooks/useUserPuzzles';
+import { useUserSwaps } from '@/hooks/useUserSwaps';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('puzzles');
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
-
-  console.log('isEditProfileOpen: ', isEditProfileOpen);
+  const { data: brands } = useBrands();
+  const { data: categories } = useCategories();
+  const { data: userPuzzles } = useUserPuzzles();
 
   useEffect(() => {
     if (!user) {
@@ -49,53 +45,12 @@ const Profile = () => {
     }
   }, [user, navigate]);
 
-  const { data: receivedSwaps = [] } = useQuery({
-    queryKey: ['received-swaps', user?.id],
-    queryFn: () => fetchReceivedSwapsByUser(user!.id),
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
+  const {
+    receivedSwaps,
+    sentSwaps,
+    completedSwaps,
+  } = useUserSwaps(user!.id);
 
-  const { data: sentSwaps = [] } = useQuery({
-    queryKey: ['sent-swaps', user?.id],
-    queryFn: () => fetchSentSwapsByUser(user!.id),
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: completedSwaps = [] } = useQuery({
-    queryKey: ['completed-swaps', user?.id],
-    queryFn: () => fetchCompletedSwapsByUser(user!.id),
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: userPuzzles } = useQuery({
-    queryKey: ['userPuzzles'],
-    queryFn: fetchPuzzlesByUser,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: brands } = useQuery({
-    queryKey: ['brands'],
-    queryFn: fetchBrands,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const { data: categories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: fetchCategories,
-    refetchOnWindowFocus: false,
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
 
   const receivedSwapsToTable = receivedSwaps.map((swap) =>
     mapSwapToRow(swap, user?.id, 'received')
