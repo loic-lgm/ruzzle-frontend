@@ -14,11 +14,10 @@ const Home = () => {
   const { data: userPuzzles } = useUserPuzzles();
   const { data: randomPuzzles } = useRandomPuzzles();
 
-
   return (
     <>
       <Hero />
-      <Stepper />
+      <Stepper user={user} />
       {randomPuzzles && (
         <Discover
           randomPuzzles={randomPuzzles}
