@@ -6,6 +6,10 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+  scroll-behavior: smooth;
+}
+
 .gradient-border-button-cta {
   @apply px-5 py-2.5 text-gray-800 font-medium rounded-xl inline-flex items-center justify-center;
   position: relative;
