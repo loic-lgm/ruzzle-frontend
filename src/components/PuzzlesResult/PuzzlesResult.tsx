@@ -8,19 +8,21 @@ interface PuzzlesResultProps {
   displayMode: string;
   setSelectedPuzzle: React.Dispatch<React.SetStateAction<Puzzle | null>>;
   user: User | null;
+  count: number;
 }
 const PuzzlesResult = ({
   puzzles,
   displayMode,
   setSelectedPuzzle,
   user,
+  count,
 }: PuzzlesResultProps) => {
   return (
     <div className="mb-16 flex justify-center flex-col m-auto max-w-7xl">
       <h2 className="text-xl font-semibold mb-4">
-        {puzzles.length < 1 && 'Aucun puzzle trouvé'}
-        {puzzles.length === 1 && `${puzzles.length} puzzle trouvé`}
-        {puzzles.length > 1 && `${puzzles.length} puzzles trouvés`}
+        {count < 1 && 'Aucun puzzle trouvé'}
+        {count === 1 && `${count} puzzle trouvé`}
+        {count > 1 && `${count} puzzles trouvés`}
       </h2>
 
       {displayMode === 'grid' ? (

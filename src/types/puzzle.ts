@@ -17,12 +17,20 @@ export interface Puzzle {
 
 export type Puzzles = Puzzle[];
 
+export interface PaginatedResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Puzzle[];
+}
+
 export interface FilterTypes {
   category: string;
   pieceCount: string;
   brand: string;
   city: string;
   condition?: string;
+  page?: number;
 }
 
 export type PieceCount = {

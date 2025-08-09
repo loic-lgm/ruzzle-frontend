@@ -1,5 +1,6 @@
 import {
   FilterTypes,
+  PaginatedResponse,
   PublishOrEditPuzzleData,
   Puzzle,
   Puzzles,
@@ -8,10 +9,10 @@ import api from '@/utils/apiClient';
 
 export const fetchPuzzles = async (
   filters: Partial<FilterTypes> = {}
-): Promise<Puzzles> => {
+): Promise<PaginatedResponse> => {
   const searchParams = new URLSearchParams();
   Object.entries(filters).forEach(([key, value]) => {
-    searchParams.append(key, value);
+    searchParams.append(key, value.toString());
   });
   const response = await api.get(
     `${import.meta.env.VITE_API_URL}/puzzles/?${searchParams}`
