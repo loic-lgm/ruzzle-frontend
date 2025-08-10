@@ -7,7 +7,7 @@ import { CONDITION, PIECE_COUNT } from '@/utils/constants';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import { User } from '@/types/user';
 import ImageInput from '@/components/ImageInput';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { publishPuzzle } from '@/service/puzzle';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
@@ -39,6 +39,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   });
   const navigate = useNavigate();
   const { open } = useAuthModalStore();
+  const queryClient = useQueryClient();
   const handleChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -51,8 +52,10 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     mutationFn: publishPuzzle,
     onSuccess: () => {
       setInternalError('');
+      queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
       toast.success('Puzzle publié avec succès !');
       navigate('/puzzles');
+
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
