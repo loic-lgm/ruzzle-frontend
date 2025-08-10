@@ -31,7 +31,11 @@ const App = () => {
   }
   return (
     <>
-      <Toaster position="top-right" richColors />
+      <Toaster
+        position="top-right"
+        richColors
+        closeButton={true}
+      />
       <BrowserRouter>
         <Wrapper>
           <Routes>
