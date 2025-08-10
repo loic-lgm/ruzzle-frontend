@@ -22,7 +22,7 @@ import SwapRequests from '@/components/SwapRequests';
 import Messages from '@/components/Messages';
 import EditProfileModal from '@/components/EditProfileModal/EditProfileModal';
 import useUserStore from '@/stores/useUserStore';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { mapSwapToRow } from '@/components/SwapRequests/helpers';
 import PuzzlesList from '@/components/PuzzlesList';
 import { useBrands } from '@/hooks/useBrands';
@@ -31,8 +31,9 @@ import { useUserPuzzles } from '@/hooks/useUserPuzzles';
 import { useUserSwaps } from '@/hooks/useUserSwaps';
 
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState('puzzles');
+  const [activeTab, setActiveTab] = useState<string>('');
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
   const { data: brands } = useBrands();
@@ -45,12 +46,21 @@ const Profile = () => {
     }
   }, [user, navigate]);
 
-  const {
-    receivedSwaps,
-    sentSwaps,
-    completedSwaps,
-  } = useUserSwaps(user!.id);
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab');
+    if (tabFromUrl) {
+      setActiveTab(tabFromUrl);
+    } else {
+      setActiveTab('puzzles');
+    }
+  }, [searchParams]);
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setSearchParams({ tab: value });
+  };
+
+  const { receivedSwaps, sentSwaps, completedSwaps } = useUserSwaps(user!.id);
 
   const receivedSwapsToTable = receivedSwaps.map((swap) =>
     mapSwapToRow(swap, user?.id, 'received')
@@ -135,9 +145,9 @@ const Profile = () => {
                 </div>
               </div>
               <Tabs
-                defaultValue="received"
+                defaultValue="puzzles"
                 value={activeTab}
-                onValueChange={setActiveTab}
+                onValueChange={handleTabChange}
                 className="w-full"
               >
                 <TabsList className="grid grid-cols-4 mb-8 w-full flex flex-nowrap">

@@ -74,7 +74,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
               <span>Mon profil</span>
             </Link>
             <Link
-              to="/mon-espace?tab=exchanges"
+              to="/mon-espace?tab=received"
               className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
             >
               <Package size={16} />
