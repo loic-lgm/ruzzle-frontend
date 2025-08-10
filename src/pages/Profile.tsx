@@ -165,12 +165,16 @@ const Profile = () => {
                   >
                     <Package size={16} />
                     <span className="hidden sm:inline">Reçues</span>
-                    <Badge className="ml-1 bg-emerald-500">2</Badge>
+                    <Badge className="ml-1 bg-emerald-500">
+                      {receivedSwapsToTable.length}
+                    </Badge>
                   </TabsTrigger>
                   <TabsTrigger value="sent" className="flex items-center gap-2">
                     <Send size={16} />
                     <span className="hidden sm:inline">Envoyées</span>
-                    <Badge className="ml-1 bg-emerald-500">1</Badge>
+                    <Badge className="ml-1 bg-emerald-500">
+                      {sentSwapsToTable.length}
+                    </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="completed"
@@ -178,6 +182,9 @@ const Profile = () => {
                   >
                     <Check size={16} />
                     <span className="hidden sm:inline">Terminé</span>
+                    <Badge className="ml-1 bg-emerald-500">
+                      {completedSwapsToTable.length}
+                    </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="messages"
@@ -185,7 +192,7 @@ const Profile = () => {
                   >
                     <MessageSquare size={16} />
                     <span className="hidden sm:inline">Messages</span>
-                    <Badge className="ml-1 bg-blue-500">3</Badge>
+                    <Badge className="ml-1 bg-blue-500">0</Badge>
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent value="puzzles">
@@ -204,7 +211,7 @@ const Profile = () => {
                           className="text-green-500 bg-transparent hover:text-green-500 w-16 h-16 flex items-center justify-center"
                         >
                           <Link to="/ajouter-un-puzzle">
-                            <CirclePlus className='size-8' />
+                            <CirclePlus className="size-8" />
                           </Link>
                         </Button>
                       </div>
