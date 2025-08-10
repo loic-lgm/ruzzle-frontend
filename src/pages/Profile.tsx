@@ -17,12 +17,13 @@ import {
   Send,
   Edit,
   Puzzle,
+  CirclePlus,
 } from 'lucide-react';
 import SwapRequests from '@/components/SwapRequests';
 import Messages from '@/components/Messages';
 import EditProfileModal from '@/components/EditProfileModal/EditProfileModal';
 import useUserStore from '@/stores/useUserStore';
-import { useNavigate, useSearchParams } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { mapSwapToRow } from '@/components/SwapRequests/helpers';
 import PuzzlesList from '@/components/PuzzlesList';
 import { useBrands } from '@/hooks/useBrands';
@@ -189,11 +190,24 @@ const Profile = () => {
                 </TabsList>
                 <TabsContent value="puzzles">
                   <Card>
-                    <CardHeader>
-                      <CardTitle>Liste de tous vos puzzles</CardTitle>
-                      <CardDescription>
-                        Vous pouvez gérer tous vos puzzles ici.
-                      </CardDescription>
+                    <CardHeader className="flex justify-between align-center">
+                      <div>
+                        <CardTitle>Liste de tous vos puzzles</CardTitle>
+                        <CardDescription>
+                          Vous pouvez gérer tous vos puzzles ici.
+                        </CardDescription>
+                      </div>
+                      <div>
+                        <Button
+                          variant="ghost"
+                          size="custom"
+                          className="text-green-500 bg-transparent hover:text-green-500 w-16 h-16 flex items-center justify-center"
+                        >
+                          <Link to="/ajouter-un-puzzle">
+                            <CirclePlus className='size-8' />
+                          </Link>
+                        </Button>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       {categories && brands && (
