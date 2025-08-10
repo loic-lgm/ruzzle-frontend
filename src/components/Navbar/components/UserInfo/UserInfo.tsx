@@ -10,6 +10,7 @@ import {
   CirclePlus,
   MessageSquare,
   Package,
+  Puzzle,
   User as UserIcon,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
@@ -43,6 +44,11 @@ const UserInfo = ({ user }: UserInfoProps) => {
   };
   return (
     <div className="flex gap-4">
+      <Button variant="ghost">
+        <Link to="/puzzles">
+          <Puzzle />
+        </Link>
+      </Button>
       <Button
         variant="ghost"
         size="icon"
@@ -58,10 +64,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
       <Popover>
         <PopoverTrigger>
           <Avatar className="cursor-pointer">
-            <AvatarImage
-              src={user.image}
-              className="object-cover"
-            />
+            <AvatarImage src={user.image} className="object-cover" />
           </Avatar>
         </PopoverTrigger>
         <PopoverContent className="w-56">
