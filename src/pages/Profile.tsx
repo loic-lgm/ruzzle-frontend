@@ -153,12 +153,12 @@ const Profile = () => {
                     className="flex items-center gap-2"
                   >
                     <Package size={16} />
-                    <span className="hidden sm:inline">Reçu</span>
+                    <span className="hidden sm:inline">Reçues</span>
                     <Badge className="ml-1 bg-emerald-500">2</Badge>
                   </TabsTrigger>
                   <TabsTrigger value="sent" className="flex items-center gap-2">
                     <Send size={16} />
-                    <span className="hidden sm:inline">Envoyé</span>
+                    <span className="hidden sm:inline">Envoyées</span>
                     <Badge className="ml-1 bg-emerald-500">1</Badge>
                   </TabsTrigger>
                   <TabsTrigger
