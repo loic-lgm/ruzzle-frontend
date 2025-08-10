@@ -15,6 +15,7 @@ import { updateSwap } from '@/service/swap';
 import { toast } from 'sonner';
 import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
 import { User } from '@/types/user';
+import { useNavigate } from 'react-router';
 
 interface ExchangeRequestsListProps {
   type: SwapType;
@@ -25,6 +26,7 @@ interface ExchangeRequestsListProps {
 const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
   const { refreshSwaps } = useSwapsRefresh();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const update = useMutation({
     mutationFn: ({
       payload,
@@ -87,7 +89,10 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
           {swaps.map((swap) => (
             <TableRow key={swap.id}>
               <TableCell className="py-6">
-                <div className="flex items-center gap-2">
+                <div
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={() => navigate(`/profil/${swap.user.username}`)}
+                >
                   <Avatar className="h-8 w-8">
                     <AvatarImage
                       src={swap.user.avatar}
@@ -142,45 +147,6 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
-                  {type === 'received' && (
-                    <>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-8 w-8 p-0"
-                        onClick={() =>
-                          handleUpdateStatus(swap.id, 'accepted', type)
-                        }
-                      >
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span className="sr-only">Accepter</span>
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-8 w-8 p-0"
-                        onClick={() =>
-                          handleUpdateStatus(swap.id, 'denied', type)
-                        }
-                      >
-                        <XCircle className="h-4 w-4 text-red-500" />
-                        <span className="sr-only">Refuser</span>
-                      </Button>
-                    </>
-                  )}
-                  {type === 'sent' && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 w-8 p-0"
-                      onClick={() =>
-                        handleUpdateStatus(swap.id, 'denied', type)
-                      }
-                    >
-                      <XCircle className="h-4 w-4 text-red-500" />
-                      <span className="sr-only">Annuler</span>
-                    </Button>
-                  )}
                   <Button
                     size="sm"
                     variant="outline"
@@ -190,6 +156,32 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                     <MessageSquare className="h-4 w-4 text-blue-500" />
                     <span className="sr-only">Message</span>
                   </Button>
+                  {type === 'received' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 w-8 p-0"
+                      onClick={() =>
+                        handleUpdateStatus(swap.id, 'accepted', type)
+                      }
+                    >
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <span className="sr-only">Accepter</span>
+                    </Button>
+                  )}
+                  {type != 'completed' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 w-8 p-0"
+                      onClick={() =>
+                        handleUpdateStatus(swap.id, 'denied', type)
+                      }
+                    >
+                      <XCircle className="h-4 w-4 text-red-500" />
+                      <span className="sr-only">Refuser</span>
+                    </Button>
+                  )}
                 </div>
               </TableCell>
             </TableRow>
