@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { SquarePen, XCircle } from 'lucide-react';
+import { Hourglass, SquarePen, XCircle } from 'lucide-react';
 import { Puzzle, Puzzles } from '@/types/puzzle';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deletePuzzleFn } from '@/service/puzzle';
@@ -103,6 +103,16 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
+                    {puzzle.status == 'pending' && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 w-8 p-0 cursor-default bg-accent"
+                      >
+                        <Hourglass className="size-4 text-emerald-300" />
+                        <span className="sr-only">En cours de transaction</span>
+                      </Button>
+                    )}
                     <Button
                       size="sm"
                       variant="outline"

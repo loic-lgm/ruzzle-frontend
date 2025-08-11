@@ -13,6 +13,7 @@ export interface Puzzle {
   condition?: string;
   created?: string;
   hashid?: string;
+  status?: string;
 }
 
 export type Puzzles = Puzzle[];
