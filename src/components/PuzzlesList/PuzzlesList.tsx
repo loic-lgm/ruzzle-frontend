@@ -18,11 +18,12 @@ import { toast } from 'sonner';
 import EditPuzzleModal from '@/components/EditPuzzleModal';
 import { Category } from '@/types/category';
 import { Brand } from '@/types/brand';
+import { CONDITION } from '@/utils/constants';
 
 interface PuzzleListProps {
   puzzles: Puzzles;
-  categories: Category[]
-  brands: Brand[]
+  categories: Category[];
+  brands: Brand[];
 }
 
 const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
@@ -89,7 +90,12 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                   <Badge variant="outline">{puzzle.piece_count} pièces</Badge>
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline">{puzzle.condition}</Badge>
+                  <Badge variant="outline">
+                    {
+                      CONDITION.find((cond) => cond.id === puzzle.condition)
+                        ?.name
+                    }
+                  </Badge>
                 </TableCell>
                 <TableCell>
                   {puzzle.created &&
@@ -101,7 +107,9 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      onClick={() => handleActions(puzzle.hashid!, 'update', puzzle)}
+                      onClick={() =>
+                        handleActions(puzzle.hashid!, 'update', puzzle)
+                      }
                     >
                       <SquarePen className="h-4 w-4" />
                       <span className="sr-only">Éditer</span>
