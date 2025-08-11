@@ -1,3 +1,4 @@
+import useUserStore from '@/stores/useUserStore';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 const api = axios.create({
@@ -11,6 +12,14 @@ api.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry?: boolean;
     };
+
+    if (
+      error.response?.status === 401 &&
+      (error.response?.data as { code?: string })?.code === 'user_not_found' 
+    ) {
+      useUserStore.getState().setUser(null);
+      return Promise.reject(error);
+    }
 
     if (originalRequest.url?.endsWith('/users/refresh/')) {
       return Promise.reject(error);

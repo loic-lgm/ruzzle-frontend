@@ -61,7 +61,7 @@ const Profile = () => {
     setSearchParams({ tab: value });
   };
 
-  const { receivedSwaps, sentSwaps, completedSwaps } = useUserSwaps(user!.id);
+  const { receivedSwaps, sentSwaps, completedSwaps } = useUserSwaps(user?.id);
 
   const receivedSwapsToTable = receivedSwaps.map((swap) =>
     mapSwapToRow(swap, user?.id, 'received')

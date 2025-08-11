@@ -79,6 +79,8 @@ const Form = ({ close }: FormProps) => {
     const confirmedPassword = formData.get('confirm-password') as string;
     const username = formData.get('username') as string;
     const city = formData.get('city') as string;
+    const firstname = formData.get('firstname') as string;
+    const name = formData.get('name') as string;
 
     if (!email || !password) {
       setError(
@@ -100,11 +102,22 @@ const Form = ({ close }: FormProps) => {
         );
         return;
       }
+      if (!username) {
+        setError("Vous devez renseigner un nom d'utilisateur");
+      }
       if (/\s/.test(username)) {
         setError("Le nom d'utlisateur ne doit pas contenir d'espace.");
       }
       if (!city) {
         setError('Vous devez renseigner une ville');
+        return;
+      }
+      if (!name || !firstname) {
+        setError(
+          !name
+            ? 'Vous devez renseigner votre nom.'
+            : 'Vous devez renseigner votre prénom.'
+        );
         return;
       }
       signup.mutate({
@@ -113,6 +126,8 @@ const Form = ({ close }: FormProps) => {
         password,
         city_id: city,
         image: AVATARS[Math.floor(Math.random() * AVATARS.length)],
+        first_name: firstname,
+        last_name: name,
       });
     }
   };
@@ -128,7 +143,7 @@ const Form = ({ close }: FormProps) => {
               id="email"
               name="email"
               type="email"
-              placeholder="votreemail@exemple.com"
+              placeholder="email@exemple.com"
             />
           </div>
           <div className="space-y-2">
@@ -152,49 +167,72 @@ const Form = ({ close }: FormProps) => {
       )}
       {activeTab === 'signup' && (
         <>
-          <div className="space-y-2">
-            <Label htmlFor="username">Nom d&apos;utilisateur</Label>
-            <Input
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Nom d'utilisateur"
-              required
-            />
-            <p className="text-xs text-muted-foreground mt-1">
-              Votre nom d&apos;utilisateur ne doit pas comporter d&apos;espace
-            </p>
-          </div>
-          <div className="space-y-2">
-            <Label>City</Label>
-            <Select onValueChange={setSelectedCity}>
-              <SelectTrigger className="w-94 bg-transparent">
-                <SelectValue placeholder="Choississez une ville" />
-              </SelectTrigger>
-              <SelectContent>
-                {cities &&
-                  cities.map((city: City) => (
-                    <SelectItem
-                      key={city.id}
-                      value={city.id.toString()}
-                      className="hover:bg-accent hover:text-accent-foreground"
-                    >
-                      {city.name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-            <input type="hidden" name="city" value={selectedCity} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="signup-email">Email</Label>
-            <Input
-              id="signup-email"
-              name="email"
-              type="email"
-              placeholder="email@exemple.com"
-              required
-            />
+          <div className="flex gap-5 flex-col">
+            <div className="flex gap-5">
+              <div className="space-y-2">
+                <Label htmlFor="username">Nom d&apos;utilisateur</Label>
+                <Input
+                  id="username"
+                  name="username"
+                  type="text"
+                  placeholder="Nom d'utilisateur"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="name">Nom</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Nom"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="firstname">Prénom</Label>
+                <Input
+                  id="firstname"
+                  name="firstname"
+                  type="text"
+                  placeholder="Prénom"
+                  required
+                />
+              </div>
+            </div>
+            <div className="flex gap-5">
+              <div className="space-y-2 w-1/2 min-w-0">
+                <Label htmlFor="signup-email">Email</Label>
+                <Input
+                  id="signup-email"
+                  name="email"
+                  type="email"
+                  placeholder="email@exemple.com"
+                  required
+                />
+              </div>
+              <div className="space-y-2 w-1/2 min-w-0">
+                <Label>Ville</Label>
+                <Select onValueChange={setSelectedCity}>
+                  <SelectTrigger className="w-94 bg-transparent w-full">
+                    <SelectValue placeholder="Choississez une ville" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities &&
+                      cities.map((city: City) => (
+                        <SelectItem
+                          key={city.id}
+                          value={city.id.toString()}
+                          className="hover:bg-accent hover:text-accent-foreground"
+                        >
+                          {city.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+                <input type="hidden" name="city" value={selectedCity} />
+              </div>
+            </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="signup-password">Mot de passe</Label>

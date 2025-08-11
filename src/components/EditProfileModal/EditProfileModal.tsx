@@ -159,7 +159,7 @@ const EditProfileModal = ({
               id="email"
               name="email"
               type="email"
-              placeholder="votreemail@exemple.com"
+              placeholder="email@exemple.com"
               value={userData.email}
               onChange={handleChange}
               required
