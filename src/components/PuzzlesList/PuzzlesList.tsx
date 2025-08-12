@@ -102,16 +102,12 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                     new Date(puzzle.created).toLocaleDateString('fr-FR')}
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    {puzzle.status == 'pending' && (
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-8 w-8 p-0 cursor-default bg-accent"
-                      >
-                        <Hourglass className="size-4 text-emerald-300" />
+                  <div className="flex justify-end gap-2 items-center">
+                    {puzzle.status != 'pending' && (
+                      <>
+                        <Hourglass className="size-4 text-green-500" />
                         <span className="sr-only">En cours de transaction</span>
-                      </Button>
+                      </>
                     )}
                     <Button
                       size="sm"
