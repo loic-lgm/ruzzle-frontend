@@ -25,8 +25,12 @@ const Home = () => {
           setSelectedPuzzle={setSelectedPuzzle}
         />
       )}
-      {userPuzzles && selectedPuzzle && (
-        <SwapModal selectedPuzzle={selectedPuzzle} userPuzzles={userPuzzles} />
+      {userPuzzles && selectedPuzzle && user && (
+        <SwapModal
+          selectedPuzzle={selectedPuzzle}
+          userPuzzles={userPuzzles}
+          requester={user}
+        />
       )}
     </>
   );

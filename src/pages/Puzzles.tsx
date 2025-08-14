@@ -102,7 +102,7 @@ const Puzzles = () => {
       {isFetchingNextPage && <p>Chargement...</p>}
 
       {selectedPuzzle && user && userPuzzles && (
-        <SwapModal selectedPuzzle={selectedPuzzle} userPuzzles={userPuzzles} />
+        <SwapModal selectedPuzzle={selectedPuzzle} userPuzzles={userPuzzles} requester={user}/>
       )}
     </div>
   );

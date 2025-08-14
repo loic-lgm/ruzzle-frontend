@@ -16,24 +16,30 @@ import { AxiosError } from 'axios';
 import { swapPuzzle } from '@/service/swap';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
+import { User } from '@/types/user';
 
 interface ExchangeModalProps {
   selectedPuzzle: Puzzle;
   userPuzzles: Puzzles | null;
+  requester: User;
 }
 
-const SwapModal = ({ selectedPuzzle, userPuzzles }: ExchangeModalProps) => {
+const SwapModal = ({ selectedPuzzle, userPuzzles, requester }: ExchangeModalProps) => {
   const [internalError, setInternalError] = useState<string | null>(null);
   const [message, setMessage] = useState<string>(
     'Bonjour, je suis intéressé pour échanger votre puzzle.'
   );
   const { isOpen, close } = useModalStore();
+  const { refreshSwaps } = useSwapsRefresh();
 
   const swap = useMutation({
     mutationFn: swapPuzzle,
     onSuccess: () => {
       setInternalError('');
       toast.success("Demande d'échange effectuée avec succès !");
+      refreshSwaps('received', selectedPuzzle.owner.id);
+      refreshSwaps('sent', requester.id);
       close();
     },
     onError: (error) => {
