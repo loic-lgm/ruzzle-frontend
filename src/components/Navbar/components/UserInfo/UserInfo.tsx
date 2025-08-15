@@ -17,7 +17,7 @@ import { Link, useNavigate } from 'react-router';
 import { User } from '@/types/user';
 import { toast } from 'sonner';
 import { logoutFn } from '@/service/auth';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useUserStore from '@/stores/useUserStore';
 
 interface UserInfoProps {
@@ -27,9 +27,11 @@ interface UserInfoProps {
 const UserInfo = ({ user }: UserInfoProps) => {
   const setUser = useUserStore((state) => state.setUser);
   const navigate = useNavigate();
+  const queryClient = useQueryClient()
   const logout = useMutation({
     mutationFn: logoutFn,
     onSuccess: () => {
+      queryClient.clear();
       setUser(null);
       navigate('/');
     },

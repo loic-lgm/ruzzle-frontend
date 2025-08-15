@@ -1,9 +1,6 @@
 import Filter from '@/components/Filter';
 import Explore from '@/components/Explore';
-import {
-  InfiniteData,
-  useInfiniteQuery,
-} from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { fetchPuzzles } from '@/service/puzzle';
 import { useEffect, useState } from 'react';
 import PuzzlesResult from '@/components/PuzzlesResult';
@@ -43,10 +40,10 @@ const Puzzles = () => {
     PaginatedResponse,
     Error,
     InfiniteData<PaginatedResponse>,
-    [string, Partial<FilterTypes>],
+    [string, number | undefined, Partial<FilterTypes>],
     number
   >({
-    queryKey: ['puzzles', filters],
+    queryKey: ['puzzles', user?.id, filters],
     queryFn: ({ pageParam = 1 }) =>
       fetchPuzzles({ ...filters, page: pageParam }),
     getNextPageParam: (lastPage) => {
@@ -102,7 +99,11 @@ const Puzzles = () => {
       {isFetchingNextPage && <p>Chargement...</p>}
 
       {selectedPuzzle && user && userPuzzles && (
-        <SwapModal selectedPuzzle={selectedPuzzle} userPuzzles={userPuzzles} requester={user}/>
+        <SwapModal
+          selectedPuzzle={selectedPuzzle}
+          userPuzzles={userPuzzles}
+          requester={user}
+        />
       )}
     </div>
   );
