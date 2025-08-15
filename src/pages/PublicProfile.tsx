@@ -127,6 +127,7 @@ const PublicProfilePage = () => {
                 <SwapModal
                   selectedPuzzle={selectedPuzzle}
                   userPuzzles={userPuzzles}
+                  requester={user}
                 />
               )}
             </div>

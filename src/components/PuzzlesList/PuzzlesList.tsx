@@ -19,6 +19,7 @@ import EditPuzzleModal from '@/components/EditPuzzleModal';
 import { Category } from '@/types/category';
 import { Brand } from '@/types/brand';
 import { CONDITION } from '@/utils/constants';
+import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
 
 interface PuzzleListProps {
   puzzles: Puzzles;
@@ -31,12 +32,15 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
   const [isEditPuzzleOpen, setIsEditPuzzleOpen] = useState<boolean>(false);
   const [selectedPuzzle, setSelectedPuzzle] = useState<Puzzle | null>();
   const queryClient = useQueryClient();
+  const { refreshSwaps } = useSwapsRefresh();
 
   const deletePuzzle = useMutation({
     mutationFn: deletePuzzleFn,
     onSuccess: () => {
       toast.success('Puzzle supprimé avec succès !');
       queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
+      refreshSwaps('received', selectedPuzzle!.owner.id);
+      refreshSwaps('sent', selectedPuzzle!.owner.id);
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
@@ -47,6 +51,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
 
   const handleActions = (hashId: string, type: string, puzzle?: Puzzle) => {
     if (type === 'delete') {
+      setSelectedPuzzle(puzzle);
       deletePuzzle.mutate(hashId);
     }
     if (type === 'update') {
@@ -124,7 +129,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      onClick={() => handleActions(puzzle.hashid!, 'delete')}
+                      onClick={() => handleActions(puzzle.hashid!, 'delete', puzzle)}
                     >
                       <XCircle className="h-4 w-4 text-red-500" />
                       <span className="sr-only">Supprimer</span>
