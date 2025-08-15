@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Upload } from 'lucide-react';
-import { FormData } from '@/components/PublishForm/PublishForm';
+
+type FormData = {
+  category: string;
+  brand: string;
+  pieceCount: string;
+  condition: string;
+  image: File | null;
+};
 
 interface ImageInputProps {
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+  formData: FormData;
+  errors: string[];
 }
 
-const ImageInput = ({ setFormData }: ImageInputProps) => {
-  const [imageURL, setImageURL] = useState('');
+const ImageInput = ({ setFormData, formData, errors }: ImageInputProps) => {
   const handleFiles = (fileList: FileList | null) => {
     if (!fileList) return;
     if (!fileList[0].type.startsWith('image/')) return;
-    setImageURL(URL.createObjectURL(fileList[0]));
-
     setFormData((prev) => ({
       ...prev,
       image: fileList[0],
@@ -29,14 +35,15 @@ const ImageInput = ({ setFormData }: ImageInputProps) => {
       ...prev,
       image: null,
     }));
-    setImageURL('');
   };
   return (
     <div className="space-y-4">
       <label
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
-        className="border-2 border-dashed border-emerald-500 rounded-lg p-8 text-center hover:border-green-500 transition-colors cursor-pointer block"
+        className={`border-2 border-dashed ${
+          errors.includes('image') ? 'border-red-500' : 'border-emerald-500'
+        } rounded-lg p-8 text-center hover:border-green-500 transition-colors cursor-pointer block`}
       >
         <Upload className="h-8 w-8 mx-auto mb-4 text-emerald-500" />
         <div className="space-y-2">
@@ -60,14 +67,14 @@ const ImageInput = ({ setFormData }: ImageInputProps) => {
       </label>
 
       <div className="flex flex-wrap gap-4">
-        {imageURL && (
+        {formData.image && (
           <div
-            key={imageURL}
+            key={URL.createObjectURL(formData.image)}
             className="relative w-24 h-24 border rounded-lg overflow-hidden"
           >
             <img
-              src={imageURL}
-              alt={`preview-${imageURL}`}
+              src={URL.createObjectURL(formData.image)}
+              alt={`preview-${URL.createObjectURL(formData.image)}`}
               className="object-cover w-full h-full"
             />
             <button

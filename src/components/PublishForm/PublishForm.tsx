@@ -19,7 +19,7 @@ interface PublishFormProps {
   user?: User | null;
 }
 
-export type FormData = {
+type FormData = {
   category: string;
   brand: string;
   pieceCount: string;
@@ -30,13 +30,15 @@ export type FormData = {
 const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   const [internalError, setInternalError] = useState<string>('');
   const [errors, setErrors] = useState<string[]>([]);
-  const [formData, setFormData] = useState<FormData>({
+  const initialFormData: FormData = {
     category: '',
     brand: '',
     pieceCount: '',
     condition: '',
     image: null,
-  });
+  };
+  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [keepAdding, setKeepAdding] = useState<boolean>(false);
   const navigate = useNavigate();
   const { open } = useAuthModalStore();
   const queryClient = useQueryClient();
@@ -54,8 +56,10 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
       setInternalError('');
       queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
       toast.success('Puzzle publié avec succès !');
-      navigate('/puzzles');
-
+      setErrors([]);
+      setInternalError('');
+      setFormData(initialFormData);
+      if (!keepAdding) navigate('/puzzles');
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
@@ -73,6 +77,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     if (!formData.category) newErrors.push('category');
     if (!formData.brand) newErrors.push('brand');
     if (!formData.pieceCount) newErrors.push('pieceCount');
+    if (!formData.image) newErrors.push('image');
     setErrors(newErrors);
     if (newErrors.length > 0) return;
     if (user) {
@@ -98,6 +103,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={categories}
             type="category"
+            value={formData.category}
             onChange={(_, value) => handleChange('category', value)}
             className={`focus:border-green-500 ${
               errors.includes('category')
@@ -114,6 +120,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
               onlyLabel={true}
               data={PIECE_COUNT}
               type="pieceCount"
+              value={formData.pieceCount}
               onChange={(_, value) => handleChange('pieceCount', value)}
               className={`focus:border-green-500 ${
                 errors.includes('pieceCount')
@@ -130,6 +137,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={brands}
             type="brand"
+            value={formData.brand}
             onChange={(_, value) => handleChange('brand', value)}
             className={`focus:border-green-500 ${
               errors.includes('brand') ? 'border-red-500' : 'border-emerald-500'
@@ -143,6 +151,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={CONDITION}
             type="condition"
+            value={formData.condition}
             onChange={(_, value) => handleChange('condition', value)}
             className={`focus:border-green-500 ${
               errors.includes('condition')
@@ -152,12 +161,21 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
           />
         </div>
       </div>
-      <ImageInput setFormData={setFormData} />
+      <ImageInput setFormData={setFormData} formData={formData} errors={errors}/>
       {internalError && (
         <div className="text-red-500 text-sm">{internalError}</div>
       )}
-      <div className="pt-4">
-        <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transition-all">
+      <div className="pt-4 flex gap-5">
+        <Button
+          className="flex- border border-green-500 text-green-500 bg-white hover:bg-green-50 transition-all"
+          onClick={() => setKeepAdding(true)}
+        >
+          Publier et ajouter un autre
+        </Button>
+        <Button
+          className="flex-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transition-all"
+          onClick={() => setKeepAdding(false)}
+        >
           Publier
         </Button>
       </div>

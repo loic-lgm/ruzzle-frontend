@@ -17,6 +17,7 @@ interface SelectCustomProps {
   label: string;
   type: keyof FilterTypes;
   onChange: (type: keyof FilterTypes, value: string) => void;
+  value: string;
   className?: string;
   onlyLabel?: boolean;
 }
@@ -28,9 +29,10 @@ const SelectCustom = ({
   onChange,
   type,
   className,
+  value,
 }: SelectCustomProps) => {
   return (
-    <Select onValueChange={(value) => onChange(type, value)}>
+    <Select onValueChange={(value) => onChange(type, value)} value={value}>
       <SelectTrigger
         className={`w-full border-lightblue/30 focus:border-green-500 ${className}`}
       >
