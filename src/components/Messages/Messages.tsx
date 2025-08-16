@@ -1,33 +1,53 @@
 import React, { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-// import { Button } from '@/components/ui/button';
-// import { Input } from '@/components/ui/input';
-// import { Badge } from '@/components/ui/badge';
-// import { Send } from 'lucide-react';
 import { useConversations } from '@/hooks/useConversations';
+import { Badge } from '@/components/ui/badge';
+import { User } from '@/types/user';
+import { Conversation } from '@/types/conversation';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Send } from 'lucide-react';
 
-const Messages = () => {
-  const [activeConversation, setActiveConversation] = useState<number | null>(
-    null
-  );
-  // const [newMessage, setNewMessage] = useState('');
+const Messages = ({ user }: { user: User }) => {
+  const [activeConversation, setActiveConversation] =
+    useState<Conversation | null>(null);
+  const [newMessage, setNewMessage] = useState('');
   const { data: conversations = [] } = useConversations();
+  const conversationsWithOther = conversations.map((conv) => {
+    const otherParticipant = conv.participants.find((p) => p.id !== user.id)!;
+    return {
+      ...conv,
+      otherParticipant,
+    };
+  });
 
-  // const handleSendMessage = () => {
-  //   if (!newMessage.trim()) return;
+  const handleSendMessage = () => {
+    if (!newMessage.trim()) return;
 
-  //   setNewMessage('');
-  // };
+    setNewMessage('');
+  };
 
-  // const formatTime = (timestamp: string) => {
-  //   const date = new Date(timestamp);
-  //   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  // };
+  const formatTime = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
 
-  // const formatDate = (timestamp: string) => {
-  //   const date = new Date(timestamp);
-  //   return date.toLocaleDateString();
-  // };
+  const formatDate = (created: string) => {
+    const date = new Date(created);
+    return date.toLocaleDateString();
+  };
+
+  /**
+   * TODO
+   * Afficher l'avatar l'autre user de la conversation OK!
+   * Récupérer l'username de l'autre user OK!
+   * Afficher la date du dernier message OK!
+   * Si le message n'est pas lu, afficher le badge new  OK!
+   * Ouvrir la concersation sur le coté avec tous les messages OK!
+   * Quand on click sur une conversation, passer le dernier message à is_read=True
+   * Sur la pge profile mettre à jour le nombre de message non lu
+   * Poster un message
+   */
 
   return (
     <div className="flex flex-col md:flex-row gap-4 h-[600px]">
@@ -36,85 +56,95 @@ const Messages = () => {
           <h3 className="font-medium">Conversations</h3>
         </div>
         <div className="divide-y">
-          {conversations.length > 0 &&
-            conversations.map((conv) => (
+          {conversationsWithOther.length > 0 &&
+            conversationsWithOther.map((conv) => (
               <div
                 key={conv.id}
-                onClick={() => setActiveConversation(conv.id)}
+                onClick={() => setActiveConversation(conv)}
                 className={`p-3 flex items-center gap-3 cursor-pointer hover:bg-gray-50 ${
-                  activeConversation === conv.id ? 'bg-gray-100' : ''
+                  activeConversation === conv ? 'bg-gray-100' : ''
                 }`}
               >
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={'toto'} alt={'toto'} />
+                  <AvatarImage
+                    src={conv.otherParticipant!.image}
+                    alt={conv.otherParticipant!.image}
+                  />
                   <AvatarFallback>
-                    {/* {conv.user.name.substring(0, 2)} */}
+                    {conv.otherParticipant!.username.substring(0, 2)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-center">
-                    {/* <p className="font-medium truncate">{conv.participants.username}</p> */}
-                    <p className="font-medium truncate">TOTO</p>
+                    <p className="font-medium truncate">
+                      {conv.otherParticipant!.username}
+                    </p>
                     <span className="text-xs text-gray-500">
-                      {/* {formatDate(conv.timestamp)} */}
+                      {formatDate(conv.last_message.created)}
                     </span>
                   </div>
                   <p className="text-sm text-gray-500 truncate">
                     {conv.last_message.content}
                   </p>
                 </div>
-                {/* {conv.unread && <Badge className="bg-emerald-500">New</Badge>} */}
+                {!conv.last_message.is_read && (
+                  <Badge className="bg-emerald-500">New</Badge>
+                )}
               </div>
             ))}
         </div>
       </div>
 
-      {/* {conversation ? (
+      {activeConversation ? (
         <div className="flex-1 flex flex-col border rounded-lg overflow-hidden">
           <div className="p-4 border-b flex items-center gap-3 bg-white">
             <Avatar className="h-10 w-10">
               <AvatarImage
-                src={conversation.user.avatar}
-                alt={conversation.user.name}
+                src={activeConversation.otherParticipant!.image}
+                alt={activeConversation.otherParticipant!.username}
               />
               <AvatarFallback>
-                {conversation.user.name.substring(0, 2)}
+                {activeConversation.otherParticipant!.username.substring(0, 2)}
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-medium">{conversation.user.name}</p>
+              <p className="font-medium">
+                {activeConversation.otherParticipant!.username}
+              </p>
             </div>
           </div>
 
           <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
             <div className="space-y-4">
-              {conversation.messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${
-                    message.sender === 'you' ? 'justify-end' : 'justify-start'
-                  }`}
-                >
+              {activeConversation.messages.map((message) => {
+                const sender =
+                  message.user.id === user.id ? 'you' : 'other';
+                return (
                   <div
-                    className={`max-w-[80%] px-4 py-2 rounded-lg ${
-                      message.sender === 'you'
-                        ? 'bg-green-500 text-white'
-                        : 'bg-white border'
+                    key={message.id}
+                    className={`flex ${
+                      sender === 'you' ? 'justify-end' : 'justify-start'
                     }`}
                   >
-                    <p>{message.text}</p>
-                    <p
-                      className={`text-xs mt-1 ${
-                        message.sender === 'you'
-                          ? 'text-green-100'
-                          : 'text-gray-500'
+                    <div
+                      className={`max-w-[80%] px-4 py-2 rounded-lg ${
+                        sender === 'you'
+                          ? 'bg-green-500 text-white'
+                          : 'bg-white border'
                       }`}
                     >
-                      {formatTime(message.timestamp)}
-                    </p>
+                      <p>{message.content}</p>
+                      <p
+                        className={`text-xs mt-1 ${
+                          sender === 'you' ? 'text-green-100' : 'text-gray-500'
+                        }`}
+                      >
+                        {formatTime(message.created)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -144,7 +174,7 @@ const Messages = () => {
             </p>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

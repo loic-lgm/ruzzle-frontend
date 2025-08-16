@@ -5,6 +5,6 @@ export type Message = {
   conversation: number;
   user: User;
   content: string;
-  created_at: string;
+  created: string;
   is_read: boolean;
 };

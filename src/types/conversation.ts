@@ -7,4 +7,5 @@ export type Conversation = {
   messages: Message[];
   updated_at: string;
   last_message: Message;
+  otherParticipant?: User;
 };

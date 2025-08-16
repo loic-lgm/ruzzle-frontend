@@ -289,7 +289,7 @@ const Profile = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Messages />
+                      <Messages user={user}/>
                     </CardContent>
                   </Card>
                 </TabsContent>
