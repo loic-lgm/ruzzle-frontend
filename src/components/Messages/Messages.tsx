@@ -29,6 +29,7 @@ const Messages = ({ user }: { user: User }) => {
     mutationFn: (id: number) => markMessageAsRead(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
+      queryClient.invalidateQueries({ queryKey: ['unread-count'] });
     },
   });
 
@@ -61,7 +62,7 @@ const Messages = ({ user }: { user: User }) => {
    * Si le message n'est pas lu, afficher le badge new  OK!
    * Ouvrir la concersation sur le coté avec tous les messages OK!
    * Quand on click sur une conversation, passer le dernier message à is_read=True OK!
-   * Sur la pge profile mettre à jour le nombre de message non lu
+   * Sur la pge profile mettre à jour le nombre de message non lu OK!
    * Poster un message
    */
 

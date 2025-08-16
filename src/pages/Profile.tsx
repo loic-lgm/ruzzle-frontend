@@ -30,6 +30,7 @@ import { useBrands } from '@/hooks/useBrands';
 import { useCategories } from '@/hooks/useCategories';
 import { useUserPuzzles } from '@/hooks/useUserPuzzles';
 import { useUserSwaps } from '@/hooks/useUserSwaps';
+import { useUnreadMessageCount } from '@/hooks/useUnreadMessageCount';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState<string>('');
@@ -40,6 +41,7 @@ const Profile = () => {
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
   const { data: userPuzzles } = useUserPuzzles();
+  const { data: unreadCount = 0 } = useUnreadMessageCount();
 
   useEffect(() => {
     if (!user) {
@@ -192,7 +194,7 @@ const Profile = () => {
                   >
                     <MessageSquare size={16} />
                     <span className="hidden sm:inline">Messages</span>
-                    <Badge className="ml-1 bg-blue-500">0</Badge>
+                    <Badge className="ml-1 bg-blue-500">{unreadCount}</Badge>
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent value="puzzles">
@@ -289,7 +291,7 @@ const Profile = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Messages user={user}/>
+                      <Messages user={user} />
                     </CardContent>
                   </Card>
                 </TabsContent>

@@ -6,3 +6,9 @@ export const markMessageAsRead = async (id: number) => {
   });
 };
 
+export const unreadMessageCount = async () => {
+  const response = await api.get(
+    `${import.meta.env.VITE_API_URL}/messages/unread_count/`
+  );
+  return response.data;
+};
