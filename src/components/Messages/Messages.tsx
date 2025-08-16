@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useConversations } from '@/hooks/useConversations';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { markMessageAsRead } from '@/service/message';
+import { markMessageAsRead, sendMessageFn } from '@/service/message';
+import { AxiosError } from 'axios';
+import { Message } from '@/types/message';
 
 const Messages = ({ user }: { user: User }) => {
   const [activeConversation, setActiveConversation] =
@@ -22,8 +24,15 @@ const Messages = ({ user }: { user: User }) => {
       otherParticipant,
     };
   });
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [activeConversation?.messages]);
 
   const { mutate: markAsRead } = useMutation({
     mutationFn: (id: number) => markMessageAsRead(id),
@@ -33,9 +42,34 @@ const Messages = ({ user }: { user: User }) => {
     },
   });
 
-  const handleSendMessage = () => {
-    if (!newMessage.trim()) return;
+  const sendMessage = useMutation({
+    mutationFn: sendMessageFn,
+    onSuccess: (message: Message) => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+      setActiveConversation((prev) =>
+        prev
+          ? {
+              ...prev,
+              last_message: message,
+              messages: [...prev.messages, message],
+            }
+          : prev
+      );
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<{ error: string }>;
+      console.error(axiosError);
+    },
+  });
 
+  const handleSendMessage = () => {
+    if (!activeConversation) return;
+    const trimmed = newMessage.trim();
+    if (trimmed.length === 0 || trimmed.length > 500) return;
+    sendMessage.mutate({
+      conversation: activeConversation.id,
+      content: trimmed,
+    });
     setNewMessage('');
   };
 
@@ -50,21 +84,16 @@ const Messages = ({ user }: { user: User }) => {
   };
 
   const handleClickConversation = (conversation: Conversation) => {
-    setActiveConversation(conversation);
+    const sortedMessages = [...conversation.messages].sort(
+      (a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()
+    );
+
+    setActiveConversation({
+      ...conversation,
+      messages: sortedMessages,
+    });
     markAsRead(conversation.last_message.id);
   };
-
-  /**
-   * TODO
-   * Afficher l'avatar l'autre user de la conversation OK!
-   * Récupérer l'username de l'autre user OK!
-   * Afficher la date du dernier message OK!
-   * Si le message n'est pas lu, afficher le badge new  OK!
-   * Ouvrir la concersation sur le coté avec tous les messages OK!
-   * Quand on click sur une conversation, passer le dernier message à is_read=True OK!
-   * Sur la pge profile mettre à jour le nombre de message non lu OK!
-   * Poster un message
-   */
 
   return (
     <div className="flex flex-col md:flex-row gap-4 h-[600px]">
@@ -161,6 +190,7 @@ const Messages = ({ user }: { user: User }) => {
                   </div>
                 );
               })}
+              <div ref={messagesEndRef} />
             </div>
           </div>
 
@@ -173,9 +203,15 @@ const Messages = ({ user }: { user: User }) => {
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
                 className="flex-1"
               />
+              <div className="text-xs text-gray-500 mt-1 text-right flex items-center">
+                {newMessage.length}/500
+              </div>
               <Button
                 onClick={handleSendMessage}
                 className="bg-green-500 hover:bg-green-500/90"
+                disabled={
+                  newMessage.trim().length === 0 || newMessage.length > 500
+                }
               >
                 <Send size={18} />
               </Button>

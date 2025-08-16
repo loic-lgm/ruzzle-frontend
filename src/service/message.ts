@@ -1,3 +1,4 @@
+import { Message } from '@/types/message';
 import api from '@/utils/apiClient';
 
 export const markMessageAsRead = async (id: number) => {
@@ -12,3 +13,18 @@ export const unreadMessageCount = async () => {
   );
   return response.data;
 };
+
+export const sendMessageFn = async ({
+  conversation,
+  content,
+}: {
+  conversation: number;
+  content: string;
+}): Promise<Message> => {
+  const response = await api.post(`${import.meta.env.VITE_API_URL}/messages/`, {
+    conversation,
+    content,
+  });
+  return response.data;
+};
+
