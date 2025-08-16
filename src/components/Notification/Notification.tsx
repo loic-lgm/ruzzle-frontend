@@ -30,12 +30,13 @@ const Notification = ({ notifications }: NotificationBellProps) => {
   });
 
   const handleClickNotification = (notification: NotificationType) => {
-    if (!notification.is_read) markAsRead(notification.id);
+    if (notification.is_read) return;
+    markAsRead(notification.id);
     if (notification.notif_type == 'exchange_request') {
       navigate('/mon-espace?tab=received');
     }
     if (notification.notif_type == 'new_message') {
-      navigate('/mon-esapce?tab=messages');
+      navigate('/mon-espace?tab=messages');
     }
   };
   return (
@@ -54,14 +55,16 @@ const Notification = ({ notifications }: NotificationBellProps) => {
         <div className="p-3 border-b">
           <h3 className="font-medium">Notifications</h3>
         </div>
-        <div className="divide-y max-h-60 overflow-y-auto cursor-pointer">
+        <div className="divide-y max-h-60 overflow-y-auto">
           {notifications.length > 0 &&
             notifications.map((notification) => (
               <div
                 key={notification.id}
                 onClick={() => handleClickNotification(notification)}
                 className={`p-3 hover:bg-gray-50 transition-colors ${
-                  !notification.is_read ? 'bg-gray-100 font-semibold' : ''
+                  !notification.is_read
+                    ? 'bg-gray-100 font-semibold cursor-pointer'
+                    : ''
                 }`}
               >
                 <div className="flex gap-3">
