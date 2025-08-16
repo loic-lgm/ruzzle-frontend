@@ -6,7 +6,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import {
-  Bell,
   CirclePlus,
   MessageSquare,
   Package,
@@ -19,7 +18,8 @@ import { toast } from 'sonner';
 import { logoutFn } from '@/service/auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useUserStore from '@/stores/useUserStore';
-import { Badge } from '@/components/ui/badge';
+import Notification from '@/components/Notification';
+import { useNotification } from '@/hooks/useNotification';
 
 interface UserInfoProps {
   user: User;
@@ -27,8 +27,9 @@ interface UserInfoProps {
 
 const UserInfo = ({ user }: UserInfoProps) => {
   const setUser = useUserStore((state) => state.setUser);
+  const { data: notifications = [] } = useNotification();
   const navigate = useNavigate();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const logout = useMutation({
     mutationFn: logoutFn,
     onSuccess: () => {
@@ -61,49 +62,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
           <CirclePlus />
         </Link>
       </Button>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button variant="ghost" size="icon" className="relative">
-            <Bell size={20} />
-            <Badge className="absolute -top-1 -right-2 h-5 w-5 p-0 flex items-center justify-center bg-green-500">
-              2
-            </Badge>
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-80 p-0">
-          <div className="p-3 border-b">
-            <h3 className="font-medium">Notifications</h3>
-          </div>
-          <div className="divide-y max-h-60 overflow-y-auto">
-            <div className="p-3 hover:bg-gray-50">
-              <div className="flex gap-3">
-                <Package className="h-5 w-5 text-green-500 flex-shrink-0 mt-1" />
-                <div>
-                  <p className="text-sm font-medium">
-                    Nouvelle demande d&apos;échange
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Emma Wilson souhaite échanger des puzzles avec vous.
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">À l&apos;instant</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-3 hover:bg-gray-50">
-              <div className="flex gap-3">
-                <MessageSquare className="h-5 w-5 text-blue-500 flex-shrink-0 mt-1" />
-                <div>
-                  <p className="text-sm font-medium">Nouveau message</p>
-                  <p className="text-xs text-gray-500">
-                    Sarah Johnson vous a envoyé un message.
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">Il y a 2 heures</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </PopoverContent>
-      </Popover>
+      <Notification notifications={notifications}/>
       <Popover>
         <PopoverTrigger>
           <Avatar className="cursor-pointer">
