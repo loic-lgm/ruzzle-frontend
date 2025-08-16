@@ -7,6 +7,8 @@ import { Conversation } from '@/types/conversation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { markMessageAsRead } from '@/service/message';
 
 const Messages = ({ user }: { user: User }) => {
   const [activeConversation, setActiveConversation] =
@@ -19,6 +21,15 @@ const Messages = ({ user }: { user: User }) => {
       ...conv,
       otherParticipant,
     };
+  });
+
+  const queryClient = useQueryClient();
+
+  const { mutate: markAsRead } = useMutation({
+    mutationFn: (id: number) => markMessageAsRead(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    },
   });
 
   const handleSendMessage = () => {
@@ -37,6 +48,11 @@ const Messages = ({ user }: { user: User }) => {
     return date.toLocaleDateString();
   };
 
+  const handleClickConversation = (conversation: Conversation) => {
+    setActiveConversation(conversation);
+    markAsRead(conversation.last_message.id);
+  };
+
   /**
    * TODO
    * Afficher l'avatar l'autre user de la conversation OK!
@@ -44,7 +60,7 @@ const Messages = ({ user }: { user: User }) => {
    * Afficher la date du dernier message OK!
    * Si le message n'est pas lu, afficher le badge new  OK!
    * Ouvrir la concersation sur le coté avec tous les messages OK!
-   * Quand on click sur une conversation, passer le dernier message à is_read=True
+   * Quand on click sur une conversation, passer le dernier message à is_read=True OK!
    * Sur la pge profile mettre à jour le nombre de message non lu
    * Poster un message
    */
@@ -60,7 +76,7 @@ const Messages = ({ user }: { user: User }) => {
             conversationsWithOther.map((conv) => (
               <div
                 key={conv.id}
-                onClick={() => setActiveConversation(conv)}
+                onClick={() => handleClickConversation(conv)}
                 className={`p-3 flex items-center gap-3 cursor-pointer hover:bg-gray-50 ${
                   activeConversation === conv ? 'bg-gray-100' : ''
                 }`}
@@ -117,8 +133,7 @@ const Messages = ({ user }: { user: User }) => {
           <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
             <div className="space-y-4">
               {activeConversation.messages.map((message) => {
-                const sender =
-                  message.user.id === user.id ? 'you' : 'other';
+                const sender = message.user.id === user.id ? 'you' : 'other';
                 return (
                   <div
                     key={message.id}
