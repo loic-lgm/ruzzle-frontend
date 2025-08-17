@@ -167,16 +167,10 @@ const Profile = () => {
                   >
                     <Package size={16} />
                     <span className="hidden sm:inline">Reçues</span>
-                    <Badge className="ml-1 bg-emerald-500">
-                      {receivedSwapsToTable.length}
-                    </Badge>
                   </TabsTrigger>
                   <TabsTrigger value="sent" className="flex items-center gap-2">
                     <Send size={16} />
                     <span className="hidden sm:inline">Envoyées</span>
-                    <Badge className="ml-1 bg-emerald-500">
-                      {sentSwapsToTable.length}
-                    </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="completed"
@@ -184,9 +178,6 @@ const Profile = () => {
                   >
                     <Check size={16} />
                     <span className="hidden sm:inline">Terminé</span>
-                    <Badge className="ml-1 bg-emerald-500">
-                      {completedSwapsToTable.length}
-                    </Badge>
                   </TabsTrigger>
                   <TabsTrigger
                     value="messages"
