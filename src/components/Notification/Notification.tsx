@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Bell, MessageSquare, Package } from 'lucide-react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 interface NotificationBellProps {
@@ -18,6 +19,7 @@ interface NotificationBellProps {
 }
 
 const Notification = ({ notifications }: NotificationBellProps) => {
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
   const unreadCount = notifications.filter((n) => !n.is_read).length;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -34,13 +36,15 @@ const Notification = ({ notifications }: NotificationBellProps) => {
     markAsRead(notification.id);
     if (notification.notif_type == 'exchange_request') {
       navigate('/mon-espace?tab=received');
+      setIsPopoverOpen(false);
     }
     if (notification.notif_type == 'new_message') {
       navigate('/mon-espace?tab=messages');
+      setIsPopoverOpen(false);
     }
   };
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <Bell size={20} />

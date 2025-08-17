@@ -20,16 +20,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useUserStore from '@/stores/useUserStore';
 import Notification from '@/components/Notification';
 import { useNotification } from '@/hooks/useNotification';
+import { useState } from 'react';
 
 interface UserInfoProps {
   user: User;
 }
 
 const UserInfo = ({ user }: UserInfoProps) => {
+  const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
   const setUser = useUserStore((state) => state.setUser);
   const { data: notifications = [] } = useNotification();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+
   const logout = useMutation({
     mutationFn: logoutFn,
     onSuccess: () => {
@@ -62,8 +65,8 @@ const UserInfo = ({ user }: UserInfoProps) => {
           <CirclePlus />
         </Link>
       </Button>
-      <Notification notifications={notifications}/>
-      <Popover>
+      <Notification notifications={notifications} />
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger>
           <Avatar className="cursor-pointer">
             <AvatarImage src={user.image} className="object-cover" />
@@ -74,6 +77,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
             <Link
               to="/mon-espace"
               className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
+              onClick={() => setIsPopoverOpen(false)}
             >
               <UserIcon size={16} />
               <span>Mon profil</span>
@@ -81,6 +85,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
             <Link
               to="/mon-espace?tab=received"
               className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
+              onClick={() => setIsPopoverOpen(false)}
             >
               <Package size={16} />
               <span>Mes Échanges</span>
@@ -88,6 +93,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
             <Link
               to="/mon-espace?tab=messages"
               className="flex items-center gap-2 text-sm font-medium hover:text-green-500"
+              onClick={() => setIsPopoverOpen(false)}
             >
               <MessageSquare size={16} />
               <span>Messages</span>
