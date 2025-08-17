@@ -24,13 +24,14 @@ const Messages = ({ user }: { user: User }) => {
       otherParticipant,
     };
   });
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
 
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [activeConversation?.messages]);
 
@@ -133,9 +134,10 @@ const Messages = ({ user }: { user: User }) => {
                     {conv.last_message.content}
                   </p>
                 </div>
-                {!conv.last_message.is_read && (
-                  <Badge className="bg-emerald-500">New</Badge>
-                )}
+                {!conv.last_message.is_read &&
+                  conv.last_message.user.id !== user.id && (
+                    <Badge className="bg-emerald-500">New</Badge>
+                  )}
               </div>
             ))}
         </div>
@@ -160,7 +162,10 @@ const Messages = ({ user }: { user: User }) => {
             </div>
           </div>
 
-          <div className="flex-1 p-4 overflow-y-auto bg-gray-50">
+          <div
+            className="flex-1 p-4 overflow-y-auto bg-gray-50"
+            ref={messagesContainerRef}
+          >
             <div className="space-y-4">
               {activeConversation.messages.map((message) => {
                 const sender = message.user.id === user.id ? 'you' : 'other';
@@ -190,7 +195,6 @@ const Messages = ({ user }: { user: User }) => {
                   </div>
                 );
               })}
-              <div ref={messagesEndRef} />
             </div>
           </div>
 
