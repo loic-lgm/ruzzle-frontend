@@ -82,7 +82,9 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
             <TableHead>Votre puzzle</TableHead>
             <TableHead>Date</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            {type != 'completed' && (
+              <TableHead className="text-right">Actions</TableHead>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -147,15 +149,6 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-8 w-8 p-0"
-                    // onClick={() => handleMessage(request.id)}
-                  >
-                    <MessageSquare className="h-4 w-4 text-blue-500" />
-                    <span className="sr-only">Message</span>
-                  </Button>
                   {type === 'received' && (
                     <Button
                       size="sm"
@@ -170,17 +163,27 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                     </Button>
                   )}
                   {type != 'completed' && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 w-8 p-0"
-                      onClick={() =>
-                        handleUpdateStatus(swap.id, 'denied', type)
-                      }
-                    >
-                      <XCircle className="h-4 w-4 text-red-500" />
-                      <span className="sr-only">Refuser</span>
-                    </Button>
+                    <>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 w-8 p-0"
+                      >
+                        <MessageSquare className="h-4 w-4 text-blue-500" />
+                        <span className="sr-only">Message</span>
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 w-8 p-0"
+                        onClick={() =>
+                          handleUpdateStatus(swap.id, 'denied', type)
+                        }
+                      >
+                        <XCircle className="h-4 w-4 text-red-500" />
+                        <span className="sr-only">Refuser</span>
+                      </Button>
+                    </>
                   )}
                 </div>
               </TableCell>
