@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useConversations } from '@/hooks/useConversations';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { markMessageAsRead, sendMessageFn } from '@/service/message';
 import { AxiosError } from 'axios';
 import { Message } from '@/types/message';
+import MessageExchange from '@/components/MessageExchange/MessageExchange';
 
 const Messages = ({ user }: { user: User }) => {
   const [activeConversation, setActiveConversation] =
@@ -161,6 +162,8 @@ const Messages = ({ user }: { user: User }) => {
               </p>
             </div>
           </div>
+
+          <MessageExchange swap={activeConversation.exchange} />
 
           <div
             className="flex-1 p-4 overflow-y-auto bg-gray-50"

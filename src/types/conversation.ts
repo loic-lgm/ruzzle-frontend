@@ -1,4 +1,5 @@
 import { Message } from '@/types/message';
+import { Swap } from '@/types/swap';
 import { User } from '@/types/user';
 
 export type Conversation = {
@@ -8,4 +9,5 @@ export type Conversation = {
   updated_at: string;
   last_message: Message;
   otherParticipant?: User;
+  exchange: Swap
 };
