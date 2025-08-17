@@ -5,9 +5,8 @@ import { Button } from '@/components/ui/button';
 import SearchBar from '@/components/Navbar/components/SearchBar';
 import UserInfo from '@/components/Navbar/components/UserInfo';
 import useUserStore from '@/stores/useUserStore';
-import { LogIn } from 'lucide-react';
+import { CirclePlus, LogIn, Puzzle } from 'lucide-react';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
-
 
 const Navbar = () => {
   const { open } = useAuthModalStore();
@@ -46,16 +45,32 @@ const Navbar = () => {
             Ruzzle
           </Link>
           <SearchBar />
-          {user ? (
-            <UserInfo user={user} />
-          ) : (
+          <div className="flex gap-5">
             <Button
-              className="gradient-border-button-cta bg-tranparent text-gray-900 hover:bg-transparent"
-              onClick={() => open('login')}
+              variant="ghost"
+              size="icon"
+              className="text-green-500 bg-transparent hover:text-green-500"
             >
-              <LogIn />
+              <Link to="/ajouter-un-puzzle">
+                <CirclePlus />
+              </Link>
             </Button>
-          )}
+            <Button variant="ghost">
+              <Link to="/puzzles">
+                <Puzzle />
+              </Link>
+            </Button>
+            {user ? (
+              <UserInfo user={user} />
+            ) : (
+              <Button
+                className="gradient-border-button-cta bg-tranparent text-gray-900 hover:bg-transparent"
+                onClick={() => open('login')}
+              >
+                <LogIn />
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </header>

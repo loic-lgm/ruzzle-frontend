@@ -6,10 +6,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import {
-  CirclePlus,
   MessageSquare,
   Package,
-  Puzzle,
   User as UserIcon,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
@@ -51,20 +49,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
   };
   return (
     <div className="flex gap-4">
-      <Button variant="ghost">
-        <Link to="/puzzles">
-          <Puzzle />
-        </Link>
-      </Button>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="text-green-500 bg-transparent hover:text-green-500"
-      >
-        <Link to="/ajouter-un-puzzle">
-          <CirclePlus />
-        </Link>
-      </Button>
+
       <Notification notifications={notifications} />
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger>
