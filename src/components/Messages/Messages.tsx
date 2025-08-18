@@ -172,7 +172,10 @@ const Messages = ({ user }: { user: User }) => {
             </div>
           </div>
 
-          <MessageExchange swap={activeConversation.exchange} />
+          <MessageExchange
+            swap={activeConversation.exchange}
+            isRequester={activeConversation.exchange.requester.id === user.id}
+          />
 
           <div
             className="flex-1 p-4 overflow-y-auto bg-gray-50"
