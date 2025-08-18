@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import SearchBar from '@/components/Navbar/components/SearchBar';
 import UserInfo from '@/components/Navbar/components/UserInfo';
 import useUserStore from '@/stores/useUserStore';
-import { CirclePlus, LogIn, Puzzle } from 'lucide-react';
+import { CirclePlus, Puzzle, User as UserIcon } from 'lucide-react';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 
 const Navbar = () => {
@@ -67,7 +67,7 @@ const Navbar = () => {
                 className="gradient-border-button-cta bg-tranparent text-gray-900 hover:bg-transparent"
                 onClick={() => open('login')}
               >
-                <LogIn />
+                <UserIcon />
               </Button>
             )}
           </div>
