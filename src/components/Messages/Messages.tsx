@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useConversations } from '@/hooks/useConversations';
 import { Badge } from '@/components/ui/badge';
 import { User } from '@/types/user';
 import { Conversation } from '@/types/conversation';
@@ -14,16 +13,29 @@ import { Message } from '@/types/message';
 import MessageExchange from '@/components/MessageExchange/MessageExchange';
 import { useNavigate } from 'react-router';
 
-const Messages = ({ user }: { user: User }) => {
+interface MessagesType {
+  user: User;
+  conversations: Conversation[];
+  activeConversationFromNotif: Conversation | null;
+}
+
+const Messages = ({
+  user,
+  conversations,
+  activeConversationFromNotif,
+}: MessagesType) => {
+  const [newMessage, setNewMessage] = useState('');
   const [activeConversation, setActiveConversation] =
     useState<Conversation | null>(null);
-  const [newMessage, setNewMessage] = useState('');
-  const { data: conversations = [] } = useConversations();
-  const conversationsWithOther = conversations.map((conv) => {
+  const conversationsWithOther = conversations.map((conv: Conversation) => {
     const otherParticipant = conv.participants.find((p) => p.id !== user.id)!;
+    const sortedMessages = [...conv.messages].sort(
+      (a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()
+    );
     return {
       ...conv,
       otherParticipant,
+      messages: sortedMessages,
     };
   });
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
@@ -37,6 +49,18 @@ const Messages = ({ user }: { user: User }) => {
         messagesContainerRef.current.scrollHeight;
     }
   }, [activeConversation?.messages]);
+
+  useEffect(() => {
+    if (activeConversationFromNotif) {
+      const conv = conversationsWithOther.find(
+        (c) => c.id === activeConversationFromNotif.id
+      );
+      if (conv) {
+        setActiveConversation(conv);
+        markAsRead(conv.last_message.id);
+      }
+    }
+  }, [activeConversationFromNotif]);
 
   const { mutate: markAsRead } = useMutation({
     mutationFn: (id: number) => markMessageAsRead(id),
@@ -88,14 +112,7 @@ const Messages = ({ user }: { user: User }) => {
   };
 
   const handleClickConversation = (conversation: Conversation) => {
-    const sortedMessages = [...conversation.messages].sort(
-      (a, b) => new Date(a.created).getTime() - new Date(b.created).getTime()
-    );
-
-    setActiveConversation({
-      ...conversation,
-      messages: sortedMessages,
-    });
+    setActiveConversation(conversation);
     markAsRead(conversation.last_message.id);
   };
 

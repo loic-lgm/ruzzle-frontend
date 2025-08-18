@@ -168,6 +168,11 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                         size="sm"
                         variant="outline"
                         className="h-8 w-8 p-0"
+                        onClick={() =>
+                          navigate('/mon-espace?tab=messages', {
+                            state: { conversationId: swap.conversationId },
+                          })
+                        }
                       >
                         <MessageSquare className="h-4 w-4 text-blue-500" />
                         <span className="sr-only">Message</span>

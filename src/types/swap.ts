@@ -15,6 +15,7 @@ export type Swap = {
   status: string;
   requester: User;
   created: string;
+  conversation_id: number
 };
 
 export type SwapRow = {
@@ -33,6 +34,7 @@ export type SwapRow = {
   };
   date: string;
   status: string;
+  conversationId: number;
 };
 
 export type SwapType = 'sent' | 'received' | 'completed';

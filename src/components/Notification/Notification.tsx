@@ -39,7 +39,9 @@ const Notification = ({ notifications }: NotificationBellProps) => {
       setIsPopoverOpen(false);
     }
     if (notification.notif_type == 'new_message') {
-      navigate('/mon-espace?tab=messages');
+      navigate('/mon-espace?tab=messages', {
+        state: { conversationId: notification.conversation_id },
+      });
       setIsPopoverOpen(false);
     }
   };

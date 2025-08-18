@@ -7,6 +7,8 @@ export function mapSwapToRow(
 ): SwapRow {
   const isRequester = swap.requester.id === currentUserId;
 
+  console.log('swap: ', swap);
+
   const user =
     type === 'sent'
       ? swap.puzzle_asked.owner
@@ -42,5 +44,6 @@ export function mapSwapToRow(
     },
     date: new Date(swap.created).toLocaleDateString('fr-FR'),
     status: swap.status,
+    conversationId: swap.conversation_id,
   };
 }

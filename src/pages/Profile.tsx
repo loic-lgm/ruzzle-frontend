@@ -23,7 +23,7 @@ import SwapRequests from '@/components/SwapRequests';
 import Messages from '@/components/Messages';
 import EditProfileModal from '@/components/EditProfileModal/EditProfileModal';
 import useUserStore from '@/stores/useUserStore';
-import { Link, useNavigate, useSearchParams } from 'react-router';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router';
 import { mapSwapToRow } from '@/components/SwapRequests/helpers';
 import PuzzlesList from '@/components/PuzzlesList';
 import { useBrands } from '@/hooks/useBrands';
@@ -31,6 +31,7 @@ import { useCategories } from '@/hooks/useCategories';
 import { useUserPuzzles } from '@/hooks/useUserPuzzles';
 import { useUserSwaps } from '@/hooks/useUserSwaps';
 import { useUnreadMessageCount } from '@/hooks/useUnreadMessageCount';
+import { useConversations } from '@/hooks/useConversations';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState<string>('');
@@ -42,6 +43,9 @@ const Profile = () => {
   const { data: categories } = useCategories();
   const { data: userPuzzles } = useUserPuzzles();
   const { data: unreadCount = 0 } = useUnreadMessageCount();
+  const { data: conversations = [] } = useConversations();
+  const location = useLocation();
+  const notificationConversationId = location.state?.conversationId;
 
   useEffect(() => {
     if (!user) {
@@ -57,6 +61,12 @@ const Profile = () => {
       setActiveTab('puzzles');
     }
   }, [searchParams]);
+
+  const activeConversationFromNotif = notificationConversationId
+    ? conversations.find((conv) => conv.id === notificationConversationId) ||
+      null
+    : null;
+
 
   const handleTabChange = (value: string) => {
     setActiveTab(value);
@@ -282,7 +292,13 @@ const Profile = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Messages user={user} />
+                      <Messages
+                        user={user}
+                        conversations={conversations}
+                        activeConversationFromNotif={
+                          activeConversationFromNotif
+                        }
+                      />
                     </CardContent>
                   </Card>
                 </TabsContent>
