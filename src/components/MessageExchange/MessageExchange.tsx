@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Swap } from '@/types/swap';
 import { ArrowRightLeft, Check, Clock, X } from 'lucide-react';
 
@@ -13,21 +13,23 @@ const MessageExchange = ({ swap, isRequester }: MessageExchangeType) => {
   const myPuzzle = isRequester ? swap.puzzle_proposed : swap.puzzle_asked;
   const otherPuzzle = isRequester ? swap.puzzle_asked : swap.puzzle_proposed;
   return (
-    <Card className="m-4 border-2 border-green-500 py-3">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <ArrowRightLeft className="h-5 w-5 text-green-500" />
-          Échange proposé
+    <Card className="mx-4 m-2 border border-border/50">
+      <CardContent className="px-6">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <ArrowRightLeft className="h-4 w-4 text-green-500" />
+            <span className="text-sm font-medium">Échange proposé</span>
+          </div>
           <Badge
             variant={swap.status === 'accepted' ? 'default' : 'secondary'}
-            className="ml-auto"
+            className="text-xs"
           >
             {swap.status === 'accepted' ? (
               <>
                 <Check className="h-3 w-3 mr-1" />
                 Accepté
               </>
-            ) : swap.status === 'denied' ? (
+            ) : swap.status === 'rejected' ? (
               <>
                 <X className="h-3 w-3 mr-1" />
                 Refusé
@@ -39,39 +41,40 @@ const MessageExchange = ({ swap, isRequester }: MessageExchangeType) => {
               </>
             )}
           </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col md:flex-row gap-4 items-center">
-          <div className="flex-1 text-center">
-            <p className="text-sm font-medium text-muted-foreground mb-2">
-              Votre puzzle
-            </p>
-            <div className="group flex justify-center">
-              <img
-                src={myPuzzle.image}
-                alt={myPuzzle.image}
-                className="h-25 object-cover rounded-lg"
-              />
+        </div>
+
+        <div className="flex items-center justify-around">
+          <div className="flex items-center gap-2">
+            <img
+              src={myPuzzle.image}
+              alt={myPuzzle.title}
+              className="w-15 h-15 object-cover rounded border"
+            />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium truncate">{myPuzzle.category.name}</p>
+              <p className="text-xs text-muted-foreground">
+                {myPuzzle.piece_count} pièces
+              </p>
             </div>
           </div>
 
           <div className="flex-shrink-0">
-            <div className="w-10 h-10rounded-full flex items-center justify-center">
-              <ArrowRightLeft className="h-5 w-5 text-green-500" />
-            </div>
+            <ArrowRightLeft className="h-4 w-4 text-green-500" />
           </div>
 
-          <div className="flex-1 text-center">
-            <p className="text-sm font-medium text-muted-foreground mb-2">
-              Son puzzle
-            </p>
-            <div className="group flex justify-center">
-              <img
-                src={otherPuzzle.image}
-                alt={otherPuzzle.image}
-                className="h-25 object-cover rounded-lg"
-              />
+          <div className="flex items-center gap-2">
+            <img
+              src={otherPuzzle.image}
+              alt={otherPuzzle.title}
+              className="w-15 h-15 object-cover rounded border"
+            />
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium truncate">
+                {otherPuzzle.category.name}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {otherPuzzle.piece_count} pièces
+              </p>
             </div>
           </div>
         </div>
