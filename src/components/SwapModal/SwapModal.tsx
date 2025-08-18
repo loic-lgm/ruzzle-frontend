@@ -25,7 +25,11 @@ interface ExchangeModalProps {
   requester: User;
 }
 
-const SwapModal = ({ selectedPuzzle, userPuzzles, requester }: ExchangeModalProps) => {
+const SwapModal = ({
+  selectedPuzzle,
+  userPuzzles,
+  requester,
+}: ExchangeModalProps) => {
   const [internalError, setInternalError] = useState<string | null>(null);
   const [message, setMessage] = useState<string>(
     'Bonjour, je suis intéressé pour échanger votre puzzle.'
@@ -44,7 +48,6 @@ const SwapModal = ({ selectedPuzzle, userPuzzles, requester }: ExchangeModalProp
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
-      console.error(axiosError);
       setInternalError(
         axiosError.response?.data?.error || 'Une erreur est survenue'
       );
@@ -165,10 +168,10 @@ const SwapModal = ({ selectedPuzzle, userPuzzles, requester }: ExchangeModalProp
           </div>
         </div>
 
+        {internalError && (
+          <div className="text-red-500 text-sm">{internalError}</div>
+        )}
         <DialogFooter>
-          {internalError && (
-            <div className="text-red-500 text-sm">{internalError}</div>
-          )}
           <Button variant="outline" onClick={close}>
             Annuler
           </Button>
