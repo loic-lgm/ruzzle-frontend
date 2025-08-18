@@ -12,6 +12,7 @@ import { markMessageAsRead, sendMessageFn } from '@/service/message';
 import { AxiosError } from 'axios';
 import { Message } from '@/types/message';
 import MessageExchange from '@/components/MessageExchange/MessageExchange';
+import { useNavigate } from 'react-router';
 
 const Messages = ({ user }: { user: User }) => {
   const [activeConversation, setActiveConversation] =
@@ -26,6 +27,7 @@ const Messages = ({ user }: { user: User }) => {
     };
   });
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 
@@ -146,7 +148,14 @@ const Messages = ({ user }: { user: User }) => {
 
       {activeConversation ? (
         <div className="flex-1 flex flex-col border rounded-lg overflow-hidden">
-          <div className="p-4 border-b flex items-center gap-3 bg-white">
+          <div
+            className="p-4 border-b flex items-center gap-3 bg-white cursor-pointer"
+            onClick={() =>
+              navigate(
+                `/profil/${activeConversation.otherParticipant!.username}`
+              )
+            }
+          >
             <Avatar className="h-10 w-10">
               <AvatarImage
                 src={activeConversation.otherParticipant!.image}
