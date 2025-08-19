@@ -25,6 +25,8 @@ const Messages = ({
   activeConversationFromNotif,
 }: MessagesType) => {
   const [newMessage, setNewMessage] = useState('');
+  const [disableConversation, setDisableConversation] =
+    useState<boolean>(false);
   const [activeConversation, setActiveConversation] =
     useState<Conversation | null>(null);
   const conversationsWithOther = conversations.map((conv: Conversation) => {
@@ -207,6 +209,8 @@ const Messages = ({
           <MessageExchange
             swap={activeConversation.exchange}
             isRequester={activeConversation.exchange.requester.id === user.id}
+            setDisableConversation={setDisableConversation}
+            disableConversation={disableConversation}
           />
 
           <div
@@ -245,8 +249,8 @@ const Messages = ({
             </div>
           </div>
 
-          {activeConversation.exchange.status == 'accepted' ||
-          activeConversation.exchange.status == 'denied' ? (
+          {(activeConversation.exchange.status == 'accepted' ||
+          activeConversation.exchange.status == 'denied' || disableConversation) ? (
             <div className="p-3 border-t bg-gray-50">
               <div className="text-center p-2">
                 <p className="text-sm text-gray-600">

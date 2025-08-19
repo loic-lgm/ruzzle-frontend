@@ -12,9 +12,11 @@ import { toast } from 'sonner';
 interface MessageExchangeType {
   swap: Swap;
   isRequester: boolean;
+  setDisableConversation: (value: boolean) => void;
+  disableConversation: boolean
 }
 
-const MessageExchange = ({ swap, isRequester }: MessageExchangeType) => {
+const MessageExchange = ({ swap, isRequester, setDisableConversation, disableConversation }: MessageExchangeType) => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [action, setAction] = useState<'accepted' | 'denied' | null>(null);
   const myPuzzle = isRequester ? swap.puzzle_proposed : swap.puzzle_asked;
@@ -146,6 +148,7 @@ const MessageExchange = ({ swap, isRequester }: MessageExchangeType) => {
               onClick={() => {
                 setAction('denied');
                 setAlertOpen(true);
+                setDisableConversation(true);
               }}
             >
               <X className="h-4 w-4" />
@@ -157,6 +160,7 @@ const MessageExchange = ({ swap, isRequester }: MessageExchangeType) => {
                 onClick={() => {
                   setAction('accepted');
                   setAlertOpen(true);
+                  setDisableConversation(true)
                 }}
               >
                 <Check className="h-4 w-4" />
@@ -164,7 +168,7 @@ const MessageExchange = ({ swap, isRequester }: MessageExchangeType) => {
             )}
           </div>
         )}
-        {(swap.status === 'accepted' || swap.status === 'denied') && (
+        {(swap.status === 'accepted' || swap.status === 'denied' || disableConversation) && (
           <div className="mt-3 p-2 bg-gray-50 rounded text-center">
             <p className="text-xs text-gray-600">
               {swap.status === 'accepted'
