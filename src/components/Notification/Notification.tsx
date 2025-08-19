@@ -10,7 +10,7 @@ import { NotificationType } from '@/types/notification';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Bell, MessageSquare, Package } from 'lucide-react';
+import { Bell, CheckCircle, MessageSquare, Package, XCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -38,7 +38,11 @@ const Notification = ({ notifications }: NotificationBellProps) => {
       navigate('/mon-espace?tab=received');
       setIsPopoverOpen(false);
     }
-    if (notification.notif_type == 'new_message') {
+    if (
+      notification.notif_type == 'new_message' ||
+      notification.notif_type == 'exchange_accepted' ||
+      notification.notif_type == 'exchange_denied'
+    ) {
       navigate('/mon-espace?tab=messages', {
         state: { conversationId: notification.conversation_id },
       });
@@ -75,20 +79,33 @@ const Notification = ({ notifications }: NotificationBellProps) => {
               >
                 <div className="flex gap-3">
                   {notification.notif_type == 'exchange_request' && (
-                    <Package className="h-5 w-5 text-green-500 flex-shrink-0 mt-1" />
+                    <Package className="h-5 w-5 text-emerald-500 flex-shrink-0 mt-1" />
                   )}
                   {notification.notif_type == 'new_message' && (
                     <MessageSquare className="h-5 w-5 text-blue-500 flex-shrink-0 mt-1" />
+                  )}
+                  {notification.notif_type === 'exchange_accepted' && (
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-1" />
+                  )}
+                  {notification.notif_type === 'exchange_denied' && (
+                    <XCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-1" />
                   )}
                   <div>
                     <p className="text-xs text-gray-500">
                       {notification.sender_username}{' '}
                       {(() => {
-                        if (notification.notif_type === 'exchange_request')
-                          return 'souhaite échanger des puzzles avec vous.';
-                        if (notification.notif_type === 'new_message')
-                          return 'vous a envoyé un message.';
-                        return '';
+                        switch (notification.notif_type) {
+                          case 'exchange_request':
+                            return 'souhaite échanger des puzzles avec vous.';
+                          case 'new_message':
+                            return 'vous a envoyé un message.';
+                          case 'exchange_accepted':
+                            return 'a accepté votre échange';
+                          case 'exchange_denied':
+                            return "a annulé l'échange";
+                          default:
+                            return '';
+                        }
                       })()}
                     </p>
                     <p className="text-xs text-gray-400 mt-1">
