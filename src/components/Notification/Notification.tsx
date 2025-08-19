@@ -74,23 +74,22 @@ const Notification = ({ notifications }: NotificationBellProps) => {
                 }`}
               >
                 <div className="flex gap-3">
-                  {notification.notif_type == 'exchange_request' ? (
+                  {notification.notif_type == 'exchange_request' && (
                     <Package className="h-5 w-5 text-green-500 flex-shrink-0 mt-1" />
-                  ) : (
+                  )}
+                  {notification.notif_type == 'new_message' && (
                     <MessageSquare className="h-5 w-5 text-blue-500 flex-shrink-0 mt-1" />
                   )}
                   <div>
-                    <p className="text-sm font-medium">
-                      {notification.notif_type == 'exchange_request'
-                        ? "Nouvelle demande d'échange"
-                        : 'Nouveau message'}
-                    </p>
                     <p className="text-xs text-gray-500">
-                      {`${notification.sender_username} ${
-                        notification.notif_type == 'exchange_request'
-                          ? 'souhaite échanger des puzzles avec vous.'
-                          : 'vous a envoyé un message.'
-                      }`}
+                      {notification.sender_username}{' '}
+                      {(() => {
+                        if (notification.notif_type === 'exchange_request')
+                          return 'souhaite échanger des puzzles avec vous.';
+                        if (notification.notif_type === 'new_message')
+                          return 'vous a envoyé un message.';
+                        return '';
+                      })()}
                     </p>
                     <p className="text-xs text-gray-400 mt-1">
                       {formatDistanceToNow(new Date(notification.created_at), {
