@@ -16,6 +16,8 @@ import { toast } from 'sonner';
 import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
 import { User } from '@/types/user';
 import { useNavigate } from 'react-router';
+import { useState } from 'react';
+import AlertDialogSwap from '@/components/AlertDialogSwap';
 
 interface ExchangeRequestsListProps {
   type: SwapType;
@@ -24,9 +26,13 @@ interface ExchangeRequestsListProps {
 }
 
 const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [action, setAction] = useState<'accepted' | 'denied' | null>(null);
+  const [currentSwapId, setCurrentSwapId] = useState<number | null>(null);
   const { refreshSwaps } = useSwapsRefresh();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  console.log(alertDialogOpen, ': alertDialogOpen');
   const update = useMutation({
     mutationFn: ({
       payload,
@@ -154,9 +160,11 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      onClick={() =>
-                        handleUpdateStatus(swap.id, 'accepted', type)
-                      }
+                      onClick={() => {
+                        setAction('accepted');
+                        setCurrentSwapId(swap.id);
+                        setAlertDialogOpen(true);
+                      }}
                     >
                       <CheckCircle className="h-4 w-4 text-green-500" />
                       <span className="sr-only">Accepter</span>
@@ -181,9 +189,11 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                         size="sm"
                         variant="outline"
                         className="h-8 w-8 p-0"
-                        onClick={() =>
-                          handleUpdateStatus(swap.id, 'denied', type)
-                        }
+                        onClick={() => {
+                          setAction('denied');
+                          setCurrentSwapId(swap.id);
+                          setAlertDialogOpen(true);
+                        }}
                       >
                         <XCircle className="h-4 w-4 text-red-500" />
                         <span className="sr-only">Refuser</span>
@@ -196,6 +206,20 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
           ))}
         </TableBody>
       </Table>
+      {currentSwapId && action && (
+        <AlertDialogSwap
+          action={action}
+          open={alertDialogOpen}
+          setOpen={setAlertDialogOpen}
+          onConfirm={() => {
+            handleUpdateStatus(
+              currentSwapId,
+              action,
+              type as 'sent' | 'received'
+            );
+          }}
+        />
+      )}
     </div>
   );
 };
