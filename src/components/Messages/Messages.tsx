@@ -158,6 +158,21 @@ const Messages = ({
                   conv.last_message.user.id !== user.id && (
                     <Badge className="bg-emerald-500">New</Badge>
                   )}
+                {conv.exchange &&
+                  (conv.exchange.status === 'accepted' ||
+                    conv.exchange.status === 'denied') && (
+                    <Badge
+                      className={`text-xs ${
+                        conv.exchange.status === 'accepted'
+                          ? 'bg-green-500'
+                          : 'bg-red-500'
+                      }`}
+                    >
+                      {conv.exchange.status === 'accepted'
+                        ? 'Terminé'
+                        : 'Refusé'}
+                    </Badge>
+                  )}
               </div>
             ))}
         </div>
@@ -230,29 +245,42 @@ const Messages = ({
             </div>
           </div>
 
-          <div className="p-3 border-t bg-white">
-            <div className="flex gap-2">
-              <Input
-                placeholder="Écrivez votre message..."
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                className="flex-1"
-              />
-              <div className="text-xs text-gray-500 mt-1 text-right flex items-center">
-                {newMessage.length}/500
+          {activeConversation.exchange.status == 'accepted' ||
+          activeConversation.exchange.status == 'denied' ? (
+            <div className="p-3 border-t bg-gray-50">
+              <div className="text-center p-2">
+                <p className="text-sm text-gray-600">
+                  {activeConversation.exchange.status === 'accepted'
+                    ? "Cette conversation est archivée car l'échange a été accepté"
+                    : "Cette conversation est archivée car l'échange a été refusé"}
+                </p>
               </div>
-              <Button
-                onClick={handleSendMessage}
-                className="bg-green-500 hover:bg-green-500/90"
-                disabled={
-                  newMessage.trim().length === 0 || newMessage.length > 500
-                }
-              >
-                <Send size={18} />
-              </Button>
             </div>
-          </div>
+          ) : (
+            <div className="p-3 border-t bg-white">
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Écrivez votre message..."
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                  className="flex-1"
+                />
+                <div className="text-xs text-gray-500 mt-1 text-right flex items-center">
+                  {newMessage.length}/500
+                </div>
+                <Button
+                  onClick={handleSendMessage}
+                  className="bg-green-500 hover:bg-green-500/90"
+                  disabled={
+                    newMessage.trim().length === 0 || newMessage.length > 500
+                  }
+                >
+                  <Send size={18} />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex-1 flex items-center justify-center border rounded-lg">

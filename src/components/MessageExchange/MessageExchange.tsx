@@ -164,6 +164,15 @@ const MessageExchange = ({ swap, isRequester }: MessageExchangeType) => {
             )}
           </div>
         )}
+        {(swap.status === 'accepted' || swap.status === 'denied') && (
+          <div className="mt-3 p-2 bg-gray-50 rounded text-center">
+            <p className="text-xs text-gray-600">
+              {swap.status === 'accepted'
+                ? 'Échange accepté - Les détails de livraison ont été partagés par email'
+                : 'Échange refusé - Cette conversation est terminée'}
+            </p>
+          </div>
+        )}
       </CardContent>
       {action && (
         <AlertDialogSwap
