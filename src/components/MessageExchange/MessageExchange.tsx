@@ -87,7 +87,7 @@ const MessageExchange = ({ swap, isRequester, setDisableConversation, disableCon
                 <Check className="h-3 w-3 mr-1" />
                 Accepté
               </>
-            ) : swap.status === 'rejected' ? (
+            ) : swap.status === 'denied' ? (
               <>
                 <X className="h-3 w-3 mr-1" />
                 Refusé
