@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { Brands } from '@/types/brand';
 import { Categories } from '@/types/category';
-import { CONDITION, PIECE_COUNT } from '@/utils/constants';
+import { CONDITION } from '@/utils/constants';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import { User } from '@/types/user';
 import ImageInput from '@/components/ImageInput';
@@ -12,6 +12,7 @@ import { publishPuzzle } from '@/service/puzzle';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
+import { Input } from '@/components/ui/input';
 
 interface PublishFormProps {
   brands: Brands;
@@ -103,7 +104,6 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={categories}
             type="category"
-            value={formData.category}
             onChange={(_, value) => handleChange('category', value)}
             className={`focus:border-green-500 ${
               errors.includes('category')
@@ -114,21 +114,24 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
         </div>
 
         <div className="space-y-2">
-          <div className="space-y-2">
-            <SelectCustom
-              label="Nombre de pièce"
-              onlyLabel={true}
-              data={PIECE_COUNT}
-              type="pieceCount"
-              value={formData.pieceCount}
-              onChange={(_, value) => handleChange('pieceCount', value)}
-              className={`focus:border-green-500 ${
-                errors.includes('pieceCount')
-                  ? 'border-red-500'
-                  : 'border-emerald-500'
-              }`}
-            />
-          </div>
+          <Input
+            id="pieceCount"
+            name="pieceCount"
+            type="number"
+            placeholder="Nombre de pièces"
+            value={formData.pieceCount}
+            onChange={(e) =>
+              handleChange(
+                e.target.name as keyof typeof formData,
+                e.target.value
+              )
+            }
+            className={`border placeholder:text-neutral-800 ${
+              errors.includes('pieceCount')
+                ? 'border-red-500 focus-visible:border-red-500 focus-visible:ring-0'
+                : 'border-emerald-500 focus-visible:border-emerald-500 focus-visible:ring-0'
+            } focus:outline-none`}
+          />
         </div>
 
         <div className="space-y-2">
@@ -137,7 +140,6 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={brands}
             type="brand"
-            value={formData.brand}
             onChange={(_, value) => handleChange('brand', value)}
             className={`focus:border-green-500 ${
               errors.includes('brand') ? 'border-red-500' : 'border-emerald-500'
@@ -151,7 +153,6 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={CONDITION}
             type="condition"
-            value={formData.condition}
             onChange={(_, value) => handleChange('condition', value)}
             className={`focus:border-green-500 ${
               errors.includes('condition')
@@ -161,7 +162,11 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
           />
         </div>
       </div>
-      <ImageInput setFormData={setFormData} formData={formData} errors={errors}/>
+      <ImageInput
+        setFormData={setFormData}
+        formData={formData}
+        errors={errors}
+      />
       {internalError && (
         <div className="text-red-500 text-sm">{internalError}</div>
       )}
