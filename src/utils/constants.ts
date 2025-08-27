@@ -1,8 +1,8 @@
 export const PIECE_COUNT = [
-  { id: 50, name: '50 pièces' },
-  { id: 100, name: '100 pièces' },
-  { id: 500, name: '500 pièces' },
-  { id: 1000, name: '1000 pièces' },
+  { id: '-500', name: '-500 pièces' },
+  { id: '500-1000', name: '500 à 1000 pièces' },
+  { id: '1000-2000', name: '1000 à 2000 pièces' },
+  { id: '2000+', name: '2000+ pièces' },
 ];
 
 export const CONDITION = [

@@ -19,6 +19,7 @@ interface SelectCustomProps {
   onChange: (type: keyof FilterTypes, value: string) => void;
   className?: string;
   onlyLabel?: boolean;
+  value?: string;
 }
 
 const SelectCustom = ({
@@ -28,17 +29,26 @@ const SelectCustom = ({
   onChange,
   type,
   className,
+  value,
 }: SelectCustomProps) => {
+  const selectedItem = data.find((item) => item.id.toString() == value);
   return (
-    <Select onValueChange={(value) => onChange(type, value)}>
+    <Select
+      onValueChange={(value) => onChange(type, value)}
+      {...(selectedItem ? { value } : {})}
+    >
       <SelectTrigger
         className={`w-full border-lightblue/30 focus:border-green-500 ${className}`}
       >
         <SelectValue
-          placeholder={
-            onlyLabel ? label : `Choisir une ${label.toLocaleLowerCase()}`
-          }
-        />
+          placeholder={onlyLabel ? label : `Choisir une ${label.toLowerCase()}`}
+        >
+          {selectedItem
+            ? selectedItem.name
+            : onlyLabel
+            ? label
+            : `Choisir une ${label.toLowerCase()}`}
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

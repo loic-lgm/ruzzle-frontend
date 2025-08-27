@@ -8,12 +8,12 @@ import {
   LayoutList,
   Search,
 } from 'lucide-react';
-import { Brands } from '@/types/brand';
+import { Brand, Brands } from '@/types/brand';
 import { FilterTypes } from '@/types/puzzle';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { PIECE_COUNT } from '@/utils/constants';
-import { Cities } from '@/types/city';
-import { Categories } from '@/types/category';
+import { Cities, City } from '@/types/city';
+import { Categories, Category } from '@/types/category';
 
 interface FilterPropsType {
   brands: Brands;
@@ -61,16 +61,29 @@ const Filter = ({
         case 'city':
           selectedItem = cities.find((item) => item.id.toString() === value);
           break;
+        case 'pieceCount':
+          selectedItem = value;
+          break;
         default:
           return;
       }
 
       if (!selectedItem) return;
 
-      setFilters((prev) => ({
-        ...prev,
-        [type]: type == 'city' ? selectedItem.name : selectedItem.id,
-      }));
+      setFilters((prev) => {
+        let value;
+        if (type === 'city') {
+          value = (selectedItem as City).name;
+        } else if (type === 'pieceCount') {
+          value = selectedItem;
+        } else {
+          value = (selectedItem as Category | Brand).id;
+        }
+        return {
+          ...prev,
+          [type]: value,
+        };
+      });
     },
     [brands, categories, cities, setFilters]
   );
@@ -156,26 +169,29 @@ const Filter = ({
                 data={categories}
                 type="category"
                 onChange={handleFilterChange}
+                value={filters.category}
               />
               <SelectCustom
                 label="Nombre de pièce"
                 data={PIECE_COUNT}
                 type="pieceCount"
-                onChange={() => {}}
+                onChange={handleFilterChange}
+                value={filters.pieceCount}
               />
               <SelectCustom
                 label="Marque"
                 data={brands}
                 type="brand"
                 onChange={handleFilterChange}
+                value={filters.brand}
               />
               <SelectCustom
                 label="Ville"
                 data={cities}
                 type="city"
                 onChange={handleFilterChange}
+                value={filters.city}
               />
-              <div></div>
             </div>
           </div>
         )}

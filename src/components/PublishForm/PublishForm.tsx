@@ -104,6 +104,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={categories}
             type="category"
+            value={formData.category}
             onChange={(_, value) => handleChange('category', value)}
             className={`focus:border-green-500 ${
               errors.includes('category')
@@ -140,6 +141,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={brands}
             type="brand"
+            value={formData.brand}
             onChange={(_, value) => handleChange('brand', value)}
             className={`focus:border-green-500 ${
               errors.includes('brand') ? 'border-red-500' : 'border-emerald-500'
@@ -153,6 +155,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             onlyLabel={true}
             data={CONDITION}
             type="condition"
+            value={formData.condition}
             onChange={(_, value) => handleChange('condition', value)}
             className={`focus:border-green-500 ${
               errors.includes('condition')

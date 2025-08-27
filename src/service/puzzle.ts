@@ -42,7 +42,7 @@ export const publishPuzzle = async (
     data,
     {
       headers: {
-        'Content-Type': 'multipart/form-data', // obligatoire pour upload
+        'Content-Type': 'multipart/form-data',
       },
     }
   );
@@ -58,7 +58,7 @@ export const editPuzzle = async (
     data,
     {
       headers: {
-        'Content-Type': 'multipart/form-data', // obligatoire pour upload
+        'Content-Type': 'multipart/form-data',
       },
     }
   );
