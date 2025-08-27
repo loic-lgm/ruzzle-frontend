@@ -9,6 +9,7 @@ import { Toaster } from 'sonner';
 import Profile from '@/pages/Profile';
 import PublicProfilePage from '@/pages/PublicProfile';
 import React, { useLayoutEffect } from 'react';
+import Puzzle from '@/pages/Puzzle';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -42,6 +43,7 @@ const App = () => {
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
               <Route path="/puzzles" element={<Puzzles />} />
+              <Route path="/puzzles/:hashId" element={<Puzzle />} />
               <Route path="/ajouter-un-puzzle" element={<Publish />} />
               <Route path="/mon-espace" element={<Profile />} />
               <Route path="/profil/:username" element={<PublicProfilePage />} />

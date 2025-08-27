@@ -7,8 +7,6 @@ export function mapSwapToRow(
 ): SwapRow {
   const isRequester = swap.requester.id === currentUserId;
 
-  console.log('swap: ', swap);
-
   const user =
     type === 'sent'
       ? swap.puzzle_asked.owner

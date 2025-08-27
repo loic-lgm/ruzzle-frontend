@@ -10,6 +10,10 @@ html {
   scroll-behavior: smooth;
 }
 
+.glass-card {
+    @apply relative backdrop-blur-lg bg-white/40 border border-white/30 shadow-lg rounded-2xl transition-all duration-300;
+  }
+
 .gradient-border-button-cta {
   @apply px-5 py-2.5 text-gray-800 font-medium rounded-xl inline-flex items-center justify-center;
   position: relative;

@@ -27,6 +27,13 @@ export const fetchPuzzlesByUser = async (): Promise<Puzzles> => {
   return response.data;
 };
 
+export const fetchPuzzle = async (hashid: string): Promise<Puzzle> => {
+  const response = await api.get(
+    `${import.meta.env.VITE_API_URL}/puzzles/${hashid}/`
+  );
+  return response.data;
+};
+
 export const fetchRandomPuzzles = async (): Promise<Puzzles> => {
   const response = await api.get(
     `${import.meta.env.VITE_API_URL}/puzzles/random/`
