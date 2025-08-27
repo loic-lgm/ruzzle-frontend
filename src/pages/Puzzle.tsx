@@ -1,6 +1,10 @@
+import SwapModal from '@/components/SwapModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { usePuzzle } from '@/hooks/usePuzzle';
+import { useUserPuzzles } from '@/hooks/useUserPuzzles';
+import { useModalStore } from '@/stores/useModalStore';
+import useUserStore from '@/stores/useUserStore';
 import { CONDITION } from '@/utils/constants';
 import {
   ArrowRightLeft,
@@ -13,10 +17,27 @@ import {
   User,
 } from 'lucide-react';
 import { useParams } from 'react-router';
+import { toast } from 'sonner';
 
 const Puzzle = () => {
   const { hashId } = useParams();
   const { data: puzzle } = usePuzzle(hashId!);
+  const user = useUserStore((state) => state.user);
+  const { data: userPuzzles } = useUserPuzzles();
+  const { open } = useModalStore();
+
+  const handleSwap = () => {
+    if (user && puzzle?.owner.id == user.id) {
+      toast.error('Vous ne pouvez pas échanger vos propres puzzles.');
+      return;
+    }
+    if (user) {
+      open();
+    } else {
+      open('login');
+    }
+  };
+
   return (
     <div className="flex flex-col bg-gray-50">
       <main className="flex-1 pt-24">
@@ -116,7 +137,7 @@ const Puzzle = () => {
                 <div className="space-y-3">
                   <Button
                     className="w-full bg-gradient-to-r from-lime-500 to-emerald-500 hover:from-teal-500 hover:to-green-500 text-white font-medium py-3"
-                    // onClick={handleExchange}
+                    onClick={handleSwap}
                     size="lg"
                   >
                     <ArrowRightLeft className="h-5 w-5 mr-2" />
@@ -149,6 +170,13 @@ const Puzzle = () => {
               </div>
             </div>
           </div>
+          {puzzle && user && userPuzzles && (
+            <SwapModal
+              selectedPuzzle={puzzle}
+              userPuzzles={userPuzzles}
+              requester={user}
+            />
+          )}
         </div>
       </main>
     </div>
