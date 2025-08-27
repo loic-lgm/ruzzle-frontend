@@ -16,7 +16,7 @@ import {
   Share2,
   User,
 } from 'lucide-react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
 
 const Puzzle = () => {
@@ -25,9 +25,10 @@ const Puzzle = () => {
   const user = useUserStore((state) => state.user);
   const { data: userPuzzles } = useUserPuzzles();
   const { open } = useModalStore();
-
+  const navigate = useNavigate();
+  const isUserConnectedIsOwner = puzzle?.owner.id == user?.id;
   const handleSwap = () => {
-    if (user && puzzle?.owner.id == user.id) {
+    if (isUserConnectedIsOwner) {
       toast.error('Vous ne pouvez pas échanger vos propres puzzles.');
       return;
     }
@@ -73,7 +74,16 @@ const Puzzle = () => {
                           ?.name
                       }
                     </Badge>
-                    <p className="text-lg cursor-pointer">
+                    <p
+                      className="text-lg cursor-pointer"
+                      onClick={() =>
+                        navigate(
+                          isUserConnectedIsOwner
+                            ? '/mon-espace'
+                            : `/profil/${puzzle?.owner.username}`
+                        )
+                      }
+                    >
                       • @{puzzle?.owner.username}
                     </p>
                   </div>

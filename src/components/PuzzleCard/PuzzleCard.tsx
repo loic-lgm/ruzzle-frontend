@@ -8,6 +8,7 @@ import React from 'react';
 import { User as UserType } from '@/types/user';
 import { useModalStore } from '@/stores/useModalStore';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router';
 
 interface PuzzleCardProps {
   puzzle: Puzzle;
@@ -18,6 +19,7 @@ interface PuzzleCardProps {
 const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
   const { open } = useAuthModalStore();
   const { open: openSwap } = useModalStore();
+  const navigate = useNavigate()
   const handleSwap = () => {
     if (user && puzzle.owner.id == user.id) {
       toast.error('Vous ne pouvez pas échanger vos propres puzzles.');
@@ -82,7 +84,8 @@ const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
             <Button
               size="sm"
               variant="ghost"
-              className="h-8 rounded-full flex items-center bg-white/20 text-white "
+              className="h-8 rounded-full flex items-center bg-white/20 text-white"
+              onClick={() => navigate(`/puzzles/${puzzle.hashid}`)}
             >
               <Eye className="h-4 w-4 mr-1" />
               <span className="text-xs">Aperçu</span>

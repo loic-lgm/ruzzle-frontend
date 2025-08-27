@@ -20,6 +20,7 @@ import { Category } from '@/types/category';
 import { Brand } from '@/types/brand';
 import { CONDITION } from '@/utils/constants';
 import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
+import { useNavigate } from 'react-router';
 
 interface PuzzleListProps {
   puzzles: Puzzles;
@@ -33,6 +34,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState<Puzzle | null>();
   const queryClient = useQueryClient();
   const { refreshSwaps } = useSwapsRefresh();
+  const navigate = useNavigate()
 
   const deletePuzzle = useMutation({
     mutationFn: deletePuzzleFn,
@@ -82,7 +84,8 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                     <img
                       src={puzzle.image}
                       alt={puzzle.image}
-                      className="w-12 h-12 rounded object-cover"
+                      className="w-12 h-12 rounded object-cover cursor-pointer"
+                      onClick={() => navigate(`/puzzles/${puzzle.hashid}`)}
                     />
                     <div>
                       <div className="text-sm text-muted-foreground">
