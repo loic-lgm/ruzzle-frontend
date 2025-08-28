@@ -86,8 +86,9 @@ const EditPuzzleModal = ({
       hashid: string;
       data: PublishOrEditPuzzleData;
     }) => editPuzzle(hashid, data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
+      queryClient.invalidateQueries({ queryKey: ['puzzle', variables.hashid] });
       onOpenChange(false);
       toast.success('Puzzle mis à jour avec succès !');
     },

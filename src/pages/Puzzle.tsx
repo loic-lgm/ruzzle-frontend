@@ -1,6 +1,9 @@
+import EditPuzzleModal from '@/components/EditPuzzleModal';
 import SwapModal from '@/components/SwapModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useBrands } from '@/hooks/useBrands';
+import { useCategories } from '@/hooks/useCategories';
 import { usePuzzle } from '@/hooks/usePuzzle';
 import { useUserPuzzles } from '@/hooks/useUserPuzzles';
 import { useModalStore } from '@/stores/useModalStore';
@@ -14,8 +17,10 @@ import {
   Layout,
   MapPin,
   Share2,
+  SquarePen,
   User,
 } from 'lucide-react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
 
@@ -23,7 +28,10 @@ const Puzzle = () => {
   const { hashId } = useParams();
   const { data: puzzle } = usePuzzle(hashId!);
   const user = useUserStore((state) => state.user);
+  const [isEditPuzzleOpen, setIsEditPuzzleOpen] = useState<boolean>(false);
   const { data: userPuzzles } = useUserPuzzles();
+  const { data: brands } = useBrands();
+  const { data: categories } = useCategories();
   const { open } = useModalStore();
   const navigate = useNavigate();
   const isUserConnectedIsOwner = puzzle?.owner.id == user?.id;
@@ -56,9 +64,9 @@ const Puzzle = () => {
                   </div>
                 </div>
               </div>
-              <div className="order-1 lg:order-2 space-y-6">
-                <div>
-                  <div className="flex flex-wrap gap-2 mb-4">
+              <div className="order-1 lg:order-2 space-y-6 flex flex-col justify-center h-full">
+                <div className="flex flex-row gap-2 mb-4 justify-between">
+                  <div className="flex flex-row gap-2">
                     <Badge
                       variant="outline"
                       className="bg-green-100 text-darkpurple border-green-500"
@@ -86,6 +94,17 @@ const Puzzle = () => {
                     >
                       • @{puzzle?.owner.username}
                     </p>
+                  </div>
+                  <div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 w-8 p-0"
+                      onClick={() => setIsEditPuzzleOpen(true)}
+                    >
+                      <SquarePen className="h-4 w-4" />
+                      <span className="sr-only">Éditer</span>
+                    </Button>
                   </div>
                 </div>
 
@@ -185,6 +204,15 @@ const Puzzle = () => {
               selectedPuzzle={puzzle}
               userPuzzles={userPuzzles}
               requester={user}
+            />
+          )}
+          {isEditPuzzleOpen && puzzle && categories && brands && (
+            <EditPuzzleModal
+              open={isEditPuzzleOpen}
+              onOpenChange={setIsEditPuzzleOpen}
+              puzzle={puzzle}
+              categories={categories}
+              brands={brands}
             />
           )}
         </div>
