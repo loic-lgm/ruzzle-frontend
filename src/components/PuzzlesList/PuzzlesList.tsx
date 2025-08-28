@@ -41,6 +41,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
     onSuccess: () => {
       toast.success('Puzzle supprimé avec succès !');
       queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
       refreshSwaps('received', selectedPuzzle!.owner.id);
       refreshSwaps('sent', selectedPuzzle!.owner.id);
     },
