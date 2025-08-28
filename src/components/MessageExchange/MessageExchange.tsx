@@ -7,21 +7,28 @@ import { Swap } from '@/types/swap';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ArrowRightLeft, Check, Clock, X } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
 interface MessageExchangeType {
   swap: Swap;
   isRequester: boolean;
   setDisableConversation: (value: boolean) => void;
-  disableConversation: boolean
+  disableConversation: boolean;
 }
 
-const MessageExchange = ({ swap, isRequester, setDisableConversation, disableConversation }: MessageExchangeType) => {
+const MessageExchange = ({
+  swap,
+  isRequester,
+  setDisableConversation,
+  disableConversation,
+}: MessageExchangeType) => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [action, setAction] = useState<'accepted' | 'denied' | null>(null);
   const myPuzzle = isRequester ? swap.puzzle_proposed : swap.puzzle_asked;
   const otherPuzzle = isRequester ? swap.puzzle_asked : swap.puzzle_proposed;
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const update = useMutation({
     mutationFn: ({ status }: { status: 'accepted' | 'denied' }) =>
@@ -106,7 +113,8 @@ const MessageExchange = ({ swap, isRequester, setDisableConversation, disableCon
             <img
               src={myPuzzle.image}
               alt={myPuzzle.title}
-              className="w-15 h-15 object-cover rounded border"
+              className="w-15 h-15 object-cover rounded border cursor-pointer"
+              onClick={() => navigate(`/puzzles/${myPuzzle.hashid}`)}
             />
             <div className="min-w-0 flex-1">
               <p className="text-xs font-medium truncate">
@@ -126,7 +134,8 @@ const MessageExchange = ({ swap, isRequester, setDisableConversation, disableCon
             <img
               src={otherPuzzle.image}
               alt={otherPuzzle.title}
-              className="w-15 h-15 object-cover rounded border"
+              className="w-15 h-15 object-cover rounded border cursor-pointer"
+              onClick={() => navigate(`/puzzles/${otherPuzzle.hashid}`)}
             />
             <div className="min-w-0 flex-1">
               <p className="text-xs font-medium truncate">
@@ -160,7 +169,7 @@ const MessageExchange = ({ swap, isRequester, setDisableConversation, disableCon
                 onClick={() => {
                   setAction('accepted');
                   setAlertOpen(true);
-                  setDisableConversation(true)
+                  setDisableConversation(true);
                 }}
               >
                 <Check className="h-4 w-4" />
@@ -168,7 +177,9 @@ const MessageExchange = ({ swap, isRequester, setDisableConversation, disableCon
             )}
           </div>
         )}
-        {(swap.status === 'accepted' || swap.status === 'denied' || disableConversation) && (
+        {(swap.status === 'accepted' ||
+          swap.status === 'denied' ||
+          disableConversation) && (
           <div className="mt-3 p-2 bg-gray-50 rounded text-center">
             <p className="text-xs text-gray-600">
               {swap.status === 'accepted'
