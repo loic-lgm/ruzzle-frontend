@@ -34,7 +34,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
   const [selectedPuzzle, setSelectedPuzzle] = useState<Puzzle | null>();
   const queryClient = useQueryClient();
   const { refreshSwaps } = useSwapsRefresh();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const deletePuzzle = useMutation({
     mutationFn: deletePuzzleFn,
@@ -111,11 +111,15 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2 items-center">
-                    {puzzle.status != 'pending' && (
-                      <>
+                    {puzzle.status == 'pending' && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 w-8 p-0 bg-accent cursor-default"
+                      >
                         <Hourglass className="size-4 text-green-500" />
                         <span className="sr-only">En cours de transaction</span>
-                      </>
+                      </Button>
                     )}
                     <Button
                       size="sm"
@@ -132,7 +136,9 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                       size="sm"
                       variant="outline"
                       className="h-8 w-8 p-0"
-                      onClick={() => handleActions(puzzle.hashid!, 'delete', puzzle)}
+                      onClick={() =>
+                        handleActions(puzzle.hashid!, 'delete', puzzle)
+                      }
                     >
                       <XCircle className="h-4 w-4 text-red-500" />
                       <span className="sr-only">Supprimer</span>
