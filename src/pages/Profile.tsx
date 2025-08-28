@@ -18,6 +18,7 @@ import {
   Edit,
   Puzzle,
   CirclePlus,
+  Star,
 } from 'lucide-react';
 import SwapRequests from '@/components/SwapRequests';
 import Messages from '@/components/Messages';
@@ -137,8 +138,9 @@ const Profile = () => {
                         <div className="text-xs text-gray-500">En cours</div>
                       </div>
                       <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
-                        <div className="text-2xl font-bold text-gray-900">
-                          5/5
+                        <div className="text-2xl font-bold text-gray-900 flex items-center gap-1">
+                          5
+                          <span><Star className='h-4 w-4 text-green-500'/></span>
                         </div>
                         <div className="text-xs text-gray-500">Note</div>
                       </div>
