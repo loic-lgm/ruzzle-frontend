@@ -171,7 +171,7 @@ const EditPuzzleModal = ({
                 label={conditionLabels[puzzle.condition as ConditionType]}
                 onlyLabel={true}
                 data={CONDITION}
-                // value={puzzle.condition || formData.condition}
+                value={formData.condition}
                 type="condition"
                 onChange={(_, value) => handleChange('condition', value)}
                 className="focus:border-green-500"
@@ -188,7 +188,7 @@ const EditPuzzleModal = ({
                 type="brand"
                 onChange={(_, value) => handleChange('brand', value)}
                 className="focus:border-green-500"
-                // value={puzzle.brand.name}
+                value={brands.find((brand) => formData.brand == brand.id)!.name}
               />
             </div>
           </div>
@@ -202,6 +202,11 @@ const EditPuzzleModal = ({
                 type="brand"
                 onChange={(_, value) => handleChange('category', value)}
                 className="focus:border-green-500"
+                value={
+                  categories.find(
+                    (category) => formData.category == category.id
+                  )!.name
+                }
               />
             </div>
           </div>
