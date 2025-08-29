@@ -95,19 +95,20 @@ const Puzzle = () => {
                       • @{puzzle?.owner.username}
                     </p>
                   </div>
-                  <div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 w-8 p-0"
-                      onClick={() => setIsEditPuzzleOpen(true)}
-                    >
-                      <SquarePen className="h-4 w-4" />
-                      <span className="sr-only">Éditer</span>
-                    </Button>
-                  </div>
+                  {isUserConnectedIsOwner && (
+                    <div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 w-8 p-0"
+                        onClick={() => setIsEditPuzzleOpen(true)}
+                      >
+                        <SquarePen className="h-4 w-4" />
+                        <span className="sr-only">Éditer</span>
+                      </Button>
+                    </div>
+                  )}
                 </div>
-
                 <div className="grid grid-cols-2 gap-4">
                   <div className="glass-card p-4">
                     <div className="flex items-center">
