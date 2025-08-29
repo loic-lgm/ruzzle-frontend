@@ -32,7 +32,6 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
   const { refreshSwaps } = useSwapsRefresh();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  console.log(alertDialogOpen, ': alertDialogOpen');
   const update = useMutation({
     mutationFn: ({
       payload,

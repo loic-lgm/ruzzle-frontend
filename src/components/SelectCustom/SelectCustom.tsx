@@ -31,11 +31,14 @@ const SelectCustom = ({
   className,
   value,
 }: SelectCustomProps) => {
-  const selectedItem = data.find((item) => item.id.toString() == value);
+  const selectedItem =
+    value != null && value !== ''
+      ? data.find((item) => item.id.toString() === value)
+      : undefined;
   return (
     <Select
       onValueChange={(value) => onChange(type, value)}
-      {...(selectedItem ? { value } : {})}
+      value={value ?? ''}
     >
       <SelectTrigger
         className={`w-full border-lightblue/30 focus:border-green-500 ${className}`}
@@ -43,11 +46,7 @@ const SelectCustom = ({
         <SelectValue
           placeholder={onlyLabel ? label : `Choisir une ${label.toLowerCase()}`}
         >
-          {selectedItem
-            ? selectedItem.name
-            : onlyLabel
-            ? label
-            : `Choisir une ${label.toLowerCase()}`}
+          {selectedItem?.name}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>

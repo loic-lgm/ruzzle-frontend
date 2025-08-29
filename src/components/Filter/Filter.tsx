@@ -70,20 +70,13 @@ const Filter = ({
 
       if (!selectedItem) return;
 
-      setFilters((prev) => {
-        let value;
-        if (type === 'city') {
-          value = (selectedItem as City).name;
-        } else if (type === 'pieceCount') {
-          value = selectedItem;
-        } else {
-          value = (selectedItem as Category | Brand).id;
-        }
-        return {
-          ...prev,
-          [type]: value,
-        };
-      });
+      setFilters((prev) => ({
+        ...prev,
+        [type]:
+          type === 'pieceCount'
+            ? selectedItem
+            : (selectedItem as Category | Brand | City).id.toString(),
+      }));
     },
     [brands, categories, cities, setFilters]
   );
@@ -169,7 +162,7 @@ const Filter = ({
                 data={categories}
                 type="category"
                 onChange={handleFilterChange}
-                value={filters.category}
+                value={filters.category ?? ''}
               />
               <SelectCustom
                 label="Nombre de pièce"
@@ -183,14 +176,14 @@ const Filter = ({
                 data={brands}
                 type="brand"
                 onChange={handleFilterChange}
-                value={filters.brand}
+                value={filters.brand ?? ''}
               />
               <SelectCustom
                 label="Ville"
                 data={cities}
                 type="city"
                 onChange={handleFilterChange}
-                value={filters.city}
+                value={filters.city ?? ''}
               />
             </div>
           </div>

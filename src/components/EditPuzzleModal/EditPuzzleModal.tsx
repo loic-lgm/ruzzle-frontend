@@ -188,7 +188,7 @@ const EditPuzzleModal = ({
                 type="brand"
                 onChange={(_, value) => handleChange('brand', value)}
                 className="focus:border-green-500"
-                value={brands.find((brand) => formData.brand == brand.id)!.name}
+                value={formData.brand ? formData.brand.toString() : ''}
               />
             </div>
           </div>
@@ -202,11 +202,7 @@ const EditPuzzleModal = ({
                 type="brand"
                 onChange={(_, value) => handleChange('category', value)}
                 className="focus:border-green-500"
-                value={
-                  categories.find(
-                    (category) => formData.category == category.id
-                  )!.name
-                }
+                value={formData.category ? formData.category.toString() : ''}
               />
             </div>
           </div>
