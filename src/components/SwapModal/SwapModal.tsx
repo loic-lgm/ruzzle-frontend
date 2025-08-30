@@ -14,7 +14,7 @@ import { Puzzle, Puzzles } from '@/types/puzzle';
 import { useModalStore } from '@/stores/useModalStore';
 import { AxiosError } from 'axios';
 import { swapPuzzle } from '@/service/swap';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
 import { User } from '@/types/user';
@@ -34,6 +34,7 @@ const SwapModal = ({
   const [message, setMessage] = useState<string>(
     'Bonjour, je suis intéressé pour échanger votre puzzle.'
   );
+  const queryClient = useQueryClient();
   const { isOpen, close } = useModalStore();
   const { refreshSwaps } = useSwapsRefresh();
 
@@ -42,6 +43,7 @@ const SwapModal = ({
     onSuccess: () => {
       setInternalError('');
       toast.success("Demande d'échange effectuée avec succès !");
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
       refreshSwaps('received', selectedPuzzle.owner.id);
       refreshSwaps('sent', requester.id);
       close();
