@@ -13,6 +13,10 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
+    if (originalRequest.url?.endsWith('/users/login/')) {
+      return Promise.reject(error);
+    }
+
     if (
       error.response?.status === 401 &&
       (error.response?.data as { code?: string })?.code === 'user_not_found' 
