@@ -38,6 +38,7 @@ const MessageExchange = ({
     onSuccess: (_, variables) => {
       const { status } = variables;
       swap = { ...swap, status };
+      setDisableConversation(true);
       if (status === 'accepted') {
         toast.success('Échange accepté');
         queryClient.invalidateQueries({
@@ -155,7 +156,6 @@ const MessageExchange = ({
               onClick={() => {
                 setAction('denied');
                 setAlertOpen(true);
-                setDisableConversation(true);
               }}
             >
               <X className="h-4 w-4" />
@@ -167,7 +167,6 @@ const MessageExchange = ({
                 onClick={() => {
                   setAction('accepted');
                   setAlertOpen(true);
-                  setDisableConversation(true);
                 }}
               >
                 <Check className="h-4 w-4" />
