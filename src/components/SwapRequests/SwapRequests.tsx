@@ -55,6 +55,9 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
         });
       }
       refreshSwaps(variables.type, user.id);
+      queryClient.invalidateQueries({
+        queryKey: ['conversations'],
+      });
     },
     onError: (error) => {
       console.log(error);
