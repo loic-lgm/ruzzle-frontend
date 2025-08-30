@@ -2,6 +2,7 @@ import AlertDialogSwap from '@/components/AlertDialogSwap';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
 import { updateSwap } from '@/service/swap';
 import { Swap } from '@/types/swap';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -29,24 +30,23 @@ const MessageExchange = ({
   const otherPuzzle = isRequester ? swap.puzzle_asked : swap.puzzle_proposed;
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { refreshSwaps } = useSwapsRefresh();
 
   const update = useMutation({
     mutationFn: ({ status }: { status: 'accepted' | 'denied' }) =>
       updateSwap({ exchangeId: swap.id, payload: status }),
     onSuccess: (_, variables) => {
       const { status } = variables;
-
+      swap = { ...swap, status };
       if (status === 'accepted') {
         toast.success('Échange accepté');
         queryClient.invalidateQueries({
-          queryKey: ['conversation-swaps', swap.conversation_id],
+          queryKey: ['conversations'],
         });
         if (!isRequester) {
-          queryClient.invalidateQueries({
-            queryKey: ['swap-requests-received'],
-          });
+          refreshSwaps('received', myPuzzle.owner.id);
         } else {
-          queryClient.invalidateQueries({ queryKey: ['swap-requests-sent'] });
+          refreshSwaps('sent', myPuzzle.owner.id);
         }
 
         queryClient.invalidateQueries({ queryKey: ['completed-swaps'] });
@@ -55,14 +55,12 @@ const MessageExchange = ({
       if (status === 'denied') {
         toast.success('Échange refusé');
         queryClient.invalidateQueries({
-          queryKey: ['conversation-swaps', swap.conversation_id],
+          queryKey: ['conversations'],
         });
         if (!isRequester) {
-          queryClient.invalidateQueries({
-            queryKey: ['swap-requests-received'],
-          });
+          refreshSwaps('received', myPuzzle.owner.id);
         } else {
-          queryClient.invalidateQueries({ queryKey: ['swap-requests-sent'] });
+          refreshSwaps('sent', myPuzzle.owner.id);
         }
       }
     },

@@ -242,8 +242,9 @@ const Messages = ({
             </div>
           </div>
 
-          {(activeConversation.exchange.status == 'accepted' ||
-          activeConversation.exchange.status == 'denied' || disableConversation) ? (
+          {activeConversation.exchange.status == 'accepted' ||
+          activeConversation.exchange.status == 'denied' ||
+          disableConversation ? (
             <div className="p-3 border-t bg-gray-50">
               <div className="text-center p-2">
                 <p className="text-sm text-gray-600">
