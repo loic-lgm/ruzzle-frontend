@@ -1,3 +1,4 @@
+import NotFound from '@/components/NotFound';
 import PuzzleCard from '@/components/PuzzleCard';
 import SwapModal from '@/components/SwapModal';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,6 +14,7 @@ import { useUserPuzzles } from '@/hooks/useUserPuzzles';
 import { useUserSwaps } from '@/hooks/useUserSwaps';
 import useUserStore from '@/stores/useUserStore';
 import { Puzzle } from '@/types/puzzle';
+import { AxiosError } from 'axios';
 import { MapPin, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -24,7 +26,7 @@ const PublicProfilePage = () => {
   const navigate = useNavigate();
   const { data: userPuzzles } = useUserPuzzles();
   const { completedSwaps } = useUserSwaps(user!.id);
-  const { data: publicUser } = usePublicUser(username!);
+  const { data: publicUser, error, isError, isLoading } = usePublicUser(username!);
 
   useEffect(() => {
     if (!user) {
@@ -36,10 +38,13 @@ const PublicProfilePage = () => {
   }, [user, navigate, username]);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen">
       <main className="flex-1 pt-24 pb-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {publicUser && (
+          {isError &&
+            (error as AxiosError)?.response?.status === 404 &&
+            !isLoading && <NotFound type="user" />}
+          {publicUser && !isLoading && (
             <div className="mb-8">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-10">
                 <Avatar className="h-24 w-24 border-4 border-white shadow-md">
