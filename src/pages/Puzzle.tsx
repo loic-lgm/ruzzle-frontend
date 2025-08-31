@@ -13,7 +13,6 @@ import { CONDITION } from '@/utils/constants';
 import { AxiosError } from 'axios';
 import {
   ArrowRightLeft,
-  BookmarkPlus,
   CalendarDays,
   Heart,
   Layout,
@@ -179,20 +178,13 @@ const Puzzle = () => {
                       <ArrowRightLeft className="h-5 w-5 mr-2" />
                       Demander un échanger
                     </Button>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 gap-40">
                       <Button
                         variant="outline"
                         className="hover:bg-red-50 hover:border-red-200 hover:text-red-600"
                       >
                         <Heart className="h-4 w-4 mr-1" />
                         Like
-                      </Button>
-                      <Button
-                        variant="outline"
-                        className="hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600"
-                      >
-                        <BookmarkPlus className="h-4 w-4 mr-1" />
-                        Sauvegarder
                       </Button>
                       <Button
                         variant="outline"
