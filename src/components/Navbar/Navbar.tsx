@@ -37,19 +37,25 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          <Link
-            to="/"
-            className="text-2xl md:text-3xl font-bold text-gray-900 hover:text-green-500 transition-colors"
-          >
-            Ruzzle
-          </Link>
-          <SearchBar />
-          <div className="flex gap-5">
+        <div className="hidden md:grid md:grid-cols-3 md:items-center md:gap-4">
+          <div className="flex items-center">
+            <Link
+              to="/"
+              className="text-2xl md:text-3xl font-bold text-gray-900 hover:text-green-500 transition-colors"
+            >
+              Ruzzle
+            </Link>
+          </div>
+          <div className="flex justify-center">
+            <div className="w-full max-w-md">
+              <SearchBar />
+            </div>
+          </div>
+          <div className="flex items-center justify-end gap-4">
             <Button
               variant="ghost"
               size="icon"
-              className="text-green-500 bg-transparent hover:text-green-500"
+              className="text-green-500 hover:text-green-500"
             >
               <Link to="/ajouter-un-puzzle">
                 <CirclePlus />
@@ -64,12 +70,53 @@ const Navbar = () => {
               <UserInfo user={user} />
             ) : (
               <Button
-                className="gradient-border-button-cta bg-tranparent text-gray-900 hover:bg-transparent"
+                className="gradient-border-button-cta bg-transparent text-gray-900 hover:bg-transparent"
                 onClick={() => open('login')}
               >
                 <UserIcon />
               </Button>
             )}
+          </div>
+        </div>
+        <div className="flex flex-col gap-3 md:hidden">
+          <div className="flex justify-between items-center">
+            <Link
+              to="/"
+              className="text-2xl font-bold text-gray-900 hover:text-green-500 transition-colors"
+            >
+              Ruzzle
+            </Link>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-green-500 hover:text-green-500"
+              >
+                <Link to="/ajouter-un-puzzle">
+                  <CirclePlus />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon">
+                <Link to="/puzzles">
+                  <Puzzle />
+                </Link>
+              </Button>
+              {user ? (
+                <UserInfo user={user} />
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => open('login')}
+                  className="text-gray-900"
+                >
+                  <UserIcon />
+                </Button>
+              )}
+            </div>
+          </div>
+          <div className="w-full">
+            <SearchBar />
           </div>
         </div>
       </div>

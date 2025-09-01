@@ -33,7 +33,7 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="relative flex items-center w-1/2">
+    <div className="relative flex items-center w-full md:w-full">
       <Search className="absolute left-[10px] z-[99] h-4 w-4 text-muted-foreground transition-colors" />
       <Input
         id="searchbar"
