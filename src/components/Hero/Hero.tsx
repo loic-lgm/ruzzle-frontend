@@ -3,12 +3,12 @@ import { Link } from 'react-router';
 
 const Hero = () => {
   return (
-    <section className="flex items-center h-screen pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="flex items-center min-h-screen pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="absolute top-0 right-0 w-64 h-64 bg-lime-500/10 rounded-full filter blur-3xl animate-spin-slow"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-teal-500/10 rounded-full filter blur-3xl"></div>
 
-        <div className="z-10 text-center">
+        <div className="relative z-10 text-center">
           <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-green-500/10 to-lime-500/10 rounded-full font-medium mb-4 animate-fade-in">
             Rejoignez la communauté!
           </span>
@@ -33,7 +33,7 @@ const Hero = () => {
             </Link>
 
             <a
-              href="#how-it-works"
+              href="#comment-ca-marche"
               className="bg-white text-gray-800 px-8 py-3 rounded-xl font-semibold text-lg inline-flex items-center justify-center gap-2 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all border border-green-500"
             >
               Comment ça marche

@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <Stepper user={user} />
+      <Stepper user={user}/>
       {randomPuzzles && (
         <Discover
           randomPuzzles={randomPuzzles}
