@@ -5,7 +5,7 @@ import { User } from '@/types/user';
 import { Conversation } from '@/types/conversation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Send } from 'lucide-react';
+import { CheckCircle, Send, XCircle } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { markMessageAsRead, sendMessageFn } from '@/service/message';
 import { AxiosError } from 'axios';
@@ -105,14 +105,13 @@ const Messages = ({
     setNewMessage('');
   };
 
-  
   const handleClickConversation = (conversation: Conversation) => {
     setActiveConversation(conversation);
     markAsRead(conversation.last_message.id);
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 h-[600px]">
+    <div className="flex flex-col md:flex-row gap-4 h-[100vh] md:h-[600px]">
       <div className="w-full md:w-1/3 h-60 md:h-full overflow-y-auto border rounded-lg">
         <div className="p-3 border-b">
           <h3 className="font-medium">Conversations</h3>
@@ -153,28 +152,19 @@ const Messages = ({
                   conv.last_message.user.id !== user.id && (
                     <Badge className="bg-emerald-500">New</Badge>
                   )}
-                {conv.exchange &&
-                  (conv.exchange.status === 'accepted' ||
-                    conv.exchange.status === 'denied') && (
-                    <Badge
-                      className={`text-xs ${
-                        conv.exchange.status === 'accepted'
-                          ? 'bg-green-500'
-                          : 'bg-red-500'
-                      }`}
-                    >
-                      {conv.exchange.status === 'accepted'
-                        ? 'Terminé'
-                        : 'Refusé'}
-                    </Badge>
-                  )}
+                {conv.exchange && conv.exchange.status === 'accepted' && (
+                  <CheckCircle className="h-5 w-5 text-green-500" />
+                )}
+                {conv.exchange && conv.exchange.status === 'denied' && (
+                  <XCircle className="h-5 w-5 text-red-500" />
+                )}
               </div>
             ))}
         </div>
       </div>
 
       {activeConversation ? (
-        <div className="flex-1 flex flex-col border rounded-lg overflow-hidden">
+        <div className="md:flex-1 flex flex-col border rounded-lg overflow-hidden">
           <div
             className="p-4 border-b flex items-center gap-3 bg-white cursor-pointer"
             onClick={() =>
@@ -207,7 +197,7 @@ const Messages = ({
           />
 
           <div
-            className="flex-1 p-4 overflow-y-auto bg-gray-50"
+            className="md:flex-1 p-4 overflow-y-auto bg-gray-50 sm:max-h-[70vh] md:max-h-none"
             ref={messagesContainerRef}
           >
             <div className="space-y-4">
