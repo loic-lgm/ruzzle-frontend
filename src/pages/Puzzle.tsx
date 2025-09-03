@@ -50,7 +50,7 @@ const Puzzle = () => {
 
   return (
     <div className="flex flex-col bg-gray-50">
-      <main className="flex-1 pt-24">
+      <main className="flex-1 pt-32 sm:pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             {isError && (error as AxiosError)?.response?.status === 404 ? (
