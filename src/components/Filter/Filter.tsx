@@ -5,7 +5,6 @@ import {
   X,
   FilterX,
   Grid3X3,
-  LayoutList,
   Search,
 } from 'lucide-react';
 import { Brand, Brands } from '@/types/brand';
@@ -86,7 +85,7 @@ const Filter = ({
 
   return (
     <>
-      <div className="flex justify-center flex-col m-auto max-w-7xl">
+      <div className="flex justify-center flex-col m-auto max-w-7xl px-4 sm:px-0">
         <div className="flex justify-end px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center gap-2">
             <Button
@@ -122,7 +121,7 @@ const Filter = ({
               <Grid3X3 className="h-4 w-4" />
             </Button>
 
-            <Button
+            {/* <Button
               variant="outline"
               size="sm"
               onClick={() => setDisplayMode('carousel')}
@@ -133,7 +132,7 @@ const Filter = ({
               }
             >
               <LayoutList className="h-4 w-4" />
-            </Button>
+            </Button> */}
           </div>
         </div>
         {filtersVisible && (
@@ -156,7 +155,7 @@ const Filter = ({
               )}
             </div>
 
-            <div className="flex gap-10 mb-10">
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-10 mb-10">
               <SelectCustom
                 label="Categorie"
                 data={categories}
