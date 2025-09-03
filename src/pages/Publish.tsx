@@ -35,7 +35,6 @@ const Publish = () => {
               />
             )}
           </div>
-
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500">
               En publiant un puzzle, vous acceptez les{' '}

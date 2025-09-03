@@ -97,7 +97,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
-      <div className="flex justify-between gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch">
         <div className="space-y-2">
           <SelectCustom
             label="Catégorie"
@@ -106,14 +106,13 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             type="category"
             value={formData.category}
             onChange={(_, value) => handleChange('category', value)}
-            className={`focus:border-green-500 ${
+            className={`w-full h-12 focus:border-green-500 ${
               errors.includes('category')
                 ? 'border-red-500'
                 : 'border-emerald-500'
             }`}
           />
         </div>
-
         <div className="space-y-2">
           <Input
             id="pieceCount"
@@ -127,14 +126,13 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
                 e.target.value
               )
             }
-            className={`border placeholder:text-neutral-800 ${
+            className={`border placeholder:text-neutral-800 bg-white w-full h-12 ${
               errors.includes('pieceCount')
                 ? 'border-red-500 focus-visible:border-red-500 focus-visible:ring-0'
                 : 'border-emerald-500 focus-visible:border-emerald-500 focus-visible:ring-0'
             } focus:outline-none`}
           />
         </div>
-
         <div className="space-y-2">
           <SelectCustom
             label="Marque"
@@ -143,12 +141,11 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             type="brand"
             value={formData.brand}
             onChange={(_, value) => handleChange('brand', value)}
-            className={`focus:border-green-500 ${
+            className={`w-full h-12 focus:border-green-500 ${
               errors.includes('brand') ? 'border-red-500' : 'border-emerald-500'
             }`}
           />
         </div>
-
         <div className="space-y-2">
           <SelectCustom
             label="État"
@@ -157,7 +154,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
             type="condition"
             value={formData.condition}
             onChange={(_, value) => handleChange('condition', value)}
-            className={`focus:border-green-500 ${
+            className={`w-full h-12 focus:border-green-500 ${
               errors.includes('condition')
                 ? 'border-red-500'
                 : 'border-emerald-500'
@@ -165,23 +162,26 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
           />
         </div>
       </div>
+
       <ImageInput
         setFormData={setFormData}
         formData={formData}
         errors={errors}
       />
+
       {internalError && (
         <div className="text-red-500 text-sm">{internalError}</div>
       )}
-      <div className="pt-4 flex gap-5">
+
+      <div className="pt-4 flex flex-col sm:flex-row gap-3 sm:gap-5">
         <Button
-          className="flex- border border-green-500 text-green-500 bg-white hover:bg-green-50 transition-all"
+          className="flex-1 border border-green-500 text-green-500 bg-white hover:bg-green-50 transition-all"
           onClick={() => setKeepAdding(true)}
         >
           Publier et ajouter un autre
         </Button>
         <Button
-          className="flex-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transition-all"
+          className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transition-all"
           onClick={() => setKeepAdding(false)}
         >
           Publier
