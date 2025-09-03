@@ -168,7 +168,7 @@ const Form = ({ close }: FormProps) => {
       {activeTab === 'signup' && (
         <>
           <div className="flex gap-5 flex-col">
-            <div className="flex gap-5">
+            <div className="flex gap-5 flex flex-col sm:flex-row gap-5">
               <div className="space-y-2">
                 <Label htmlFor="username">Nom d&apos;utilisateur</Label>
                 <Input
@@ -200,8 +200,8 @@ const Form = ({ close }: FormProps) => {
                 />
               </div>
             </div>
-            <div className="flex gap-5">
-              <div className="space-y-2 w-1/2 min-w-0">
+            <div className="flex flex-col sm:flex-row gap-5">
+              <div className="space-y-2 sm:w-1/2 min-w-0">
                 <Label htmlFor="signup-email">Email</Label>
                 <Input
                   id="signup-email"
@@ -211,7 +211,7 @@ const Form = ({ close }: FormProps) => {
                   required
                 />
               </div>
-              <div className="space-y-2 w-1/2 min-w-0">
+              <div className="space-y-2 sm:w-1/2 min-w-0">
                 <Label>Ville</Label>
                 <Select onValueChange={setSelectedCity}>
                   <SelectTrigger className="w-94 bg-transparent w-full">

@@ -93,7 +93,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
 
           <button
             onClick={handleLogout}
-            className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-gray-600 hover:text-red-500 transition-colors"
+            className="flex flex-col md:flex-row items-center gap-1 md:gap-2 text-gray-600 hover:text-red-500 transition-colors cursor-pointer"
           >
             <LogOut size={18} />
             <span className="hidden md:inline text-sm">Déconnexion</span>
