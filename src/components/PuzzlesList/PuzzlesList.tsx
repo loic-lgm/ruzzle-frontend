@@ -21,6 +21,12 @@ import { Brand } from '@/types/brand';
 import { CONDITION } from '@/utils/constants';
 import { useSwapsRefresh } from '@/hooks/useSwapsRefresh';
 import { useNavigate } from 'react-router';
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 interface PuzzleListProps {
   puzzles: Puzzles;
@@ -66,7 +72,81 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
   return (
     <div className="space-y-4">
       {error && <div className="text-red-500 text-sm">{error}</div>}
-      <div className="overflow-x-auto">
+
+      {/* MOBILE */}
+      <div className="block md:hidden space-y-4">
+        {puzzles.map((puzzle) => (
+          <Card
+            key={puzzle.id}
+            className="overflow-hidden shadow-sm border border-gray-200"
+          >
+            <div
+              className="relative aspect-[4/3] cursor-pointer"
+              onClick={() => navigate(`/puzzles/${puzzle.hashid}`)}
+            >
+              <img
+                src={puzzle.image}
+                alt={puzzle.image}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base flex justify-between items-center">
+                <div>
+                  <span>
+                    {puzzle.brand.name} • {puzzle.category.name}
+                  </span>
+                </div>
+                <div className="flex gap-2">
+                  {puzzle.status == 'pending' && (
+                    <Button size="icon" variant="secondary" className="h-8 w-8">
+                      <Hourglass className="h-4 w-4 text-green-500" />
+                    </Button>
+                  )}
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="h-8 w-8"
+                    onClick={() =>
+                      handleActions(puzzle.hashid!, 'update', puzzle)
+                    }
+                  >
+                    <SquarePen className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="h-8 w-8"
+                    onClick={() =>
+                      handleActions(puzzle.hashid!, 'delete', puzzle)
+                    }
+                  >
+                    <XCircle className="h-4 w-4 text-red-500" />
+                  </Button>
+                </div>
+              </CardTitle>
+              <CardDescription className="flex flex-col gap-2">
+                <div className='flex gap-1'>
+                  <Badge variant="outline">
+                    {
+                      CONDITION.find((cond) => cond.id === puzzle.condition)
+                        ?.name
+                    }
+                  </Badge>
+                  <Badge variant="secondary">{puzzle.piece_count} pièces</Badge>
+                </div>
+                <div>
+                  Ajouté le{' '}
+                  {puzzle.created &&
+                    new Date(puzzle.created).toLocaleDateString('fr-FR')}
+                </div>
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        ))}
+      </div>
+      {/* DESKTOP */}
+      <div className="hidden md:block overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -119,7 +199,6 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                         className="h-8 w-8 p-0 bg-accent cursor-default"
                       >
                         <Hourglass className="size-4 text-green-500" />
-                        <span className="sr-only">En cours de transaction</span>
                       </Button>
                     )}
                     <Button
@@ -131,7 +210,6 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                       }
                     >
                       <SquarePen className="h-4 w-4" />
-                      <span className="sr-only">Éditer</span>
                     </Button>
                     <Button
                       size="sm"
@@ -142,7 +220,6 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                       }
                     >
                       <XCircle className="h-4 w-4 text-red-500" />
-                      <span className="sr-only">Supprimer</span>
                     </Button>
                   </div>
                 </TableCell>
