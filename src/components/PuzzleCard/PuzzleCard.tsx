@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Puzzle } from '@/types/puzzle';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
-import React from 'react';
+import React, { useState } from 'react';
 import { User as UserType } from '@/types/user';
 import { useModalStore } from '@/stores/useModalStore';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
+import { cn } from '@/lib/utils';
 
 interface PuzzleCardProps {
   puzzle: Puzzle;
@@ -17,6 +18,7 @@ interface PuzzleCardProps {
 }
 
 const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
+  const [showInfo, setShowInfo] = useState<boolean>(false);
   const { open } = useAuthModalStore();
   const { open: openSwap } = useModalStore();
   const navigate = useNavigate()
@@ -33,7 +35,10 @@ const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
     }
   };
   return (
-    <Card className="group relative h-64 w-full overflow-hidden transition-shadow duration-00 hover:shadow-xl p-0">
+    <Card
+      className="group relative h-64 w-full overflow-hidden transition-shadow duration-00 hover:shadow-xl p-0"
+      onClick={() => setShowInfo(!showInfo)}
+    >
       <div className="absolute top-2 right-2 z-20">
         <Badge
           variant="secondary"
@@ -52,9 +57,12 @@ const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
         />
       </CardContent>
 
-      <div className="absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-4">
-        <h3 className="text-white font-semibold truncate">{puzzle.title}</h3>
-
+      <div
+        className={cn(
+          'absolute inset-0 z-10 flex flex-col justify-end bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-500 p-4',
+          showInfo ? 'opacity-100' : 'opacity-0 sm:group-hover:opacity-100'
+        )}
+      >
         {puzzle.owner && (
           <div className="flex items-center justify-between mt-1 text-white/90 text-xs">
             <div className="flex flex-row items-center">
