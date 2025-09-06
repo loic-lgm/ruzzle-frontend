@@ -38,7 +38,7 @@ const PublicProfilePage = () => {
   }, [user, navigate, username]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <main className="flex-1 pt-32 sm:pt-24 pb-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {isError &&

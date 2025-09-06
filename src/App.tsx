@@ -10,6 +10,7 @@ import Profile from '@/pages/Profile';
 import PublicProfilePage from '@/pages/PublicProfile';
 import React, { useLayoutEffect } from 'react';
 import Puzzle from '@/pages/Puzzle';
+import NotFound from '@/components/NotFound';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -47,8 +48,7 @@ const App = () => {
               <Route path="/ajouter-un-puzzle" element={<Publish />} />
               <Route path="/mon-espace" element={<Profile />} />
               <Route path="/profil/:username" element={<PublicProfilePage />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              {/* <Route path="*" element={<NotFound />} /> */}
+              <Route path="*" element={<NotFound type='page'/>} />
             </Route>
           </Routes>
         </Wrapper>
