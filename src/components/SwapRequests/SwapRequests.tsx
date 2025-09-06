@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { MessageSquare, CheckCircle, XCircle } from 'lucide-react';
+import { MessageSquare, CheckCircle, XCircle, ArrowRightLeft } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -18,6 +18,8 @@ import { User } from '@/types/user';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import AlertDialogSwap from '@/components/AlertDialogSwap';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 interface ExchangeRequestsListProps {
   type: SwapType;
@@ -75,35 +77,29 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
   if (swaps.length === 0) {
     return (
       <div className="text-center py-8 text-gray-500">
-        <p>No {type} exchange requests found.</p>
+        <p>
+          {`Aucune demande d'échanges ${type == 'sent' ? 'envoyées' : 'reçues'} pour le moment`}
+          </p>
       </div>
     );
   }
 
   return (
     <div className="w-full overflow-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Membre</TableHead>
-            <TableHead>Son puzzle</TableHead>
-            <TableHead>Votre puzzle</TableHead>
-            <TableHead>Date</TableHead>
-            <TableHead>Status</TableHead>
-            {type != 'completed' && (
-              <TableHead className="text-right">Actions</TableHead>
-            )}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {swaps.map((swap) => (
-            <TableRow key={swap.id}>
-              <TableCell className="py-6">
+      {/* MOBILE */}
+      <div className="block md:hidden space-y-4">
+        {swaps.map((swap) => (
+          <Card
+            key={swap.id}
+            className="overflow-hidden shadow-sm border border-gray-200 py-4"
+          >
+            <CardHeader className="p-0">
+              <div className="flex justify-between items-center cursor-pointer border-b px-4 pb-2">
                 <div
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex gap-2"
                   onClick={() => navigate(`/profil/${swap.user.username}`)}
                 >
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-10 w-10">
                     <AvatarImage
                       src={swap.user.avatar}
                       alt={swap.user.username}
@@ -112,102 +108,227 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                       {swap.user.username.substring(0, 2)}
                     </AvatarFallback>
                   </Avatar>
-                  <span>{swap.user.username}</span>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <img
-                    src={swap.forPuzzle.image}
-                    alt="Miniature du puzzle"
-                    className="h-12 w-12 object-cover rounded-md shadow-sm border"
-                  />
                   <div>
-                    <p className="text-sm text-gray-500">
-                      {swap.forPuzzle.pieceCount} pièces
-                    </p>
+                    <CardTitle className="text-base font-medium">
+                      {swap.user.username}
+                    </CardTitle>
+                    <CardDescription>{swap.date}</CardDescription>
                   </div>
                 </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <img
-                    src={swap.puzzle.image}
-                    alt="Miniature du puzzle"
-                    className="h-12 w-12 object-cover rounded-md shadow-sm border"
-                  />
-                  <div>
-                    <p className="text-sm text-gray-500">
-                      {swap.puzzle.pieceCount} pièces
-                    </p>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>{swap.date}</TableCell>
-              <TableCell>
-                {swap.status === 'pending' ? (
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                    <span className="mr-1">●</span> En attente
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    <span className="mr-1">●</span> Terminé
-                  </span>
-                )}
-              </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  {type === 'received' && (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="h-8 w-8 p-0"
-                      onClick={() => {
-                        setAction('accepted');
-                        setCurrentSwapId(swap.id);
-                        setAlertDialogOpen(true);
-                      }}
+                <div>
+                  {swap.status === 'pending' ? (
+                    <Badge
+                      variant="secondary"
+                      className="bg-yellow-100 text-yellow-800"
                     >
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                      <span className="sr-only">Accepter</span>
-                    </Button>
+                      ● En attente
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="secondary"
+                      className="bg-green-100 text-green-800"
+                    >
+                      ● Terminé
+                    </Badge>
                   )}
-                  {type != 'completed' && (
-                    <>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-8 w-8 p-0"
-                        onClick={() =>
-                          navigate('/mon-espace?tab=messages', {
-                            state: { conversationId: swap.conversationId },
-                          })
-                        }
-                      >
-                        <MessageSquare className="h-4 w-4 text-blue-500" />
-                        <span className="sr-only">Message</span>
-                      </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3 flex justify-between items-center">
+              <div className="flex flex-col items-center gap-3">
+                <img
+                  src={swap.forPuzzle.image}
+                  alt="Puzzle de l'autre membre"
+                  className="h-16 w-16 object-cover rounded-md border"
+                />
+                <p className="text-sm text-gray-600">
+                  {swap.forPuzzle.pieceCount} pièces
+                </p>
+              </div>
+              <ArrowRightLeft className="text-green-500" />
+              <div className="flex flex-col items-center gap-3">
+                <img
+                  src={swap.puzzle.image}
+                  alt="Votre puzzle"
+                  className="h-16 w-16 object-cover rounded-md border"
+                />
+                <p className="text-sm text-gray-600">
+                  {swap.puzzle.pieceCount} pièces
+                </p>
+              </div>
+            </CardContent>
+
+            {type !== 'completed' && (
+              <CardFooter className="flex justify-between gap-2 pt-2">
+                {type === 'received' && (
+                  <Button
+                    variant="outline"
+                    className="w-1/3"
+                    onClick={() => {
+                      setAction('accepted');
+                      setCurrentSwapId(swap.id);
+                      setAlertDialogOpen(true);
+                    }}
+                  >
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                  </Button>
+                )}
+                <Button
+                  variant="outline"
+                  className=""
+                  onClick={() =>
+                    navigate('/mon-espace?tab=messages', {
+                      state: { conversationId: swap.conversationId },
+                    })
+                  }
+                >
+                  <MessageSquare className="h-4 w-4 text-blue-500" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="w-1/3"
+                  onClick={() => {
+                    setAction('denied');
+                    setCurrentSwapId(swap.id);
+                    setAlertDialogOpen(true);
+                  }}
+                >
+                  <XCircle className="h-4 w-4 text-red-500" />
+                </Button>
+              </CardFooter>
+            )}
+          </Card>
+        ))}
+      </div>
+      {/* DESKTOP */}
+      <div className="hidden md:block overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Membre</TableHead>
+              <TableHead>Son puzzle</TableHead>
+              <TableHead>Votre puzzle</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Status</TableHead>
+              {type != 'completed' && (
+                <TableHead className="text-right">Actions</TableHead>
+              )}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {swaps.map((swap) => (
+              <TableRow key={swap.id}>
+                <TableCell className="py-6">
+                  <div
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={() => navigate(`/profil/${swap.user.username}`)}
+                  >
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage
+                        src={swap.user.avatar}
+                        alt={swap.user.username}
+                      />
+                      <AvatarFallback>
+                        {swap.user.username.substring(0, 2)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <span>{swap.user.username}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={swap.forPuzzle.image}
+                      alt="Miniature du puzzle"
+                      className="h-12 w-12 object-cover rounded-md shadow-sm border"
+                    />
+                    <div>
+                      <p className="text-sm text-gray-500">
+                        {swap.forPuzzle.pieceCount} pièces
+                      </p>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={swap.puzzle.image}
+                      alt="Miniature du puzzle"
+                      className="h-12 w-12 object-cover rounded-md shadow-sm border"
+                    />
+                    <div>
+                      <p className="text-sm text-gray-500">
+                        {swap.puzzle.pieceCount} pièces
+                      </p>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{swap.date}</TableCell>
+                <TableCell>
+                  {swap.status === 'pending' ? (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                      <span className="mr-1">●</span> En attente
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      <span className="mr-1">●</span> Terminé
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
+                    {type === 'received' && (
                       <Button
                         size="sm"
                         variant="outline"
                         className="h-8 w-8 p-0"
                         onClick={() => {
-                          setAction('denied');
+                          setAction('accepted');
                           setCurrentSwapId(swap.id);
                           setAlertDialogOpen(true);
                         }}
                       >
-                        <XCircle className="h-4 w-4 text-red-500" />
-                        <span className="sr-only">Refuser</span>
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span className="sr-only">Accepter</span>
                       </Button>
-                    </>
-                  )}
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                    )}
+                    {type != 'completed' && (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 w-8 p-0"
+                          onClick={() =>
+                            navigate('/mon-espace?tab=messages', {
+                              state: { conversationId: swap.conversationId },
+                            })
+                          }
+                        >
+                          <MessageSquare className="h-4 w-4 text-blue-500" />
+                          <span className="sr-only">Message</span>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 w-8 p-0"
+                          onClick={() => {
+                            setAction('denied');
+                            setCurrentSwapId(swap.id);
+                            setAlertDialogOpen(true);
+                          }}
+                        >
+                          <XCircle className="h-4 w-4 text-red-500" />
+                          <span className="sr-only">Refuser</span>
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       {currentSwapId && action && (
         <AlertDialogSwap
           action={action}
