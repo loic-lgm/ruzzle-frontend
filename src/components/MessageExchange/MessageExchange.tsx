@@ -74,6 +74,7 @@ const MessageExchange = ({
   const handleConfirm = () => {
     if (!action) return;
     update.mutate({ status: action });
+    swap.status = action;
     setAlertOpen(false);
   };
   return (
