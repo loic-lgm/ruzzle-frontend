@@ -50,26 +50,26 @@ const Form = ({ close }: FormProps) => {
     },
   });
 
-  // const signup = useMutation({
-  //   mutationFn: signupFn,
-  //   onSuccess: () => {
-  //     setError(null);
-  //     switchTab('login');
-  //   },
-  //   onError: (error) => {
-  //     const axiosError = error as AxiosError<{
-  //       error?: string;
-  //       username?: string;
-  //       email?: string;
-  //     }>;
-  //     setError(
-  //       axiosError.response?.data?.error ||
-  //         axiosError.response?.data?.username ||
-  //         axiosError.response?.data?.email ||
-  //         'Une erreur est survenue'
-  //     );
-  //   },
-  // });
+  const signup = useMutation({
+    mutationFn: signupFn,
+    onSuccess: () => {
+      setError(null);
+      switchTab('login');
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<{
+        error?: string;
+        username?: string;
+        email?: string;
+      }>;
+      setError(
+        axiosError.response?.data?.error ||
+          axiosError.response?.data?.username ||
+          axiosError.response?.data?.email ||
+          'Une erreur est survenue'
+      );
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -120,15 +120,15 @@ const Form = ({ close }: FormProps) => {
         );
         return;
       }
-      signup.mutate({
-        username,
-        email,
-        password,
-        city_id: city,
-        image: AVATARS[Math.floor(Math.random() * AVATARS.length)],
-        first_name: firstname,
-        last_name: name,
-      });
+      // signup.mutate({
+      //   username,
+      //   email,
+      //   password,
+      //   city_id: city,
+      //   image: AVATARS[Math.floor(Math.random() * AVATARS.length)],
+      //   first_name: firstname,
+      //   last_name: name,
+      // });
     }
   };
 
