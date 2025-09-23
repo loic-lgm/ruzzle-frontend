@@ -40,7 +40,7 @@ const AuthModal = () => {
           </TabsContent>
 
           <TabsContent value="signup">
-            <Form />
+            <Form close={close} />
           </TabsContent>
         </Tabs>
       </DialogContent>

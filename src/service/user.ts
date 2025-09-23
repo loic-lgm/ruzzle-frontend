@@ -1,5 +1,5 @@
 import { Swap } from '@/types/swap';
-import { User } from '@/types/user';
+import { ActivateUserResponse, User } from '@/types/user';
 import api from '@/utils/apiClient';
 
 export const fetchUser = async (): Promise<User> => {
@@ -8,7 +8,9 @@ export const fetchUser = async (): Promise<User> => {
 };
 
 export const fetchUserByUsername = async (username: string): Promise<User> => {
-  const res = await api.get(`${import.meta.env.VITE_API_URL}/users/profile/${username}/`);
+  const res = await api.get(
+    `${import.meta.env.VITE_API_URL}/users/profile/${username}/`
+  );
   return res.data;
 };
 
@@ -42,6 +44,16 @@ export const fetchSentSwapsByUser = async (userId: number): Promise<Swap[]> => {
   return res.data;
 };
 
+export const validateUser = async (
+  uuid: string,
+  token: string
+): Promise<ActivateUserResponse> => {
+  const res = await api.post(
+    `${import.meta.env.VITE_API_URL}/users/activate/${uuid}/${token}/`
+  );
+  return res.data;
+};
+
 export const fetchCompletedSwapsByUser = async (
   userId: number
 ): Promise<Swap[]> => {
@@ -51,9 +63,7 @@ export const fetchCompletedSwapsByUser = async (
   return res.data;
 };
 
-export const searchUser = async (
-  search: string
-): Promise<User[]> => {
+export const searchUser = async (search: string): Promise<User[]> => {
   const res = await api.get(
     `${import.meta.env.VITE_API_URL}/users/search/?q=${search}`
   );

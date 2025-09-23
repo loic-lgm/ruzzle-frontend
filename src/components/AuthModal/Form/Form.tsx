@@ -20,6 +20,7 @@ import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import useUserStore from '@/stores/useUserStore';
 import { useCities } from '@/hooks/useCities';
 import { AVATARS } from '@/utils/constants';
+import { toast } from 'sonner';
 
 interface FormProps {
   close?: () => void;
@@ -54,7 +55,10 @@ const Form = ({ close }: FormProps) => {
     mutationFn: signupFn,
     onSuccess: () => {
       setError(null);
-      switchTab('login');
+      close?.();
+      toast.success(
+        'Inscription réussies ! Valider votre compte par email pour vous connecter.'
+      );
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{
@@ -120,15 +124,15 @@ const Form = ({ close }: FormProps) => {
         );
         return;
       }
-      // signup.mutate({
-      //   username,
-      //   email,
-      //   password,
-      //   city_id: city,
-      //   image: AVATARS[Math.floor(Math.random() * AVATARS.length)],
-      //   first_name: firstname,
-      //   last_name: name,
-      // });
+      signup.mutate({
+        username,
+        email,
+        password,
+        city_id: city,
+        image: AVATARS[Math.floor(Math.random() * AVATARS.length)],
+        first_name: firstname,
+        last_name: name,
+      });
     }
   };
 

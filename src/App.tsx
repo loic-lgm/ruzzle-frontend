@@ -11,6 +11,7 @@ import PublicProfilePage from '@/pages/PublicProfile';
 import React, { useLayoutEffect } from 'react';
 import Puzzle from '@/pages/Puzzle';
 import NotFound from '@/components/NotFound';
+import Activation from '@/pages/Activation';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -33,11 +34,7 @@ const App = () => {
   }
   return (
     <>
-      <Toaster
-        position="top-right"
-        richColors
-        closeButton={true}
-      />
+      <Toaster position="top-right" richColors closeButton={true} />
       <BrowserRouter>
         <Wrapper>
           <Routes>
@@ -48,7 +45,8 @@ const App = () => {
               <Route path="/ajouter-un-puzzle" element={<Publish />} />
               <Route path="/mon-espace" element={<Profile />} />
               <Route path="/profil/:username" element={<PublicProfilePage />} />
-              <Route path="*" element={<NotFound type='page'/>} />
+              <Route path="/activation/:uuid/:token" element={<Activation />} />
+              <Route path="*" element={<NotFound type="page" />} />
             </Route>
           </Routes>
         </Wrapper>
