@@ -39,6 +39,7 @@ const ImageInput = ({ setFormData, formData, errors }: ImageInputProps) => {
   return (
     <div className="space-y-4">
       <label
+        htmlFor="puzzle-image"
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         className={`border-2 border-dashed ${
@@ -58,6 +59,7 @@ const ImageInput = ({ setFormData, formData, errors }: ImageInputProps) => {
           </p>
         </div>
         <input
+          id="puzzle-image"
           type="file"
           accept="image/png,image/jpeg,image/jpg"
           multiple
