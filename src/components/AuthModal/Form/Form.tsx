@@ -58,7 +58,7 @@ const Form = ({ close }: FormProps) => {
       close?.();
       toast.success(
         'Inscription réussie ! Validez votre compte par email pour vous connecter.'
-      );
+      ,{duration: 8000});
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{
