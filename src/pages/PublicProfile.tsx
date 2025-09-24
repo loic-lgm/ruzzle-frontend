@@ -25,7 +25,7 @@ const PublicProfilePage = () => {
   const { username } = useParams();
   const navigate = useNavigate();
   const { data: userPuzzles } = useUserPuzzles();
-  const { completedSwaps } = useUserSwaps(user!.id);
+  const { completedSwaps } = useUserSwaps(user?.id ?? undefined);
   const { data: publicUser, error, isError, isLoading } = usePublicUser(username!);
 
   useEffect(() => {
