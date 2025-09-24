@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { User } from '@/types/user';
 import { AVATARS } from '@/utils/constants';
 import { User as UserIcon } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface SelectAvatarProps {
   setShowAvatarSelector: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,8 +14,9 @@ const SelectAvatar = ({
   setShowAvatarSelector,
   setUserData,
 }: SelectAvatarProps) => {
-  const handleImage = (e: React.MouseEvent<HTMLImageElement>) => {
-    const image = e.currentTarget.src
+  const [selectedAvatar, setSelectedAvatar] = useState<string | null>();
+  const handleImage = (image: string) => {
+    setSelectedAvatar(image);
     setUserData((prev) => ({
       ...prev,
       image: image,
@@ -34,18 +35,23 @@ const SelectAvatar = ({
           ✕
         </Button>
       </div>
-      <div className="flex flex-wrap justify-around">
+
+      {/* Scroll vertical avec snapping */}
+      <div className="flex flex-wrap justify-around gap-2 max-h-[120px] overflow-y-auto snap-y snap-mandatory">
         {AVATARS.map((avatarUrl, index) => (
           <div
             key={index}
-            className="flex flex-col items-center gap-1 cursor-pointer p-2 rounded-lg hover:bg-accent transition-colors h-20 w-20 full-rounded"
+            className="flex flex-col items-center gap-1 cursor-pointer p-2 rounded-lg hover:bg-accent transition-colors h-20 w-20 full-rounded snap-start"
+            onClick={() => handleImage(avatarUrl)}
           >
-            <Avatar className="h-16 w-16 border-2 border-border hover:border-green-500 transition-colors p-1">
-              <AvatarImage
-                src={avatarUrl}
-                alt={`Avatar option ${index + 1}`}
-                onClick={handleImage}
-              />
+            <Avatar
+              className={`h-16 w-16 rounded-full border-2 p-1 transition-colors ${
+                selectedAvatar === avatarUrl
+                  ? 'border-green-500 ring-green-500'
+                  : 'border-border hover:border-green-500'
+              }`}
+            >
+              <AvatarImage src={avatarUrl} alt={`Avatar option ${index + 1}`} />
               <AvatarFallback>
                 <UserIcon className="h-6 w-6" />
               </AvatarFallback>
