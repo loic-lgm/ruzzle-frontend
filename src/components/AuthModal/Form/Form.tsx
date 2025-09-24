@@ -57,7 +57,7 @@ const Form = ({ close }: FormProps) => {
       setError(null);
       close?.();
       toast.success(
-        'Inscription réussies ! Valider votre compte par email pour vous connecter.'
+        'Inscription réussie ! Validez votre compte par email pour vous connecter.'
       );
     },
     onError: (error) => {
