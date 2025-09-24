@@ -29,9 +29,6 @@ const PublicProfilePage = () => {
   const { data: publicUser, error, isError, isLoading } = usePublicUser(username!);
 
   useEffect(() => {
-    if (!user) {
-      navigate('/');
-    }
     if (user?.username == username) {
       navigate('/mon-espace');
     }
