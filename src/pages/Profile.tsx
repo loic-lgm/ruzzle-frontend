@@ -95,7 +95,10 @@ const Profile = () => {
             <>
               <div className="mb-8">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                  <Avatar className="h-24 w-24 border-4 border-white shadow-md">
+                  <Avatar
+                    className="h-24 w-24 border-4 border-white shadow-md cursor-pointer"
+                    onClick={() => setIsEditProfileOpen(true)}
+                  >
                     <AvatarImage
                       src={user?.image}
                       alt={user?.username}
