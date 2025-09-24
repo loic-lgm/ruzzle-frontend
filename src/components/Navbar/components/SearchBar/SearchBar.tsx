@@ -23,6 +23,7 @@ const SearchBar = () => {
   };
 
   const handleClick = (username: string) => {
+    setSearchTerm('');
     navigate(`profil/${username}`);
     setIsOpen(false);
   };
@@ -30,7 +31,7 @@ const SearchBar = () => {
   const handleDelete = () => {
     setSearchTerm('');
     setIsOpen(false);
-  }
+  };
 
   return (
     <div className="relative flex items-center w-full md:w-full">
