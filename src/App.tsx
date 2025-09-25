@@ -12,6 +12,7 @@ import React, { useLayoutEffect } from 'react';
 import Puzzle from '@/pages/Puzzle';
 import NotFound from '@/components/NotFound';
 import Activation from '@/pages/Activation';
+import ResetPassword from '@/pages/ResetPassword';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -46,6 +47,7 @@ const App = () => {
               <Route path="/mon-espace" element={<Profile />} />
               <Route path="/profil/:username" element={<PublicProfilePage />} />
               <Route path="/activation/:uuid/:token" element={<Activation />} />
+              <Route path="/reset-password/:uuid/:token" element={<ResetPassword />} />
               <Route path="*" element={<NotFound type="page" />} />
             </Route>
           </Routes>

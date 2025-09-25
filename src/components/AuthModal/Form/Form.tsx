@@ -21,6 +21,8 @@ import useUserStore from '@/stores/useUserStore';
 import { useCities } from '@/hooks/useCities';
 import { AVATARS } from '@/utils/constants';
 import { toast } from 'sonner';
+import { isValidEmail } from '@/utils/isValideEmail';
+import { forgotPassword as forgotPasswordQuery } from '@/service/user';
 
 interface FormProps {
   close?: () => void;
@@ -29,6 +31,7 @@ interface FormProps {
 const Form = ({ close }: FormProps) => {
   const { activeTab, switchTab } = useAuthModalStore();
   const navigate = useNavigate();
+  const [email, setEmail] = useState<string>('');
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [error, setError] = useState<string | null>('');
   const setUser = useUserStore((state) => state.setUser);
@@ -44,6 +47,9 @@ const Form = ({ close }: FormProps) => {
       if (location.pathname == '/') {
         navigate('/puzzles');
       }
+      if (location.pathname.startsWith('/reset-password')) {
+        navigate('/mon-espace');
+      }
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
@@ -57,8 +63,9 @@ const Form = ({ close }: FormProps) => {
       setError(null);
       close?.();
       toast.success(
-        'Inscription réussie ! Validez votre compte par email pour vous connecter.'
-      ,{duration: 8000});
+        'Inscription réussie ! Validez votre compte par email pour vous connecter.',
+        { duration: 8000 }
+      );
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{
@@ -75,6 +82,24 @@ const Form = ({ close }: FormProps) => {
     },
   });
 
+  const forgotPassword = useMutation({
+    mutationFn: forgotPasswordQuery,
+    onSuccess: (data) => {
+      setError(null);
+      toast.success(data.message, { duration: 8000 });
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<{
+        error?: string;
+      }>;
+      setError(axiosError.response?.data?.error || 'Une erreur est survenue');
+    },
+  });
+
+  const handleForgotPassword = (email: string) => {
+    forgotPassword.mutate(email);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -86,10 +111,15 @@ const Form = ({ close }: FormProps) => {
     const firstname = formData.get('firstname') as string;
     const name = formData.get('name') as string;
 
+    if (!isValidEmail(email)) {
+      setError('Vous devez fournir un email valide.');
+      return;
+    }
+
     if (!email || !password) {
       setError(
         !email
-          ? 'Vous devez fournir un email valide.'
+          ? 'Vous devez fournir un email.'
           : 'Vous devez fournir un mot de passe.'
       );
       return;
@@ -147,18 +177,38 @@ const Form = ({ close }: FormProps) => {
               id="email"
               name="email"
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="email@exemple.com"
             />
           </div>
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <Label htmlFor="password">Mot de passe</Label>
-              <a
-                href="#forgot-password"
-                className="text-sm text-green-500 hover:underline"
-              >
-                Mot de passe oublié ?
-              </a>
+
+              <div className="flex flex-col items-end">
+                {!isValidEmail(email) && (
+                  <p className="text-xs text-gray-500 mb-1">
+                    Veuillez entrer un email valide pour activer ce lien
+                  </p>
+                )}
+                <a
+                  className={`text-sm text-green-500 ${
+                    !isValidEmail(email)
+                      ? 'opacity-50 cursor-default'
+                      : 'hover:underline cursor-pointer'
+                  }`}
+                  onClick={(e) => {
+                    if (!isValidEmail(email)) {
+                      e.preventDefault();
+                    } else {
+                      handleForgotPassword(email);
+                    }
+                  }}
+                >
+                  Mot de passe oublié ?
+                </a>
+              </div>
             </div>
             <Input
               id="password"
