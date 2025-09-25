@@ -37,7 +37,6 @@ const SearchBar = () => {
     <div className="relative flex items-center w-full md:w-full">
       <Search className="absolute left-[10px] z-[99] h-4 w-4 text-muted-foreground transition-colors" />
       <Input
-        id="searchbar"
         type="text"
         placeholder="Rechercher un membre"
         className="pl-10 pr-4 rounded-full border-2 border-border/50 bg-background/80 backdrop-blur-sm focus:border-primary/50 focus:bg-background transition-all"
