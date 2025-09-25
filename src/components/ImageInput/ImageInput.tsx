@@ -62,7 +62,6 @@ const ImageInput = ({ setFormData, formData, errors }: ImageInputProps) => {
           id="puzzle-image"
           type="file"
           accept="image/png,image/jpeg,image/jpg"
-          multiple
           className="hidden"
           onChange={(e) => handleFiles(e.target.files)}
         />
