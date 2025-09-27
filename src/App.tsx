@@ -13,6 +13,7 @@ import Puzzle from '@/pages/Puzzle';
 import NotFound from '@/components/NotFound';
 import Activation from '@/pages/Activation';
 import ResetPassword from '@/pages/ResetPassword';
+import TermsOfUse from '@/pages/TermOfUse';
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -44,6 +45,7 @@ const App = () => {
               <Route path="/puzzles" element={<Puzzles />} />
               <Route path="/puzzles/:hashId" element={<Puzzle />} />
               <Route path="/ajouter-un-puzzle" element={<Publish />} />
+              <Route path="/conditions-utilisation" element={<TermsOfUse />} />
               <Route path="/mon-espace" element={<Profile />} />
               <Route path="/profil/:username" element={<PublicProfilePage />} />
               <Route path="/activation/:uuid/:token" element={<Activation />} />
