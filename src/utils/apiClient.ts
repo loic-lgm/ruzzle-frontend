@@ -13,7 +13,7 @@ api.interceptors.response.use(
       _retry?: boolean;
     };
 
-    if (originalRequest.url?.endsWith('/users/login/')) {
+    if (originalRequest.url?.endsWith('/auth/login/')) {
       return Promise.reject(error);
     }
 
@@ -25,7 +25,7 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (originalRequest.url?.endsWith('/users/refresh/')) {
+    if (originalRequest.url?.endsWith('/auth/refresh/')) {
       return Promise.reject(error);
     }
 
@@ -33,7 +33,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await api.post('/users/refresh/');
+        await api.post('/auth/refresh/');
         return api(originalRequest);
       } catch (refreshError) {
         return Promise.reject(refreshError);

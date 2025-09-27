@@ -1,4 +1,5 @@
-import { validateUser } from '@/service/user';
+
+import { validateUser } from '@/service/auth';
 import { useQuery } from '@tanstack/react-query';
 
 export const useValidation = (uuid: string, token: string) => {

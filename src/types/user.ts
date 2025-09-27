@@ -18,12 +18,3 @@ export interface UserStore {
   setUser: (user: User | null) => void;
 }
 
-export interface ActivateUserResponse {
-  message?: string;
-  error?: string;
-}
-
-export interface ForgotPasswordResponse {
-  message?: string;
-  error?: string;
-}

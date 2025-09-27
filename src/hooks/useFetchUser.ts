@@ -1,4 +1,4 @@
-import { fetchUser } from '@/service/user';
+import { fetchUser } from '@/service/auth';
 import useUserStore from '@/stores/useUserStore';
 import { useQuery } from '@tanstack/react-query';
 

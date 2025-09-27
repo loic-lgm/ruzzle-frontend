@@ -28,3 +28,13 @@ export type SignupResponse = {
   image: string;
   city: string;
 };
+
+export interface ActivateUserResponse {
+  message?: string;
+  error?: string;
+}
+
+export interface ForgotPasswordResponse {
+  message?: string;
+  error?: string;
+}

@@ -22,7 +22,7 @@ import { useCities } from '@/hooks/useCities';
 import { AVATARS } from '@/utils/constants';
 import { toast } from 'sonner';
 import { isValidEmail } from '@/utils/isValideEmail';
-import { forgotPassword as forgotPasswordQuery } from '@/service/user';
+import { forgotPassword as forgotPasswordQuery } from '@/service/auth';
 
 interface FormProps {
   close?: () => void;

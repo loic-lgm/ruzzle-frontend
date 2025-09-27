@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { resetPassword as resetPasswordQuery } from '@/service/user';
+import { resetPassword as resetPasswordQuery } from '@/service/auth';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
