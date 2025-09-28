@@ -14,7 +14,7 @@ import SocialLoginButtons from '@/components/AuthModal/SocialLoginButtons';
 import { AxiosError } from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { loginFn, signupFn } from '@/service/auth';
-import { useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { City } from '@/types/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import useUserStore from '@/stores/useUserStore';
@@ -23,12 +23,14 @@ import { AVATARS } from '@/utils/constants';
 import { toast } from 'sonner';
 import { isValidEmail } from '@/utils/isValideEmail';
 import { forgotPassword as forgotPasswordQuery } from '@/service/auth';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface FormProps {
   close?: () => void;
 }
 
 const Form = ({ close }: FormProps) => {
+  const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
   const { activeTab, switchTab } = useAuthModalStore();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
@@ -110,6 +112,13 @@ const Form = ({ close }: FormProps) => {
     const city = formData.get('city') as string;
     const firstname = formData.get('firstname') as string;
     const name = formData.get('name') as string;
+
+    if (!termsAccepted) {
+      setError(
+        'Vous devez accepter les conditions d’utilisation pour vous inscrire.'
+      );
+      return;
+    }
 
     if (!isValidEmail(email)) {
       setError('Vous devez fournir un email valide.');
@@ -307,6 +316,27 @@ const Form = ({ close }: FormProps) => {
               placeholder="••••••••"
               required
             />
+          </div>
+          <div className="flex items-start space-x-3 rounded-lg border border-gray-200 bg-white/20 p-4 shadow-sm hover:shadow transition">
+            <Checkbox
+              id="terms"
+              checked={termsAccepted}
+              onCheckedChange={(checked) => setTermsAccepted(!!checked)}
+              className="mt-0.5 border-gray-300 data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500"
+            />
+            <label
+              htmlFor="terms"
+              className="text-sm text-gray-700 leading-snug cursor-pointer"
+            >
+              J’accepte les{' '}
+              <Link
+                to="/conditions"
+                target="_blank"
+                className="text-green-500 font-semibold hover:underline"
+              >
+                conditions d’utilisation
+              </Link>
+            </label>
           </div>
         </>
       )}
