@@ -113,13 +113,6 @@ const Form = ({ close }: FormProps) => {
     const firstname = formData.get('firstname') as string;
     const name = formData.get('name') as string;
 
-    if (!termsAccepted) {
-      setError(
-        'Vous devez accepter les conditions d’utilisation pour vous inscrire.'
-      );
-      return;
-    }
-
     if (!isValidEmail(email)) {
       setError('Vous devez fournir un email valide.');
       return;
@@ -163,6 +156,12 @@ const Form = ({ close }: FormProps) => {
         );
         return;
       }
+       if (!termsAccepted) {
+         setError(
+           'Vous devez accepter les conditions d’utilisation pour vous inscrire.'
+         );
+         return;
+       }
       signup.mutate({
         username,
         email,
