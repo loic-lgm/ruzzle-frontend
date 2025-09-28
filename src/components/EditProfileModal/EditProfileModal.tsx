@@ -94,7 +94,7 @@ const EditProfileModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[525px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[525px] max-h-[90vh] overflow-y-auto pb-0">
         <DialogHeader>
           <DialogTitle>Éditer votre profil</DialogTitle>
           <DialogDescription>
@@ -139,7 +139,7 @@ const EditProfileModal = ({
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="username">* Nom d&apos;utilisateur</Label>
+            <Label htmlFor="username">Nom d&apos;utilisateur</Label>
             <Input
               id="username"
               name="username"
@@ -154,7 +154,7 @@ const EditProfileModal = ({
             </p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">* Email</Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               name="email"
@@ -191,7 +191,7 @@ const EditProfileModal = ({
           {internalError && (
             <div className="text-red-500 text-sm">{internalError}</div>
           )}
-          <DialogFooter>
+          <DialogFooter className="flex flex-row justify-center sticky bottom-0 gap-2 bg-gradient-to-t from-white to-transparent border-gray-200 py-4">
             <Button
               type="button"
               variant="outline"
@@ -199,7 +199,7 @@ const EditProfileModal = ({
             >
               Annuler
             </Button>
-            <Button className="bg-green-500" type="submit">
+            <Button className="bg-green-500 hover:bg-green-600" type="submit">
               Sauvegarder
             </Button>
           </DialogFooter>

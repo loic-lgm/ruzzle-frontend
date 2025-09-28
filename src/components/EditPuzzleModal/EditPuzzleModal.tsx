@@ -114,7 +114,7 @@ const EditPuzzleModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col pb-0 overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Modifier le puzzle</DialogTitle>
           <DialogDescription>
@@ -122,7 +122,7 @@ const EditPuzzleModal = ({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4 pt-4">
           <div className="grid gap-2">
             <Label>Image du puzzle</Label>
             <div className="flex items-center gap-4">
@@ -207,11 +207,14 @@ const EditPuzzleModal = ({
             </div>
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="flex flex-row justify-center sticky bottom-0 gap-2 bg-gradient-to-t from-white to-transparent border-gray-200 py-4">
           <Button variant="outline" onClick={() => onOpenChange(!open)}>
             Annuler
           </Button>
-          <Button className="bg-green-500" onClick={handleEdit}>
+          <Button
+            className="bg-green-500 hover:bg-green-600"
+            onClick={handleEdit}
+          >
             Enregistrer
           </Button>
         </DialogFooter>

@@ -78,14 +78,14 @@ const SwapModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto max-h-[90vh] flex flex-col pb-0">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
             Demande d&apos;échange
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid gap-6 py-4">
+        <div className="grid gap-6 pt-4">
           <div>
             <h3 className="text-base font-semibold mb-2">
               Vous souhaitez échanger
@@ -173,14 +173,14 @@ const SwapModal = ({
         {internalError && (
           <div className="text-red-500 text-sm">{internalError}</div>
         )}
-        <DialogFooter>
+        <DialogFooter className="flex flex-row justify-center sticky bottom-0 gap-2 bg-gradient-to-t from-white to-transparent border-gray-200 py-4">
           <Button variant="outline" onClick={close}>
             Annuler
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={!puzzleToSend}
-            className="bg-gradient-to-r from-green-500 to-emerald-500 text-white"
+            className="bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-emerald-600"
           >
             Envoyer une demande
           </Button>
