@@ -82,16 +82,16 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#comment-ca-marche"
+                <Link
+                  to="/#comment-ca-marche"
                   className="text-gray-600 hover:text-green-500 transition-colors"
                 >
                   Comment ça marche
-                </a>
+                </Link>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="mailto:contact@ruzzle.fr"
                   className="text-gray-600 hover:text-green-500 transition-colors"
                 >
                   Contact
@@ -106,28 +106,28 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/conditions"
                   className="text-gray-600 hover:text-green-500 transition-colors"
                 >
                   Conditions d&apos;utilisation
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/confidentialite"
                   className="text-gray-600 hover:text-green-500 transition-colors"
                 >
                   Politique de confidentialité
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/cookies"
                   className="text-gray-600 hover:text-green-500 transition-colors"
                 >
                   Politique de cookies
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

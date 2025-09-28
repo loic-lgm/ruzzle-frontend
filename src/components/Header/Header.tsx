@@ -1,0 +1,20 @@
+interface HeaderProps {
+  title: string;
+  subtitle: string;
+}
+const Header = ({ title, subtitle }: HeaderProps) => {
+  return (
+    <div className="pt-36 sm:pt-28 pb-16 bg-white border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          {title}
+        </h1>
+        <p className="text-lg text-gray-600">
+          {subtitle}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Header;

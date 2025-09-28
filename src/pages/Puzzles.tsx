@@ -1,5 +1,4 @@
 import Filter from '@/components/Filter';
-import Explore from '@/components/Explore';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { fetchPuzzles } from '@/service/puzzle';
 import { useEffect, useState } from 'react';
@@ -13,6 +12,7 @@ import { useCities } from '@/hooks/useCities';
 import { useBrands } from '@/hooks/useBrands';
 import { useCategories } from '@/hooks/useCategories';
 import { useUserPuzzles } from '@/hooks/useUserPuzzles';
+import Header from '@/components/Header';
 
 const Puzzles = () => {
   const user = useUserStore((state) => state.user);
@@ -71,7 +71,10 @@ const Puzzles = () => {
 
   return (
     <div className="bg-gray-50">
-      <Explore />
+      <Header
+        title="Explorer les puzzles"
+        subtitle="Découvrez et échangez avec notre vaste collection de puzzles"
+      />
       {cities && brands && categories && (
         <Filter
           cities={cities}

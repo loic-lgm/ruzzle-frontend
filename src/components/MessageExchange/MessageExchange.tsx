@@ -180,9 +180,20 @@ const MessageExchange = ({
           disableConversation) && (
           <div className="mt-3 p-2 bg-gray-50 rounded text-center">
             <p className="text-xs text-gray-600">
-              {swap.status === 'accepted'
-                ? 'Échange accepté - Contactez le support si vous rencontrez une difficulté'
-                : 'Échange refusé - Cette conversation est terminée'}
+              {swap.status === 'accepted' ? (
+                <>
+                  Échange accepté –{' '}
+                  <a
+                    href={`mailto:support@tondomaine.com?subject=Support%20|%20Echange%20ID:%20${swap.id}%20-%20Conversation%20ID:%20${swap.conversation_id}`}
+                    className="text-green-600 underline hover:text-green-800"
+                  >
+                    Contactez le support
+                  </a>{' '}
+                  si vous rencontrez une difficulté
+                </>
+              ) : (
+                'Échange refusé – Cette conversation est terminée'
+              )}
             </p>
           </div>
         )}

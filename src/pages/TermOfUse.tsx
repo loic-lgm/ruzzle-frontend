@@ -1,19 +1,16 @@
+import Header from '@/components/Header';
 
-export default function TermsOfUse() {
+const TermsOfUse = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1 pt-32 sm:pt-24 pb-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-500 to-green-500 bg-clip-text text-transparent mb-2">
-            Conditions d&apos;utilisation
-          </h1>
-          <div className="space-y-6 text-gray-700">
-            <p className='mb-20'>
-              Bienvenue sur <strong>Ruzzle</strong>, une plateforme de mise en
+      <Header
+        title="Conditions d'utilisation"
+        subtitle="Bienvenue sur Ruzzle, une plateforme de mise en
               relation entre particuliers pour échanger des puzzles lors de
-              rencontres en personne (“meet-ups”).
-            </p>
-
+              rencontres en personne (“meet-ups”)."
+      />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+          <div className="space-y-6 text-gray-700">
             <h2 className="text-xl font-semibold">1. Objet</h2>
             <p>
               Ces conditions définissent les modalités d&apos;utilisation de la
@@ -68,14 +65,15 @@ export default function TermsOfUse() {
             </p>
 
             <h2 className="text-xl font-semibold">7. Modifications</h2>
-            <p className='mb-20'>
+            <p className="mb-20">
               Ruzzle se réserve le droit de modifier ces conditions. Vous serez
               informé des changements importants via email ou notification sur
               le site.
             </p>
           </div>
         </div>
-      </main>
     </div>
   );
-}
+};
+
+export default TermsOfUse;
