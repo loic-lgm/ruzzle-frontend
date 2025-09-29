@@ -33,6 +33,8 @@ export type FormData = {
   pieceCount: number;
   condition: string;
   image: File | null;
+  width?: number | null;
+  height?: number | null;
 };
 
 type ConditionType = 'used' | 'new' | 'damage';
@@ -51,6 +53,8 @@ const EditPuzzleModal = ({
     pieceCount: puzzle.piece_count,
     condition: puzzle.condition!,
     image: null,
+    width: puzzle.width ?? null,
+    height: puzzle.height ?? null,
   });
   const queryClient = useQueryClient();
 
@@ -106,6 +110,8 @@ const EditPuzzleModal = ({
         category_id: formData.category,
         piece_count: formData.pieceCount,
         condition: formData.condition,
+        height: formData.height ?? null,
+        width: formData.width ?? null,
         owner: puzzle.owner.id,
         ...(formData.image && { image: formData.image }),
       },
@@ -204,6 +210,40 @@ const EditPuzzleModal = ({
                 className="focus:border-green-500"
                 value={formData.category ? formData.category.toString() : ''}
               />
+            </div>
+          </div>
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="width">Largeur (optionnel)</Label>
+          <div className="relative flex">
+            <Input
+              id="width"
+              name="width"
+              type="number"
+              min={0}
+              value={formData.width ?? ''}
+              onChange={(e) => handleChange('width', e.target.value)}
+              className="border bg-white w-full h-12 pr-14 rounded-r-none"
+            />
+            <div className="flex items-center px-3 bg-gray-100 border border-l-0 rounded-r-md text-gray-600 text-sm">
+              cm
+            </div>
+          </div>
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="width">Hauteur (optionnel)</Label>
+          <div className="relative flex">
+            <Input
+              id="height"
+              name="height"
+              type="number"
+              min={0}
+              value={formData.height ?? ''}
+              onChange={(e) => handleChange('height', e.target.value)}
+              className="border bg-white w-full h-12 pr-14 rounded-r-none"
+            />
+            <div className="flex items-center px-3 bg-gray-100 border border-l-0 rounded-r-md text-gray-600 text-sm">
+              cm
             </div>
           </div>
         </div>

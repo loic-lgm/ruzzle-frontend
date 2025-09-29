@@ -14,6 +14,8 @@ export interface Puzzle {
   created?: string;
   hashid?: string;
   status?: string;
+  height?: number | null;
+  width?: number | null;
 }
 
 export type Puzzles = Puzzle[];
@@ -51,6 +53,8 @@ export type PublishOrEditPuzzleData = {
   condition: string;
   image?: File | null;
   owner: number;
+  height?: number | null;
+  width?: number | null;
 };
 
 export type PublishPuzzleResponse = {

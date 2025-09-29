@@ -3,6 +3,7 @@ import PublishForm from '@/components/PublishForm';
 import useUserStore from '@/stores/useUserStore';
 import { useBrands } from '@/hooks/useBrands';
 import { useCategories } from '@/hooks/useCategories';
+import { Link } from 'react-router';
 
 const Publish = () => {
   const { user } = useUserStore();
@@ -38,13 +39,9 @@ const Publish = () => {
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500">
               En publiant un puzzle, vous acceptez les{' '}
-              <a href="#" className="text-green-500">
+              <Link to="/conditions" className="text-green-500">
                 Conditions d&apos;utilisation{' '}
-              </a>{' '}
-              et les{' '}
-              <a href="#" className="text-green-500">
-                Règles Communautaires{' '}
-              </a>{' '}
+              </Link>{' '}
               de Ruzzle.
             </p>
           </div>

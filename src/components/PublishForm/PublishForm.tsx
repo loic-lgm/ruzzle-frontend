@@ -20,23 +20,32 @@ interface PublishFormProps {
   user?: User | null;
 }
 
+type FieldError = {
+  field: string;
+  message: string;
+};
+
 type FormData = {
   category: string;
   brand: string;
   pieceCount: string;
   condition: string;
   image: File | null;
+  width?: number | null;
+  height?: number | null;
 };
 
 const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   const [internalError, setInternalError] = useState<string>('');
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<FieldError[]>([]);
   const initialFormData: FormData = {
     category: '',
     brand: '',
     pieceCount: '',
     condition: '',
     image: null,
+    width: null,
+    height: null,
   };
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [keepAdding, setKeepAdding] = useState<boolean>(false);
@@ -48,7 +57,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
       ...prev,
       [field]: value,
     }));
-    setErrors((prevErrors) => prevErrors.filter((err) => err !== field));
+    setErrors((prevErrors) => prevErrors.filter((err) => err.field !== field));
   };
 
   const publish = useMutation({
@@ -73,12 +82,29 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newErrors: string[] = [];
-    if (!formData.condition) newErrors.push('condition');
-    if (!formData.category) newErrors.push('category');
-    if (!formData.brand) newErrors.push('brand');
-    if (!formData.pieceCount) newErrors.push('pieceCount');
-    if (!formData.image) newErrors.push('image');
+    const newErrors: FieldError[] = [];
+    if (!formData.condition)
+      newErrors.push({
+        field: 'condition',
+        message: 'Tu dois renseigner la condition de ton puzzle',
+      });
+    if (!formData.category)
+      newErrors.push({
+        field: 'category',
+        message: 'Tu dois renseigner la catégorie de ton puzzle',
+      });
+    if (!formData.brand)
+      newErrors.push({
+        field: 'brand',
+        message: 'Tu dois renseigner la marque de ton puzzle',
+      });
+    if (!formData.pieceCount)
+      newErrors.push({
+        field: 'pieceCount',
+        message: 'Tu dois renseinger le nombre de pièces de ton puzzle ?',
+      });
+    if (!formData.image)
+      newErrors.push({ field: 'image', message: 'Mets nous une petite image' });
     setErrors(newErrors);
     if (newErrors.length > 0) return;
     if (user) {
@@ -88,6 +114,8 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
         piece_count: Number(formData.pieceCount),
         image: formData.image || null,
         condition: formData.condition,
+        height: formData.height ? Number(formData.height) : null,
+        width: formData.width ? Number(formData.width) : null,
         owner: user.id,
       });
     } else {
@@ -97,69 +125,136 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch">
-        <div className="space-y-2">
-          <SelectCustom
-            label="Catégorie"
-            onlyLabel={true}
-            data={categories}
-            type="category"
-            value={formData.category}
-            onChange={(_, value) => handleChange('category', value)}
-            className={`w-full h-12 focus:border-green-500 ${
-              errors.includes('category')
-                ? 'border-red-500'
-                : 'border-emerald-500'
-            }`}
-          />
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col sm:flex-row gap-6">
+          <div className="flex-1 space-y-2">
+            <SelectCustom
+              label="Catégorie"
+              onlyLabel={true}
+              data={categories}
+              type="category"
+              value={formData.category}
+              onChange={(_, value) => handleChange('category', value)}
+              className={`w-full h-12 focus:border-green-500 ${
+                errors.some((err) => err.field == 'category')
+                  ? 'border-red-500'
+                  : 'border-emerald-500'
+              }`}
+            />
+          </div>
+
+          <div className="flex-1 space-y-2">
+            <Input
+              id="pieceCount"
+              name="pieceCount"
+              type="number"
+              placeholder="Nombre de pièce"
+              value={formData.pieceCount}
+              onChange={(e) =>
+                handleChange(
+                  e.target.name as keyof typeof formData,
+                  e.target.value
+                )
+              }
+              className={`border placeholder:text-neutral-800 bg-white w-full h-12 ${
+                errors.some((err) => err.field == 'pieceCount')
+                  ? 'border-red-500 focus-visible:border-red-500 focus-visible:ring-0'
+                  : 'border-emerald-500 focus-visible:border-emerald-500 focus-visible:ring-0'
+              } focus:outline-none`}
+            />
+          </div>
         </div>
-        <div className="space-y-2">
-          <Input
-            id="pieceCount"
-            name="pieceCount"
-            type="number"
-            placeholder="Nombre de pièces"
-            value={formData.pieceCount}
-            onChange={(e) =>
-              handleChange(
-                e.target.name as keyof typeof formData,
-                e.target.value
-              )
-            }
-            className={`border placeholder:text-neutral-800 bg-white w-full h-12 ${
-              errors.includes('pieceCount')
-                ? 'border-red-500 focus-visible:border-red-500 focus-visible:ring-0'
-                : 'border-emerald-500 focus-visible:border-emerald-500 focus-visible:ring-0'
-            } focus:outline-none`}
-          />
+
+        <div className="flex flex-col sm:flex-row gap-6">
+          <div className="flex-1 space-y-2">
+            <SelectCustom
+              label="Marque"
+              onlyLabel={true}
+              data={brands}
+              type="brand"
+              value={formData.brand}
+              onChange={(_, value) => handleChange('brand', value)}
+              className={`w-full h-12 focus:border-green-500 ${
+                errors.some((err) => err.field == 'brand')
+                  ? 'border-red-500'
+                  : 'border-emerald-500'
+              }`}
+            />
+          </div>
+
+          <div className="flex-1 space-y-2">
+            <SelectCustom
+              label="État"
+              onlyLabel={true}
+              data={CONDITION}
+              type="condition"
+              value={formData.condition}
+              onChange={(_, value) => handleChange('condition', value)}
+              className={`w-full h-12 focus:border-green-500 ${
+                errors.some((err) => err.field == 'condition')
+                  ? 'border-red-500'
+                  : 'border-emerald-500'
+              }`}
+            />
+          </div>
         </div>
-        <div className="space-y-2">
-          <SelectCustom
-            label="Marque"
-            onlyLabel={true}
-            data={brands}
-            type="brand"
-            value={formData.brand}
-            onChange={(_, value) => handleChange('brand', value)}
-            className={`w-full h-12 focus:border-green-500 ${
-              errors.includes('brand') ? 'border-red-500' : 'border-emerald-500'
-            }`}
-          />
-        </div>
-        <div className="space-y-2">
-          <SelectCustom
-            label="État"
-            onlyLabel={true}
-            data={CONDITION}
-            type="condition"
-            value={formData.condition}
-            onChange={(_, value) => handleChange('condition', value)}
-            className={`w-full h-12 focus:border-green-500 ${
-              errors.includes('condition')
-                ? 'border-red-500'
-                : 'border-emerald-500'
-            }`}
-          />
+
+        <div className="flex flex-col sm:flex-row gap-6">
+          <div className="flex-1 space-y-1">
+            <div className="relative flex">
+              <Input
+                id="height"
+                name="height"
+                type="number"
+                min={0}
+                placeholder="Hauteur (optionnel)"
+                value={formData.height ?? ''}
+                onChange={(e) => handleChange('height', e.target.value)}
+                className={`border bg-white w-full h-12 pr-14 rounded-r-none ${
+                  errors.some((err) => err.field == 'height')
+                    ? 'border-red-500'
+                    : 'border-emerald-500'
+                }`}
+              />
+              <div
+                className={`flex items-center px-3 bg-gray-100 border border-l-0 rounded-r-md text-gray-600 text-sm ${
+                  errors.some((err) => err.field == 'height')
+                    ? 'border-red-500'
+                    : 'border-emerald-500'
+                }`}
+              >
+                cm
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 space-y-1">
+            <div className="relative flex">
+              <Input
+                id="width"
+                name="width"
+                type="number"
+                min={0}
+                placeholder="Largeur (optionnel)"
+                value={formData.width ?? ''}
+                onChange={(e) => handleChange('width', e.target.value)}
+                className={`border bg-white w-full h-12 pr-14 rounded-r-none ${
+                  errors.some((err) => err.field == 'width')
+                    ? 'border-red-500'
+                    : 'border-emerald-500'
+                }`}
+              />
+              <div
+                className={`flex items-center px-3 bg-gray-100 border border-l-0 rounded-r-md text-gray-600 text-sm ${
+                  errors.some((err) => err.field == 'width')
+                    ? 'border-red-500'
+                    : 'border-emerald-500'
+                }`}
+              >
+                cm
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -172,8 +267,11 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
       {internalError && (
         <div className="text-red-500 text-sm">{internalError}</div>
       )}
+      {errors.length > 0 && (
+        <div className="text-red-500 text-sm">{errors[0].message}</div>
+      )}
 
-      <div className="pt-4 flex flex-col sm:flex-row gap-3 sm:gap-5">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-5">
         <Button
           className="flex-1 border border-green-500 text-green-500 bg-white hover:bg-green-50 transition-all"
           onClick={() => setKeepAdding(true)}
