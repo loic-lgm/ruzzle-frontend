@@ -73,13 +73,13 @@ const Puzzle = () => {
                     <div className="flex flex-row gap-2">
                       <Badge
                         variant="outline"
-                        className="bg-green-100 text-darkpurple border-green-500"
+                        className="bg-emerald-100 text-darkpurple border-emerald-500"
                       >
                         {puzzle?.category.name}
                       </Badge>
                       <Badge
                         variant="outline"
-                        className="bg-lime-100 text-darkpurple border-lime-500"
+                        className="bg-teal-100 text-darkpurple border-teal-500"
                       >
                         {
                           CONDITION.find(
@@ -87,6 +87,14 @@ const Puzzle = () => {
                           )?.name
                         }
                       </Badge>
+                      {puzzle?.width && puzzle.height && (
+                        <Badge
+                          variant="outline"
+                          className="bg-lime-100 text-darkpurple border-lime-500"
+                        >
+                          {puzzle?.width}cm x {puzzle?.height}cm
+                        </Badge>
+                      )}
                       <p
                         className="text-lg cursor-pointer"
                         onClick={() =>
