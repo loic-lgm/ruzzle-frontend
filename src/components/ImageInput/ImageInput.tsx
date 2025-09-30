@@ -48,7 +48,7 @@ const ImageInput = ({ setFormData, formData, errors }: ImageInputProps) => {
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         className={`border-2 border-dashed ${
-          errors.some((err) => err.field == 'image') ? 'border-red-500' : 'border-emerald-500'
+          (errors.some((err) => err.field == 'image') && !formData.image) ? 'border-red-500' : 'border-emerald-500'
         } rounded-lg p-8 text-center hover:border-green-500 transition-colors cursor-pointer block`}
       >
         <Upload className="h-8 w-8 mx-auto mb-4 text-emerald-500" />

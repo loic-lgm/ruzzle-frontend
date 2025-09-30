@@ -13,6 +13,7 @@ import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
+import { Loader } from 'lucide-react';
 
 interface PublishFormProps {
   brands: Brands;
@@ -38,6 +39,7 @@ type FormData = {
 const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   const [internalError, setInternalError] = useState<string>('');
   const [errors, setErrors] = useState<FieldError[]>([]);
+  const [publishButton, setPublishButton] = useState<string | null>(null);
   const initialFormData: FormData = {
     category: '',
     brand: '',
@@ -86,7 +88,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     if (!formData.condition)
       newErrors.push({
         field: 'condition',
-        message: 'Tu dois renseigner la condition de ton puzzle',
+        message: "Tu dois renseigner l'état de ton puzzle",
       });
     if (!formData.category)
       newErrors.push({
@@ -271,18 +273,39 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
         <div className="text-red-500 text-sm">{errors[0].message}</div>
       )}
 
-      <div className="flex flex-col sm:flex-row gap-3 sm:gap-5">
+      <div
+        className="
+          flex flex-row sm:flex-row gap-3 sm:gap-5
+          w-full z-50
+          border-gray-200
+          sm:static sm:bg-transparent sm:p-0
+        "
+      >
         <Button
           className="flex-1 border border-green-500 text-green-500 bg-white hover:bg-green-50 transition-all"
-          onClick={() => setKeepAdding(true)}
+          onClick={() => {
+            setKeepAdding(true);
+            setPublishButton('publishAndAdd');
+          }}
+          disabled={publish.isPending}
         >
           Publier et ajouter un autre
+          {publish.isPending && publishButton == 'publishAndAdd' && (
+            <Loader className="animate-spin" size={16} />
+          )}
         </Button>
         <Button
           className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transition-all"
-          onClick={() => setKeepAdding(false)}
+          onClick={() => {
+            setKeepAdding(false);
+            setPublishButton('publish');
+          }}
+          disabled={publish.isPending}
         >
           Publier
+          {publish.isPending && publishButton == 'publish' && (
+            <Loader className="animate-spin" size={16} />
+          )}
         </Button>
       </div>
     </form>

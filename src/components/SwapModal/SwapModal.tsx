@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Check, MessageSquare } from 'lucide-react';
+import { Check, Loader, MessageSquare } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Puzzle, Puzzles } from '@/types/puzzle';
 import { useModalStore } from '@/stores/useModalStore';
@@ -183,6 +183,7 @@ const SwapModal = ({
             className="bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-emerald-600"
           >
             Envoyer une demande
+            {swap.isPending && <Loader className="animate-spin" size={16} />}
           </Button>
         </DialogFooter>
       </DialogContent>
