@@ -174,12 +174,12 @@ const SwapModal = ({
           <div className="text-red-500 text-sm">{internalError}</div>
         )}
         <DialogFooter className="flex flex-row justify-center sticky bottom-0 gap-2 bg-gradient-to-t from-white to-transparent border-gray-200 py-4">
-          <Button variant="outline" onClick={close}>
+          <Button variant="outline" onClick={close} disabled={swap.isPending}>
             Annuler
           </Button>
           <Button
             onClick={handleSubmit}
-            disabled={!puzzleToSend}
+            disabled={!puzzleToSend || swap.isPending}
             className="bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-emerald-600"
           >
             Envoyer une demande
