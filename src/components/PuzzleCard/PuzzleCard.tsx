@@ -17,7 +17,9 @@ interface PuzzleCardProps {
   user: UserType | null;
 }
 
+
 const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
+  console.log(puzzle)
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const { open } = useAuthModalStore();
   const { open: openSwap } = useModalStore();
@@ -77,7 +79,7 @@ const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
         )}
 
         <div className="flex justify-between items-center mt-2">
-          <span className="text-white/80 text-xs">{puzzle.category.name}</span>
+          <span className="text-white/80 text-xs">{puzzle.categories[0]?.name}</span>
 
           <div className="flex items-center space-x-2">
             <Button

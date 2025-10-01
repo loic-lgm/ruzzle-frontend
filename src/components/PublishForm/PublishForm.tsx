@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { Brands } from '@/types/brand';
-import { Categories } from '@/types/category';
+import { Categories, CategoryInput } from '@/types/category';
 import { CONDITION } from '@/utils/constants';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import { User } from '@/types/user';
@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Loader } from 'lucide-react';
+import MultiSelectWithSuggestions from '@/components/MultiSelectWithSuggestions';
 
 interface PublishFormProps {
   brands: Brands;
@@ -27,7 +28,7 @@ type FieldError = {
 };
 
 type FormData = {
-  category: string;
+  categories: CategoryInput[];
   brand: string;
   pieceCount: string;
   condition: string;
@@ -41,7 +42,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   const [errors, setErrors] = useState<FieldError[]>([]);
   const [publishButton, setPublishButton] = useState<string | null>(null);
   const initialFormData: FormData = {
-    category: '',
+    categories: [],
     brand: '',
     pieceCount: '',
     condition: '',
@@ -54,7 +55,10 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   const navigate = useNavigate();
   const { open } = useAuthModalStore();
   const queryClient = useQueryClient();
-  const handleChange = (field: keyof typeof formData, value: string) => {
+  const handleChange = (
+    field: keyof typeof formData,
+    value: string | string[] | CategoryInput[]
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -62,10 +66,13 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     setErrors((prevErrors) => prevErrors.filter((err) => err.field !== field));
   };
 
+  console.log(formData.categories)
+
   const publish = useMutation({
     mutationFn: publishPuzzle,
     onSuccess: () => {
       setInternalError('');
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
       queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
       toast.success('Puzzle publié avec succès !');
       setErrors([]);
@@ -90,10 +97,10 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
         field: 'condition',
         message: "Tu dois renseigner l'état de ton puzzle",
       });
-    if (!formData.category)
+    if (formData.categories.length < 1)
       newErrors.push({
-        field: 'category',
-        message: 'Tu dois renseigner la catégorie de ton puzzle',
+        field: 'categories',
+        message: 'Tu dois renseigner au moins une catégorie pour ton puzzle',
       });
     if (!formData.brand)
       newErrors.push({
@@ -111,7 +118,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     if (newErrors.length > 0) return;
     if (user) {
       publish.mutate({
-        category_id: Number(formData.category),
+        category_ids: formData.categories,
         brand_id: Number(formData.brand),
         piece_count: Number(formData.pieceCount),
         image: formData.image || null,
@@ -130,18 +137,17 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row gap-6">
           <div className="flex-1 space-y-2">
-            <SelectCustom
-              label="Catégorie"
-              onlyLabel={true}
+            <MultiSelectWithSuggestions
               data={categories}
-              type="category"
-              value={formData.category}
-              onChange={(_, value) => handleChange('category', value)}
-              className={`w-full h-12 focus:border-green-500 ${
-                errors.some((err) => err.field == 'category')
-                  ? 'border-red-500'
-                  : 'border-emerald-500'
-              }`}
+              values={formData.categories}
+              onChange={(vals) => handleChange('categories', vals)}
+              className={`
+                ${
+                  errors.some((err) => err.field == 'categories')
+                    ? 'border-red-500'
+                    : 'border-emerald-500'
+                }
+              `}
             />
           </div>
 
@@ -158,7 +164,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
                   e.target.value
                 )
               }
-              className={`border placeholder:text-neutral-800 bg-white w-full h-12 ${
+              className={`border placeholder:text-neutral-800 bg-white w-full h-12 text-sm ${
                 errors.some((err) => err.field == 'pieceCount')
                   ? 'border-red-500 focus-visible:border-red-500 focus-visible:ring-0'
                   : 'border-emerald-500 focus-visible:border-emerald-500 focus-visible:ring-0'
@@ -203,35 +209,13 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
 
         <div className="flex flex-col sm:flex-row gap-6">
           <div className="flex-1 space-y-1">
-            <div className="relative flex">
-              <Input
-                id="height"
-                name="height"
-                type="number"
-                min={0}
-                placeholder="Hauteur (optionnel)"
-                value={formData.height ?? ''}
-                onChange={(e) => handleChange('height', e.target.value)}
-                className={`border bg-white w-full h-12 pr-14 rounded-r-none ${
-                  errors.some((err) => err.field == 'height')
-                    ? 'border-red-500'
-                    : 'border-emerald-500'
-                }`}
-              />
-              <div
-                className={`flex items-center px-3 bg-gray-100 border border-l-0 rounded-r-md text-gray-600 text-sm ${
-                  errors.some((err) => err.field == 'height')
-                    ? 'border-red-500'
-                    : 'border-emerald-500'
-                }`}
-              >
-                cm
-              </div>
-            </div>
-          </div>
-
-          <div className="flex-1 space-y-1">
-            <div className="relative flex">
+            <div
+              className={`
+                relative flex rounded-md transition
+                focus-within:ring-2 focus-within:ring-emerald-500 focus-within:ring-offset-2 focus-within:outline-none
+                transition-shadow duration-200 ease-in-out
+              `}
+            >
               <Input
                 id="width"
                 name="width"
@@ -240,7 +224,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
                 placeholder="Largeur (optionnel)"
                 value={formData.width ?? ''}
                 onChange={(e) => handleChange('width', e.target.value)}
-                className={`border bg-white w-full h-12 pr-14 rounded-r-none ${
+                className={`border bg-white w-full h-12 pr-14 rounded-r-none focus-visible:ring-0 placeholder:text-black text-sm ${
                   errors.some((err) => err.field == 'width')
                     ? 'border-red-500'
                     : 'border-emerald-500'
@@ -249,6 +233,39 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
               <div
                 className={`flex items-center px-3 bg-gray-100 border border-l-0 rounded-r-md text-gray-600 text-sm ${
                   errors.some((err) => err.field == 'width')
+                    ? 'border-red-500'
+                    : 'border-emerald-500'
+                }`}
+              >
+                cm
+              </div>
+            </div>
+          </div>
+          <div className="flex-1 space-y-1">
+            <div
+              className={`
+                relative flex rounded-md transition
+                focus-within:ring-2 focus-within:ring-emerald-500 focus-within:ring-offset-2 focus-within:outline-none
+                transition-shadow duration-200 ease-in-out
+              `}
+            >
+              <Input
+                id="height"
+                name="height"
+                type="number"
+                min={0}
+                placeholder="Hauteur (optionnel)"
+                value={formData.height ?? ''}
+                onChange={(e) => handleChange('height', e.target.value)}
+                className={`border bg-white w-full h-12 pr-14 rounded-r-none focus-visible:ring-0 placeholder:text-black text-sm ${
+                  errors.some((err) => err.field == 'height')
+                    ? 'border-red-500'
+                    : 'border-emerald-500'
+                }`}
+              />
+              <div
+                className={`flex items-center px-3 bg-gray-100 border border-l-0 rounded-r-md text-gray-600 text-sm ${
+                  errors.some((err) => err.field == 'height')
                     ? 'border-red-500'
                     : 'border-emerald-500'
                 }`}

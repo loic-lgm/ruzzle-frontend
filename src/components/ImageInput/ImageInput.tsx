@@ -1,8 +1,9 @@
 import React from 'react';
 import { Upload } from 'lucide-react';
+import { CategoryInput } from '@/types/category';
 
 type FormData = {
-  category: string;
+  categories: CategoryInput[];
   brand: string;
   pieceCount: string;
   condition: string;

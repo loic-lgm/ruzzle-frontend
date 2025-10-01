@@ -3,4 +3,6 @@ export type Category = {
   name: string;
 };
 
-export type Categories = [Category];
+export type Categories = Category[];
+
+export type CategoryInput = number | { name: string; isNew: true };

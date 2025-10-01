@@ -37,3 +37,5 @@ export const AVATARS = [
   'https://api.dicebear.com/9.x/adventurer/svg?seed=Jocelyn&glassesProbability=0&hair=long05,long06,long07,long10&skinColor=ecad80,f2d3b1,9e5622,763900',
   'https://api.dicebear.com/9.x/adventurer/svg?seed=Brooklynn',
 ];
+
+export const MAX_CATEGORIES = 3;

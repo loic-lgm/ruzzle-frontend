@@ -1,5 +1,5 @@
 import { Brand } from '@/types/brand';
-import { Category } from '@/types/category';
+import { Category, CategoryInput } from '@/types/category';
 import { User } from '@/types/user';
 
 export interface Puzzle {
@@ -7,7 +7,7 @@ export interface Puzzle {
   title: string;
   image: string;
   piece_count: number;
-  category: Category;
+  categories: Category[];
   brand: Brand;
   owner: User;
   condition?: string;
@@ -47,7 +47,7 @@ export type Condition = {
 };
 
 export type PublishOrEditPuzzleData = {
-  category_id: number;
+  category_ids: CategoryInput[];
   brand_id: number;
   piece_count: number;
   condition: string;

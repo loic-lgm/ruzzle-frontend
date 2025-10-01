@@ -94,7 +94,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
               <CardTitle className="text-base flex justify-between items-center">
                 <div>
                   <span>
-                    {puzzle.brand.name} • {puzzle.category.name}
+                    {puzzle.brand.name} • {puzzle.categories[0]?.name}
                   </span>
                 </div>
                 <div className="flex gap-2">
@@ -170,7 +170,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                     />
                     <div>
                       <div className="text-sm text-muted-foreground">
-                        {puzzle.brand.name} • {puzzle.category.name}
+                        {puzzle.brand.name} • {puzzle.categories[0]?.name}
                       </div>
                     </div>
                   </div>

@@ -69,14 +69,19 @@ const Puzzle = () => {
                   </div>
                 </div>
                 <div className="order-1 lg:order-2 space-y-6 flex flex-col justify-center h-full">
-                  <div className="flex flex-row gap-2 mb-4 justify-between">
-                    <div className="flex flex-row gap-2">
+                  <div className='flex gap-1 mb-2'>
+                    {puzzle?.categories?.map((category) => (
                       <Badge
                         variant="outline"
                         className="bg-emerald-100 text-darkpurple border-emerald-500"
+                        key={category.id}
                       >
-                        {puzzle?.category.name}
+                        {category.name}
                       </Badge>
+                    ))}
+                  </div>
+                  <div className="flex flex-row gap-2 mb-4 justify-between">
+                    <div className="flex flex-row gap-2">
                       <Badge
                         variant="outline"
                         className="bg-teal-100 text-darkpurple border-teal-500"

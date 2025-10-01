@@ -118,7 +118,7 @@ const MessageExchange = ({
             />
             <div className="min-w-0 flex-1">
               <p className="text-xs font-medium truncate">
-                {myPuzzle.category.name}
+                {myPuzzle.categories[0]?.name}
               </p>
               <p className="text-xs text-muted-foreground">
                 {myPuzzle.piece_count} pièces
@@ -139,7 +139,7 @@ const MessageExchange = ({
             />
             <div className="min-w-0 flex-1">
               <p className="text-xs font-medium truncate">
-                {otherPuzzle.category.name}
+                {otherPuzzle.categories[0]?.name}
               </p>
               <p className="text-xs text-muted-foreground">
                 {otherPuzzle.piece_count} pièces

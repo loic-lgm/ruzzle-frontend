@@ -101,7 +101,7 @@ const SwapModal = ({
                   {selectedPuzzle.piece_count} pieces
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {selectedPuzzle.category.name}
+                  {selectedPuzzle.categories[0]?.name}
                 </p>
               </div>
             </div>
@@ -137,7 +137,7 @@ const SwapModal = ({
                           {puzzle.piece_count} pieces
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {puzzle.category.name}
+                          {puzzle.categories[0]?.name}
                         </p>
                       </div>
                       {puzzleToSend?.id === puzzle.id && (
