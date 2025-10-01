@@ -66,8 +66,6 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     setErrors((prevErrors) => prevErrors.filter((err) => err.field !== field));
   };
 
-  console.log(formData.categories)
-
   const publish = useMutation({
     mutationFn: publishPuzzle,
     onSuccess: () => {

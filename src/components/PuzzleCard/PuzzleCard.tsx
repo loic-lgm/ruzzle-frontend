@@ -19,7 +19,6 @@ interface PuzzleCardProps {
 
 
 const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
-  console.log(puzzle)
   const [showInfo, setShowInfo] = useState<boolean>(false);
   const { open } = useAuthModalStore();
   const { open: openSwap } = useModalStore();
