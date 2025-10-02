@@ -123,7 +123,7 @@ const Messages = ({
                 key={conv.id}
                 onClick={() => handleClickConversation(conv)}
                 className={`p-3 flex items-center gap-3 cursor-pointer hover:bg-gray-50 ${
-                  activeConversation === conv ? 'bg-gray-100' : ''
+                  activeConversation?.id === conv.id ? 'bg-gray-200' : ''
                 }`}
               >
                 <Avatar className="h-10 w-10">
