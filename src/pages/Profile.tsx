@@ -102,7 +102,7 @@ const Profile = () => {
                     <AvatarImage
                       src={user?.image}
                       alt={user?.username}
-                      className="object-cover"
+                      className="object-cover mt-2"
                     />
                     <AvatarFallback>
                       {user?.username.substring(0, 2)}
@@ -141,7 +141,7 @@ const Profile = () => {
                       </div>
                       <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
                         <div className="text-2xl font-bold text-gray-900 flex items-center gap-1">
-                          5
+                          {user.rating}
                           <span>
                             <Star className="h-4 w-4 text-green-500" />
                           </span>

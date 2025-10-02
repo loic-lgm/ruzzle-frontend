@@ -11,10 +11,10 @@ export interface User {
   last_name?: string | null;
   created_at?: string;
   puzzles?: Puzzle[];
+  rating: number;
 }
 
 export interface UserStore {
   user: User | null;
   setUser: (user: User | null) => void;
 }
-
