@@ -80,28 +80,25 @@ const MessageExchange = ({
   return (
     <Card className="mx-4 m-2 border border-border/50">
       <CardContent className="px-6">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-5 sm:mb-3 flex-col-reverse sm:flex-row">
           <div className="flex items-center gap-2">
             <ArrowRightLeft className="h-4 w-4 text-green-500" />
             <span className="text-sm font-medium">Échange proposé</span>
           </div>
-          <Badge
-            variant={swap.status === 'accepted' ? 'default' : 'secondary'}
-            className="text-xs"
-          >
+          <Badge variant="outline" className="text-xs">
             {swap.status === 'accepted' ? (
               <>
-                <Check className="h-3 w-3 mr-1" />
+                <Check className="h-3 w-3 sm:mr-1" />
                 Accepté
               </>
             ) : swap.status === 'denied' ? (
               <>
-                <X className="h-3 w-3 mr-1" />
+                <X className="h-3 w-3 sm:mr-1" />
                 Refusé
               </>
             ) : (
               <>
-                <Clock className="h-3 w-3 mr-1" />
+                <Clock className="h-3 w-3 sm:mr-1" />
                 En attente
               </>
             )}
@@ -109,7 +106,7 @@ const MessageExchange = ({
         </div>
 
         <div className="flex items-center justify-around">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-col sm:flew-row">
             <img
               src={myPuzzle.image}
               alt={myPuzzle.title}
@@ -130,7 +127,7 @@ const MessageExchange = ({
             <ArrowRightLeft className="h-4 w-4 text-green-500" />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-col sm:flew-row">
             <img
               src={otherPuzzle.image}
               alt={otherPuzzle.title}

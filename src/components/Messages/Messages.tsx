@@ -248,7 +248,7 @@ const Messages = ({
             <div className="p-3 border-t bg-white">
               <div className="flex gap-2">
                 <Input
-                  placeholder="Écrivez votre message..."
+                  placeholder="Discutez..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
