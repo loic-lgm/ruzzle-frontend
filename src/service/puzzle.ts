@@ -45,7 +45,11 @@ export const publishPuzzle = async (
   data: PublishOrEditPuzzleData
 ): Promise<Puzzle> => {
   const formData = new FormData();
-  formData.append('brand_id', data.brand_id.toString());
+  if (typeof data.brand_input === 'number') {
+    formData.append('brand_input', data.brand_input.toString());
+  } else if (data.brand_input?.isNew) {
+    formData.append('brand_input', JSON.stringify(data.brand_input));
+  }
   formData.append('piece_count', data.piece_count.toString());
   formData.append('condition', data.condition);
   formData.append('owner', data.owner.toString());
@@ -55,11 +59,11 @@ export const publishPuzzle = async (
   if (data.width !== null && data.width !== undefined) {
     formData.append('width', data.width.toString());
   }
-  data.category_ids.forEach((cat) => {
+  data.category_inputs.forEach((cat) => {
     if (typeof cat === 'number') {
-      formData.append('category_ids', cat.toString());
+      formData.append('category_inputs', cat.toString());
     } else if ('isNew' in cat && cat.isNew) {
-      formData.append('category_ids', JSON.stringify(cat));
+      formData.append('category_inputs', JSON.stringify(cat));
     }
   });
   if (data.image) {
@@ -82,7 +86,11 @@ export const editPuzzle = async (
   data: PublishOrEditPuzzleData
 ): Promise<Puzzle> => {
   const formData = new FormData();
-  formData.append('brand_id', data.brand_id.toString());
+  if (typeof data.brand_input === 'number') {
+    formData.append('brand_input', data.brand_input.toString());
+  } else if (data.brand_input?.isNew) {
+    formData.append('brand_input', JSON.stringify(data.brand_input));
+  }
   formData.append('piece_count', data.piece_count.toString());
   formData.append('condition', data.condition);
   formData.append('owner', data.owner.toString());
@@ -92,11 +100,11 @@ export const editPuzzle = async (
   if (data.height !== null && data.height !== undefined) {
     formData.append('height', data.height.toString());
   }
-  data.category_ids.forEach((cat) => {
+  data.category_inputs.forEach((cat) => {
     if (typeof cat === 'number') {
-      formData.append('category_ids', cat.toString());
+      formData.append('category_inputs', cat.toString());
     } else if ('isNew' in cat && cat.isNew) {
-      formData.append('category_ids', JSON.stringify(cat));
+      formData.append('category_inputs', JSON.stringify(cat));
     }
   });
   if (data.image) {

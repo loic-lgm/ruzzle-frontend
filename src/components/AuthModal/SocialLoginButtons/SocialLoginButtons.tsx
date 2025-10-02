@@ -8,6 +8,7 @@ const SocialLoginButtons = () => {
         variant="outline"
         className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50"
         onClick={() => console.log('Google sign in')}
+        disabled={true}
       >
         <svg
           width="18"
@@ -40,6 +41,7 @@ const SocialLoginButtons = () => {
         variant="outline"
         className="flex items-center justify-center gap-2 bg-white hover:bg-gray-50"
         onClick={() => console.log('Facebook sign in')}
+        disabled={true}
       >
         <svg
           width="18"

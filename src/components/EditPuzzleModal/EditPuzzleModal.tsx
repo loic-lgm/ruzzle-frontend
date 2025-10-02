@@ -1,5 +1,6 @@
 import MultiSelectWithSuggestions from '@/components/MultiSelectWithSuggestions';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
+import SingleSelectWithSuggestions from '@/components/SingleSelectWithSuggestions';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { editPuzzle } from '@/service/puzzle';
-import { Brand } from '@/types/brand';
+import { Brand, BrandInput } from '@/types/brand';
 import { Category, CategoryInput } from '@/types/category';
 import { PublishOrEditPuzzleData, Puzzle } from '@/types/puzzle';
 import { CONDITION } from '@/utils/constants';
@@ -31,7 +32,7 @@ interface EditPuzzleModalProps {
 
 export type FormData = {
   categories: CategoryInput[];
-  brand: number;
+  brand: BrandInput;
   pieceCount: number;
   condition: string;
   image: File | null;
@@ -51,7 +52,7 @@ const EditPuzzleModal = ({
   const [imageURL, setImageURL] = useState('');
   const [formData, setFormData] = useState<FormData>({
     categories: puzzle.categories.map((c) => c.id) as CategoryInput[],
-    brand: puzzle.brand.id,
+    brand: puzzle.brand.id as BrandInput,
     pieceCount: puzzle.piece_count,
     condition: puzzle.condition!,
     image: null,
@@ -68,7 +69,7 @@ const EditPuzzleModal = ({
 
   const handleChange = (
     field: keyof typeof formData,
-    value: string | File | CategoryInput[]
+    value: string | File | CategoryInput[] | BrandInput | null
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -98,6 +99,7 @@ const EditPuzzleModal = ({
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ['brands'] });
       queryClient.invalidateQueries({ queryKey: ['puzzle', variables.hashid] });
       onOpenChange(false);
       toast.success('Puzzle mis à jour avec succès !');
@@ -107,7 +109,6 @@ const EditPuzzleModal = ({
       toast.error(
         axiosError.response?.data?.error || 'Une erreur est survenue'
       );
-      console.log(error);
     },
   });
 
@@ -115,8 +116,8 @@ const EditPuzzleModal = ({
     update.mutate({
       hashid: puzzle.hashid!,
       data: {
-        brand_id: formData.brand,
-        category_ids: formData.categories,
+        brand_input: formData.brand,
+        category_inputs: formData.categories,
         piece_count: formData.pieceCount,
         condition: formData.condition,
         height: formData.height ?? null,
@@ -171,6 +172,15 @@ const EditPuzzleModal = ({
             />
           </div>
           <div className="grid gap-2">
+            <Label htmlFor="brand">Marque</Label>
+            <SingleSelectWithSuggestions
+              data={brands}
+              value={formData.brand}
+              onChange={(value) => handleChange('brand', value)}
+              className="focus:border-green-500"
+            />
+          </div>
+          <div className="grid gap-2">
             <div className="space-y-2">
               <Label htmlFor="condition">Nombre de pièces</Label>
               <Input
@@ -199,20 +209,6 @@ const EditPuzzleModal = ({
                 type="condition"
                 onChange={(_, value) => handleChange('condition', value)}
                 className="focus:border-green-500"
-              />
-            </div>
-          </div>
-          <div className="grid gap-2">
-            <div className="space-y-2">
-              <Label htmlFor="brand">Marque</Label>
-              <SelectCustom
-                label={puzzle.brand.name}
-                onlyLabel={true}
-                data={brands}
-                type="brand"
-                onChange={(_, value) => handleChange('brand', value)}
-                className="focus:border-green-500"
-                value={formData.brand ? formData.brand.toString() : ''}
               />
             </div>
           </div>

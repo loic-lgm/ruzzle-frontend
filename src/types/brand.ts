@@ -3,4 +3,6 @@ export type Brand = {
   name: string;
 };
 
-export type Brands = [Brand];
+export type Brands = Brand[];
+
+export type BrandInput = number | { name: string; isNew: true };

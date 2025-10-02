@@ -1,4 +1,4 @@
-import { Brand } from '@/types/brand';
+import { Brand, BrandInput } from '@/types/brand';
 import { Category, CategoryInput } from '@/types/category';
 import { User } from '@/types/user';
 
@@ -47,8 +47,8 @@ export type Condition = {
 };
 
 export type PublishOrEditPuzzleData = {
-  category_ids: CategoryInput[];
-  brand_id: number;
+  category_inputs: CategoryInput[];
+  brand_input: BrandInput;
   piece_count: number;
   condition: string;
   image?: File | null;

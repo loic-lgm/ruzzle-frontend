@@ -85,7 +85,7 @@ const Filter = ({
 
   return (
     <>
-      <div className="flex justify-center flex-col m-auto max-w-7xl px-4 sm:px-0">
+      <div className="flex justify-center flex-col m-auto max-w-7xl">
         <div className="flex justify-end px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center gap-2">
             <Button

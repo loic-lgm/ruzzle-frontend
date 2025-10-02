@@ -1,10 +1,11 @@
 import React from 'react';
 import { Upload } from 'lucide-react';
 import { CategoryInput } from '@/types/category';
+import { BrandInput } from '@/types/brand';
 
 type FormData = {
   categories: CategoryInput[];
-  brand: string;
+  brand: BrandInput | null;
   pieceCount: string;
   condition: string;
   image: File | null;

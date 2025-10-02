@@ -18,7 +18,7 @@ const PuzzlesResult = ({
   count,
 }: PuzzlesResultProps) => {
   return (
-    <div className="mb-16 flex justify-center flex-col m-auto max-w-7xl px-5 sm:px-0">
+    <div className="mb-16 flex justify-center flex-col m-auto max-w-7xl px-5 sm:px-2 lg:px-0">
       <h2 className="text-xl font-semibold mb-4">
         {count < 1 && 'Aucun puzzle trouvé'}
         {count === 1 && `${count} puzzle trouvé`}

@@ -17,9 +17,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Categories, CategoryInput } from '@/types/category';
 import { MAX_CATEGORIES } from '@/utils/constants';
+import { Brands } from '@/types/brand';
 
 interface MultiSelectWithSuggestionsProps {
-  data: Categories;
+  data: Categories | Brands;
   values: CategoryInput[];
   onChange: (value: CategoryInput[]) => void;
   className?: string;
@@ -172,7 +173,7 @@ const MultiSelectWithSuggestions = ({
         </Popover>
       </div>
       <span className="text-sm text-muted-foreground">
-        Vous pouvez choisir jusqu&apos;à 3 catégories
+        Tu peux choisir jusqu&apos;à 3 catégories
       </span>
     </div>
   );

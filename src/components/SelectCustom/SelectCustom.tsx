@@ -41,7 +41,7 @@ const SelectCustom = ({
       value={value ?? ''}
     >
       <SelectTrigger
-        className={`w-full border-lightblue/30 focus:border-green-500 ${className}`}
+        className={`w-full border-lightblue/30 focus:border-green-500  bg-transparent ${className}`}
       >
         <SelectValue
           placeholder={onlyLabel ? label : `Choisir une ${label.toLowerCase()}`}

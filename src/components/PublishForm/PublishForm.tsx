@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
-import { Brands } from '@/types/brand';
+import { BrandInput, Brands } from '@/types/brand';
 import { Categories, CategoryInput } from '@/types/category';
 import { CONDITION } from '@/utils/constants';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import { Input } from '@/components/ui/input';
 import { Loader } from 'lucide-react';
 import MultiSelectWithSuggestions from '@/components/MultiSelectWithSuggestions';
+import SingleSelectWithSuggestions from '@/components/SingleSelectWithSuggestions';
 
 interface PublishFormProps {
   brands: Brands;
@@ -29,7 +30,7 @@ type FieldError = {
 
 type FormData = {
   categories: CategoryInput[];
-  brand: string;
+  brand: BrandInput | null;
   pieceCount: string;
   condition: string;
   image: File | null;
@@ -43,7 +44,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   const [publishButton, setPublishButton] = useState<string | null>(null);
   const initialFormData: FormData = {
     categories: [],
-    brand: '',
+    brand: null,
     pieceCount: '',
     condition: '',
     image: null,
@@ -57,7 +58,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
   const queryClient = useQueryClient();
   const handleChange = (
     field: keyof typeof formData,
-    value: string | string[] | CategoryInput[]
+    value: string | string[] | CategoryInput[] | BrandInput | null
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -71,6 +72,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     onSuccess: () => {
       setInternalError('');
       queryClient.invalidateQueries({ queryKey: ['categories'] });
+      queryClient.invalidateQueries({ queryKey: ['brands'] });
       queryClient.invalidateQueries({ queryKey: ['userPuzzles'] });
       toast.success('Puzzle publié avec succès !');
       setErrors([]);
@@ -116,8 +118,8 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     if (newErrors.length > 0) return;
     if (user) {
       publish.mutate({
-        category_ids: formData.categories,
-        brand_id: Number(formData.brand),
+        category_inputs: formData.categories,
+        brand_input: formData.brand!,
         piece_count: Number(formData.pieceCount),
         image: formData.image || null,
         condition: formData.condition,
@@ -150,6 +152,23 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
           </div>
 
           <div className="flex-1 space-y-2">
+            <SingleSelectWithSuggestions
+              data={brands}
+              value={formData.brand}
+              onChange={(vals) => handleChange('brand', vals)}
+              className={`
+                ${
+                  errors.some((err) => err.field == 'categories')
+                    ? 'border-red-500'
+                    : 'border-emerald-500'
+                }
+              `}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-6">
+          <div className="flex-1 space-y-2">
             <Input
               id="pieceCount"
               name="pieceCount"
@@ -162,32 +181,13 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
                   e.target.value
                 )
               }
-              className={`border placeholder:text-neutral-800 bg-white w-full h-12 text-sm ${
+              className={`border placeholder:text-neutral-800 w-full h-12 text-sm ${
                 errors.some((err) => err.field == 'pieceCount')
                   ? 'border-red-500 focus-visible:border-red-500 focus-visible:ring-0'
                   : 'border-emerald-500 focus-visible:border-emerald-500 focus-visible:ring-0'
               } focus:outline-none`}
             />
           </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-6">
-          <div className="flex-1 space-y-2">
-            <SelectCustom
-              label="Marque"
-              onlyLabel={true}
-              data={brands}
-              type="brand"
-              value={formData.brand}
-              onChange={(_, value) => handleChange('brand', value)}
-              className={`w-full h-12 focus:border-green-500 ${
-                errors.some((err) => err.field == 'brand')
-                  ? 'border-red-500'
-                  : 'border-emerald-500'
-              }`}
-            />
-          </div>
-
           <div className="flex-1 space-y-2">
             <SelectCustom
               label="État"
@@ -222,7 +222,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
                 placeholder="Largeur (optionnel)"
                 value={formData.width ?? ''}
                 onChange={(e) => handleChange('width', e.target.value)}
-                className={`border bg-white w-full h-12 pr-14 rounded-r-none focus-visible:ring-0 placeholder:text-black text-sm ${
+                className={`border w-full h-12 pr-14 rounded-r-none focus-visible:ring-0 placeholder:text-black text-sm ${
                   errors.some((err) => err.field == 'width')
                     ? 'border-red-500'
                     : 'border-emerald-500'
@@ -255,7 +255,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
                 placeholder="Hauteur (optionnel)"
                 value={formData.height ?? ''}
                 onChange={(e) => handleChange('height', e.target.value)}
-                className={`border bg-white w-full h-12 pr-14 rounded-r-none focus-visible:ring-0 placeholder:text-black text-sm ${
+                className={`border w-full h-12 pr-14 rounded-r-none focus-visible:ring-0 placeholder:text-black text-sm ${
                   errors.some((err) => err.field == 'height')
                     ? 'border-red-500'
                     : 'border-emerald-500'
@@ -290,14 +290,14 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
 
       <div
         className="
-          flex flex-row sm:flex-row gap-3 sm:gap-5
+          flex justify-center flex-row sm:flex-row gap-3 sm:gap-5
           w-full z-50
           border-gray-200
           sm:static sm:bg-transparent sm:p-0
         "
       >
         <Button
-          className="flex-1 border border-green-500 text-green-500 bg-white hover:bg-green-50 transition-all"
+          className="flex-1 border border-green-500 text-green-500 bg-transparent hover:bg-green-50 transition-all"
           onClick={() => {
             setKeepAdding(true);
             setPublishButton('publishAndAdd');
