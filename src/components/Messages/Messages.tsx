@@ -111,7 +111,7 @@ const Messages = ({
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 h-[100vh] md:h-[600px]">
+    <div className="flex flex-col md:flex-row gap-4 h-full md:h-[600px]">
       <div className="w-full md:w-1/3 h-60 md:h-full overflow-y-auto border rounded-lg">
         <div className="p-3 border-b">
           <h3 className="font-medium">Conversations</h3>
@@ -164,7 +164,7 @@ const Messages = ({
       </div>
 
       {activeConversation ? (
-        <div className="md:flex-1 flex flex-col border rounded-lg overflow-hidden">
+        <div className="md:flex-1 flex flex-col border rounded-lg overflow-hidden h-full">
           <div
             className="p-4 border-b flex items-center gap-3 bg-white cursor-pointer"
             onClick={() =>
@@ -197,7 +197,7 @@ const Messages = ({
           />
 
           <div
-            className="md:flex-1 p-4 overflow-y-auto bg-gray-50 sm:max-h-[70vh] md:max-h-none"
+            className="flex-1 p-4 overflow-y-auto bg-gray-50 min-h-[300px] md:min-h-0"
             ref={messagesContainerRef}
           >
             <div className="space-y-4">
