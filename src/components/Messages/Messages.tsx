@@ -66,31 +66,6 @@ const Messages = ({
     }
   }, [activeConversationFromNotif]);
 
-  const refreshConversations = async () => {
-    await queryClient.invalidateQueries({ queryKey: ['conversations'] });
-    const updatedData = queryClient.getQueryData<Conversation[]>([
-      'conversations',
-    ]);
-    if (updatedData && activeConversation) {
-      const updatedConv = updatedData.find(
-        (c) => c.id === activeConversation.id
-      );
-      if (updatedConv) {
-        const enrichedConv = {
-          ...updatedConv,
-          otherParticipant: updatedConv.participants.find(
-            (p) => p.id !== user.id
-          )!,
-          messages: [...updatedConv.messages].sort(
-            (a, b) =>
-              new Date(a.created).getTime() - new Date(b.created).getTime()
-          ),
-        };
-        setActiveConversation(enrichedConv);
-      }
-    }
-  };
-
   const { mutate: markAsRead } = useMutation({
     mutationFn: (id: number) => markMessageAsRead(id),
     onSuccess: () => {
@@ -116,7 +91,7 @@ const Messages = ({
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
-      console.error(axiosError);
+      console.log(axiosError);
     },
   });
 
@@ -263,7 +238,6 @@ const Messages = ({
                   reviewedId={activeConversation.otherParticipant.id}
                   hasVoted={activeConversation.exchange.has_voted}
                   ratingGiven={activeConversation.exchange.rating_given}
-                  onRated={refreshConversations}
                 />
               )}
           </div>

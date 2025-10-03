@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { rateQuery } from '@/service/rate';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,6 @@ interface RateBlockProps {
   reviewedId: number;
   hasVoted: boolean;
   ratingGiven: number;
-  onRated: () => void;
 }
 
 const RateBlock = ({
@@ -19,17 +18,17 @@ const RateBlock = ({
   reviewedId,
   hasVoted,
   ratingGiven,
-  onRated,
 }: RateBlockProps) => {
   const [ratingSelected, setRatingSelected] = useState<number>(0);
   const [hoveredStar, setHoveredStar] = useState<number | null>(null);
   const [localHasVoted, setLocalHasVoted] = useState(hasVoted);
   const [localRating, setLocalRating] = useState(ratingGiven);
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     setLocalHasVoted(hasVoted);
     setLocalRating(ratingGiven);
-    setRatingSelected(0); // réinitialise la sélection pour le nouveau swap
+    setRatingSelected(0);
   }, [hasVoted, ratingGiven, swapId]);
 
   const rate = useMutation({
@@ -51,7 +50,8 @@ const RateBlock = ({
     onSuccess: () => {
       setLocalHasVoted(true);
       setLocalRating(ratingSelected);
-      onRated();
+      // onRated();
+      queryClient.invalidateQueries({ queryKey: ['conversations'] });
       toast.success('Note envoyée avec succès');
     },
 

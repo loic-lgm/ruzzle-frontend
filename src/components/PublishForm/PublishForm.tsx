@@ -82,7 +82,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
-      console.error(axiosError);
+      console.log(axiosError);
       setInternalError(
         axiosError.response?.data?.error || 'Une erreur est survenue'
       );

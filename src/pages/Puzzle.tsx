@@ -14,10 +14,8 @@ import { AxiosError } from 'axios';
 import {
   ArrowRightLeft,
   CalendarDays,
-  Heart,
   Layout,
   MapPin,
-  Share2,
   SquarePen,
   User,
 } from 'lucide-react';
@@ -30,7 +28,6 @@ const Puzzle = () => {
   const { data: puzzle, error, isError } = usePuzzle(hashId!);
   const user = useUserStore((state) => state.user);
   const [isEditPuzzleOpen, setIsEditPuzzleOpen] = useState<boolean>(false);
-  // const [selectedPuzzle, setSelectedPuzzle]
   const { data: userPuzzles } = useUserPuzzles();
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
@@ -192,7 +189,7 @@ const Puzzle = () => {
                       <ArrowRightLeft className="h-5 w-5 mr-2" />
                       Demander un échanger
                     </Button>
-                    <div className="grid grid-cols-2 gap-40">
+                    {/* <div className="grid grid-cols-2 gap-40">
                       <Button
                         variant="outline"
                         className="hover:bg-red-50 hover:border-red-200 hover:text-red-600"
@@ -207,7 +204,7 @@ const Puzzle = () => {
                         <Share2 className="h-4 w-4 mr-1" />
                         Partager
                       </Button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

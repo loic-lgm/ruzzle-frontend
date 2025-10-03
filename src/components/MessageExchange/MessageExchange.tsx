@@ -69,7 +69,7 @@ const MessageExchange = ({
       }
     },
     onError: (err) => {
-      console.error(err);
+      console.log(err);
       toast.error("Une erreur s'est produite");
     },
   });
