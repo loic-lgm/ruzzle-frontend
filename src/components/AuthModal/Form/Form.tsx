@@ -156,12 +156,12 @@ const Form = ({ close }: FormProps) => {
         );
         return;
       }
-       if (!termsAccepted) {
-         setError(
-           'Vous devez accepter les conditions d’utilisation pour vous inscrire.'
-         );
-         return;
-       }
+      if (!termsAccepted) {
+        setError(
+          'Vous devez accepter les conditions d’utilisation pour vous inscrire.'
+        );
+        return;
+      }
       signup.mutate({
         username,
         email,
@@ -191,9 +191,8 @@ const Form = ({ close }: FormProps) => {
             />
           </div>
           <div className="space-y-2">
-            <div className="flex justify-between items-center">
+            <div className="flex sm:justify-between sm:items-center sm:flex-row flex-col-reverse">
               <Label htmlFor="password">Mot de passe</Label>
-
               <div className="flex flex-col items-end">
                 {!isValidEmail(email) && (
                   <p className="text-xs text-gray-500 mb-1">

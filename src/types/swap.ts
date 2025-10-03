@@ -16,6 +16,8 @@ export type Swap = {
   requester: User;
   created: string;
   conversation_id: number
+  has_voted: boolean
+  rating_given: number
 };
 
 export type SwapRow = {

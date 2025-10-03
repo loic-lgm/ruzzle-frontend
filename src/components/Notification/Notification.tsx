@@ -10,7 +10,14 @@ import { NotificationType } from '@/types/notification';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Bell, CheckCircle, MessageSquare, Package, XCircle } from 'lucide-react';
+import {
+  Bell,
+  CheckCircle,
+  MessageSquare,
+  Package,
+  Star,
+  XCircle,
+} from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -41,7 +48,8 @@ const Notification = ({ notifications }: NotificationBellProps) => {
     if (
       notification.notif_type == 'new_message' ||
       notification.notif_type == 'exchange_accepted' ||
-      notification.notif_type == 'exchange_denied'
+      notification.notif_type == 'exchange_denied' ||
+      notification.notif_type == 'rating'
     ) {
       navigate('/mon-espace?tab=messages', {
         state: { conversationId: notification.conversation_id },
@@ -90,19 +98,25 @@ const Notification = ({ notifications }: NotificationBellProps) => {
                   {notification.notif_type === 'exchange_denied' && (
                     <XCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-1" />
                   )}
+                  {notification.notif_type === 'rating' && (
+                    <Star className="h-5 w-5 text-lime-500 flex-shrink-0 mt-1" />
+                  )}
                   <div>
                     <p className="text-xs text-gray-500">
-                      {notification.sender_username}{' '}
+                      {notification.notif_type != 'rating' &&
+                        notification.sender_username}{' '}
                       {(() => {
                         switch (notification.notif_type) {
                           case 'exchange_request':
-                            return 'souhaite échanger des puzzles avec vous.';
+                            return 'souhaite échanger des puzzles avec toi.';
                           case 'new_message':
-                            return 'vous a envoyé un message.';
+                            return "t'a envoyé un message.";
                           case 'exchange_accepted':
-                            return 'a accepté votre échange';
+                            return "a accepté ton échange. Tu peux évaluer l'échange";
                           case 'exchange_denied':
                             return "a annulé l'échange";
+                          case 'rating':
+                            return "Tu peux désormais évaluer l'échange";
                           default:
                             return '';
                         }

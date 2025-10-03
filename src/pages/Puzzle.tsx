@@ -30,6 +30,7 @@ const Puzzle = () => {
   const { data: puzzle, error, isError } = usePuzzle(hashId!);
   const user = useUserStore((state) => state.user);
   const [isEditPuzzleOpen, setIsEditPuzzleOpen] = useState<boolean>(false);
+  // const [selectedPuzzle, setSelectedPuzzle]
   const { data: userPuzzles } = useUserPuzzles();
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
@@ -69,7 +70,7 @@ const Puzzle = () => {
                   </div>
                 </div>
                 <div className="order-1 lg:order-2 space-y-6 flex flex-col justify-center h-full">
-                  <div className='flex gap-1 mb-2'>
+                  <div className="flex gap-1 mb-2">
                     {puzzle?.categories?.map((category) => (
                       <Badge
                         variant="outline"

@@ -141,7 +141,7 @@ const Profile = () => {
                       </div>
                       <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
                         <div className="text-2xl font-bold text-gray-900 flex items-center gap-1">
-                          {user.rating}
+                          {user.rating} <span className='text-sm'>/5</span>
                           <span>
                             <Star className="h-4 w-4 text-green-500" />
                           </span>

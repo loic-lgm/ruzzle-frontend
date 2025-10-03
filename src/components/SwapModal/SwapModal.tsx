@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -74,6 +74,7 @@ const SwapModal = ({
       puzzle_asked_id: Number(selectedPuzzle.id),
       puzzle_proposed_id: Number(puzzleToSend?.id),
     });
+    setPuzzleToSend(null);
   };
 
   return (

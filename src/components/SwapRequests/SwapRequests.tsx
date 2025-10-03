@@ -1,6 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { MessageSquare, CheckCircle, XCircle, ArrowRightLeft } from 'lucide-react';
+import {
+  MessageSquare,
+  CheckCircle,
+  XCircle,
+  ArrowRightLeft,
+} from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -18,7 +23,14 @@ import { User } from '@/types/user';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import AlertDialogSwap from '@/components/AlertDialogSwap';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 interface ExchangeRequestsListProps {
@@ -55,6 +67,9 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
         queryClient.invalidateQueries({
           queryKey: ['userPuzzles'],
         });
+        queryClient.invalidateQueries({
+          queryKey: ['notifications'],
+        });
       }
       refreshSwaps(variables.type, user.id);
       queryClient.invalidateQueries({
@@ -78,8 +93,10 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
     return (
       <div className="text-center py-8 text-gray-500">
         <p>
-          {`Aucune demande d'échanges ${type == 'sent' ? 'envoyées' : 'reçues'} pour le moment`}
-          </p>
+          {`Aucune demande d'échanges ${
+            type == 'sent' ? 'envoyées' : 'reçues'
+          } pour le moment`}
+        </p>
       </div>
     );
   }

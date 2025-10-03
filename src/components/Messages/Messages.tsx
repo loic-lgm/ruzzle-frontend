@@ -13,6 +13,7 @@ import { Message } from '@/types/message';
 import MessageExchange from '@/components/MessageExchange/MessageExchange';
 import { useNavigate } from 'react-router';
 import { formatDate, formatTime } from '@/utils/timeFormat';
+import RateBlock from '@/components/RateBlock';
 
 interface MessagesType {
   user: User;
@@ -64,6 +65,31 @@ const Messages = ({
       }
     }
   }, [activeConversationFromNotif]);
+
+  const refreshConversations = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['conversations'] });
+    const updatedData = queryClient.getQueryData<Conversation[]>([
+      'conversations',
+    ]);
+    if (updatedData && activeConversation) {
+      const updatedConv = updatedData.find(
+        (c) => c.id === activeConversation.id
+      );
+      if (updatedConv) {
+        const enrichedConv = {
+          ...updatedConv,
+          otherParticipant: updatedConv.participants.find(
+            (p) => p.id !== user.id
+          )!,
+          messages: [...updatedConv.messages].sort(
+            (a, b) =>
+              new Date(a.created).getTime() - new Date(b.created).getTime()
+          ),
+        };
+        setActiveConversation(enrichedConv);
+      }
+    }
+  };
 
   const { mutate: markAsRead } = useMutation({
     mutationFn: (id: number) => markMessageAsRead(id),
@@ -175,16 +201,16 @@ const Messages = ({
           >
             <Avatar className="h-10 w-10">
               <AvatarImage
-                src={activeConversation.otherParticipant!.image}
-                alt={activeConversation.otherParticipant!.username}
+                src={activeConversation.otherParticipant?.image}
+                alt={activeConversation.otherParticipant?.username}
               />
               <AvatarFallback>
-                {activeConversation.otherParticipant!.username.substring(0, 2)}
+                {activeConversation.otherParticipant?.username.substring(0, 2)}
               </AvatarFallback>
             </Avatar>
             <div>
               <p className="font-medium">
-                {activeConversation.otherParticipant!.username}
+                {activeConversation.otherParticipant?.username}
               </p>
             </div>
           </div>
@@ -230,6 +256,16 @@ const Messages = ({
                 );
               })}
             </div>
+            {activeConversation?.exchange?.status === 'accepted' &&
+              activeConversation.otherParticipant && (
+                <RateBlock
+                  swapId={activeConversation.exchange.id}
+                  reviewedId={activeConversation.otherParticipant.id}
+                  hasVoted={activeConversation.exchange.has_voted}
+                  ratingGiven={activeConversation.exchange.rating_given}
+                  onRated={refreshConversations}
+                />
+              )}
           </div>
 
           {activeConversation.exchange.status == 'accepted' ||

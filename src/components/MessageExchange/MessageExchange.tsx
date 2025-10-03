@@ -44,6 +44,9 @@ const MessageExchange = ({
         queryClient.invalidateQueries({
           queryKey: ['conversations'],
         });
+        queryClient.invalidateQueries({
+          queryKey: ['notifications'],
+        });
         if (!isRequester) {
           refreshSwaps('received', myPuzzle.owner.id);
         } else {
