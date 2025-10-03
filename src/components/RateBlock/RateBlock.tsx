@@ -3,7 +3,7 @@ import { rateQuery } from '@/service/rate';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { Star } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 interface RateBlockProps {
@@ -23,6 +23,15 @@ const RateBlock = ({
 }: RateBlockProps) => {
   const [ratingSelected, setRatingSelected] = useState<number>(0);
   const [hoveredStar, setHoveredStar] = useState<number | null>(null);
+  const [localHasVoted, setLocalHasVoted] = useState(hasVoted);
+  const [localRating, setLocalRating] = useState(ratingGiven);
+
+  useEffect(() => {
+    setLocalHasVoted(hasVoted);
+    setLocalRating(ratingGiven);
+    setRatingSelected(0); // réinitialise la sélection pour le nouveau swap
+  }, [hasVoted, ratingGiven, swapId]);
+
   const rate = useMutation({
     mutationFn: ({
       exchangeId,
@@ -40,6 +49,8 @@ const RateBlock = ({
       }),
 
     onSuccess: () => {
+      setLocalHasVoted(true);
+      setLocalRating(ratingSelected);
       onRated();
       toast.success('Note envoyée avec succès');
     },
@@ -54,6 +65,7 @@ const RateBlock = ({
   });
 
   const handleSubmitRating = () => {
+    if (ratingSelected === 0) return;
     rate.mutate({
       exchangeId: swapId,
       rating: ratingSelected,
@@ -63,17 +75,17 @@ const RateBlock = ({
 
   return (
     <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-md text-center flex flex-col items-center gap-3">
-      {hasVoted ? (
+      {localHasVoted ? (
         <>
           <p className="text-sm font-medium text-green-700">
-            Tu as déjà noté cet échange
+            Merci pour ton évaluation !
           </p>
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((star) => (
               <Star
                 key={star}
                 className={`${
-                  star <= ratingGiven ? 'text-yellow-500' : 'text-gray-300'
+                  star <= localRating ? 'text-yellow-500' : 'text-gray-300'
                 }`}
               />
             ))}
@@ -102,7 +114,7 @@ const RateBlock = ({
           <Button
             size="sm"
             className="bg-green-500 hover:bg-emerald-500 text-white"
-            disabled={rate.isPending}
+            disabled={rate.isPending || ratingSelected === 0}
             onClick={handleSubmitRating}
           >
             Noter
