@@ -43,7 +43,7 @@ const Profile = () => {
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
   const { data: userPuzzles } = useUserPuzzles();
-  const { data: unreadCount = 0 } = useUnreadMessageCount();
+  const { data: unreadCount } = useUnreadMessageCount();
   const { data: conversations = [] } = useConversations();
   const location = useLocation();
   const notificationConversationId = location.state?.conversationId;
