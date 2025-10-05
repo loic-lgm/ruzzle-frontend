@@ -9,7 +9,7 @@ export function useUserSwaps(userId: number | undefined) {
   const commonOptions = {
     refetchOnWindowFocus: true,
     retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
   };
 
   const receivedSwaps = useQuery({
