@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export function useUserSwaps(userId: number | undefined) {
   const commonOptions = {
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
     staleTime: 5 * 60 * 1000,
   };

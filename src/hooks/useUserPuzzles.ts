@@ -5,8 +5,8 @@ export const useUserPuzzles = () => {
   return useQuery({
     queryKey: ['userPuzzles'],
     queryFn: fetchPuzzlesByUser,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
   });
 };

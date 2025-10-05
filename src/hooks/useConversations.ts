@@ -7,6 +7,6 @@ export const useConversations = () => {
     queryFn: fetchConversations,
     refetchOnWindowFocus: false,
     retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
   });
 };

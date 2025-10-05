@@ -5,7 +5,7 @@ export const useRandomPuzzles = () => {
   return useQuery({
     queryKey: ['random-puzzles'],
     queryFn: fetchRandomPuzzles,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
     staleTime: 5 * 60 * 1000,
   });

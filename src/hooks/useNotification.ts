@@ -5,9 +5,9 @@ export const useNotification = () => {
   return useQuery({
     queryKey: ['notifications'],
     queryFn: fetchNotifications,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
-    staleTime: 60 * 1000,
+    staleTime: 0,
     refetchInterval: 60 * 1000,
   });
 };

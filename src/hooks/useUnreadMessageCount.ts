@@ -5,8 +5,9 @@ export const useUnreadMessageCount = () => {
   return useQuery({
     queryKey: ['unread-count'],
     queryFn: unreadMessageCount,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
+    refetchInterval: 60 * 1000,
   });
 };
