@@ -9,7 +9,6 @@ import { CheckCircle, Send, XCircle } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { markMessageAsRead, sendMessageFn } from '@/service/message';
 import { AxiosError } from 'axios';
-import { Message } from '@/types/message';
 import MessageExchange from '@/components/MessageExchange/MessageExchange';
 import { useNavigate } from 'react-router';
 import { formatDate, formatTime } from '@/utils/timeFormat';
@@ -29,8 +28,10 @@ const Messages = ({
   const [newMessage, setNewMessage] = useState('');
   const [disableConversation, setDisableConversation] =
     useState<boolean>(false);
-  const [activeConversation, setActiveConversation] =
-    useState<Conversation | null>(null);
+  const [activeConversationId, setActiveConversationId] = useState<
+    number | null
+  >(null);
+
   const conversationsWithOther = conversations.map((conv: Conversation) => {
     const otherParticipant = conv.participants.find((p) => p.id !== user.id)!;
     const sortedMessages = [...conv.messages].sort(
@@ -42,9 +43,13 @@ const Messages = ({
       messages: sortedMessages,
     };
   });
+
+  const activeConversation = activeConversationId
+    ? conversationsWithOther.find((c) => c.id === activeConversationId) || null
+    : null;
+
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
-
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -56,14 +61,12 @@ const Messages = ({
 
   useEffect(() => {
     if (activeConversationFromNotif?.id) {
+      setActiveConversationId(activeConversationFromNotif.id);
       const conv = conversationsWithOther.find(
         (c) => c.id === activeConversationFromNotif.id
       );
-      if (conv) {
-        setActiveConversation(conv);
-        if (conv.last_message.user.id !== user.id) {
-          markAsRead(conv.last_message.id);
-        }
+      if (conv && conv.last_message.user.id !== user.id) {
+        markAsRead(conv.last_message.id);
       }
     }
   }, [activeConversationFromNotif?.id]);
@@ -79,17 +82,8 @@ const Messages = ({
 
   const sendMessage = useMutation({
     mutationFn: sendMessageFn,
-    onSuccess: (message: Message) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
-      setActiveConversation((prev) =>
-        prev
-          ? {
-              ...prev,
-              last_message: message,
-              messages: [...prev.messages, message],
-            }
-          : prev
-      );
     },
     onError: (error) => {
       const axiosError = error as AxiosError<{ error: string }>;
@@ -98,9 +92,16 @@ const Messages = ({
   });
 
   const handleSendMessage = () => {
-    if (!activeConversation) return;
+    if (
+      !activeConversation ||
+      activeConversation.exchange.status === 'denied' ||
+      activeConversation.exchange.status === 'accepted'
+    ) {
+      return;
+    }
     const trimmed = newMessage.trim();
     if (trimmed.length === 0 || trimmed.length > 500) return;
+
     sendMessage.mutate({
       conversation: activeConversation.id,
       content: trimmed,
@@ -109,7 +110,7 @@ const Messages = ({
   };
 
   const handleClickConversation = (conversation: Conversation) => {
-    setActiveConversation(conversation);
+    setActiveConversationId(conversation.id);
     if (conversation.last_message.user.id !== user.id) {
       markAsRead(conversation.last_message.id);
     }
@@ -235,6 +236,7 @@ const Messages = ({
                 );
               })}
             </div>
+
             {activeConversation?.exchange?.status === 'accepted' &&
               activeConversation.otherParticipant && (
                 <RateBlock
@@ -246,8 +248,8 @@ const Messages = ({
               )}
           </div>
 
-          {activeConversation.exchange.status == 'accepted' ||
-          activeConversation.exchange.status == 'denied' ||
+          {activeConversation.exchange.status === 'accepted' ||
+          activeConversation.exchange.status === 'denied' ||
           disableConversation ? (
             <div className="p-3 border-t bg-gray-50">
               <div className="text-center p-2">
