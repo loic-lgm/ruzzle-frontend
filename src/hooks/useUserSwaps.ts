@@ -10,6 +10,7 @@ export function useUserSwaps(userId: number | undefined) {
     refetchOnWindowFocus: true,
     retry: false,
     staleTime: 0,
+    refetchInterval: 60 * 1000,
   };
 
   const receivedSwaps = useQuery({

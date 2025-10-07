@@ -55,16 +55,18 @@ const Messages = ({
   }, [activeConversation?.messages]);
 
   useEffect(() => {
-    if (activeConversationFromNotif) {
+    if (activeConversationFromNotif?.id) {
       const conv = conversationsWithOther.find(
         (c) => c.id === activeConversationFromNotif.id
       );
       if (conv) {
         setActiveConversation(conv);
-        markAsRead(conv.last_message.id);
+        if (conv.last_message.user.id !== user.id) {
+          markAsRead(conv.last_message.id);
+        }
       }
     }
-  }, [activeConversationFromNotif]);
+  }, [activeConversationFromNotif?.id]);
 
   const { mutate: markAsRead } = useMutation({
     mutationFn: (id: number) => markMessageAsRead(id),
@@ -108,7 +110,9 @@ const Messages = ({
 
   const handleClickConversation = (conversation: Conversation) => {
     setActiveConversation(conversation);
-    markAsRead(conversation.last_message.id);
+    if (conversation.last_message.user.id !== user.id) {
+      markAsRead(conversation.last_message.id);
+    }
   };
 
   return (

@@ -8,5 +8,6 @@ export const useUnreadMessageCount = () => {
     refetchOnWindowFocus: true,
     retry: false,
     staleTime: 0,
+    refetchInterval: 60 * 1000,
   });
 };
