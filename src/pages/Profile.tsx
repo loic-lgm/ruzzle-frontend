@@ -141,7 +141,7 @@ const Profile = () => {
                       </div>
                       <div className="text-center px-4 py-2 bg-white rounded-lg shadow-sm">
                         <div className="text-2xl font-bold text-gray-900 flex items-center gap-1">
-                          {user.rating} <span className='text-sm'>/5</span>
+                          {user.rating} <span className="text-sm">/5</span>
                           <span>
                             <Star className="h-4 w-4 text-green-500" />
                           </span>
@@ -158,7 +158,7 @@ const Profile = () => {
                       onClick={() => setIsEditProfileOpen(true)}
                     >
                       <Edit size={16} />
-                      Éditer son profil
+                      Éditer mon profil
                     </Button>
                   </div>
                 </div>
@@ -208,9 +208,9 @@ const Profile = () => {
                   <Card>
                     <CardHeader className="flex justify-between align-center">
                       <div>
-                        <CardTitle>Liste de tous vos puzzles</CardTitle>
+                        <CardTitle>Liste de tous tes puzzles</CardTitle>
                         <CardDescription>
-                          Vous pouvez gérer tous vos puzzles ici.
+                          Tu peux gérer tous tes puzzles ici.
                         </CardDescription>
                       </div>
                       <div>
@@ -241,8 +241,8 @@ const Profile = () => {
                     <CardHeader>
                       <CardTitle>Demandes d&apos;échange reçues</CardTitle>
                       <CardDescription>
-                        Les demandes d&apos;échange que vous avez reçu des
-                        autres membres.
+                        Les demandes d&apos;échange que tu as reçu des autres
+                        membres.
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -259,7 +259,7 @@ const Profile = () => {
                     <CardHeader>
                       <CardTitle>Demandes d&apos;échange envoyées</CardTitle>
                       <CardDescription>
-                        Demande d&apos;échange que vous avez envoyées aux autres
+                        Demande d&apos;échange que tu as envoyé aux autres
                         membres.
                       </CardDescription>
                     </CardHeader>
@@ -277,7 +277,7 @@ const Profile = () => {
                     <CardHeader>
                       <CardTitle>Échanges terminés</CardTitle>
                       <CardDescription>
-                        Votre historique d&apos;échanges conclus.
+                        Ton historique d&apos;échanges conclus.
                       </CardDescription>
                     </CardHeader>
                     <CardContent>

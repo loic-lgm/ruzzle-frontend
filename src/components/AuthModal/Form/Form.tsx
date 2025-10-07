@@ -196,7 +196,7 @@ const Form = ({ close }: FormProps) => {
               <div className="flex flex-col items-end">
                 {!isValidEmail(email) && (
                   <p className="text-xs text-gray-500 mb-1">
-                    Veuillez entrer un email valide pour activer ce lien
+                    Saisir un email valide pour activer ce lien
                   </p>
                 )}
                 <a
@@ -276,7 +276,7 @@ const Form = ({ close }: FormProps) => {
                 <Label>Ville</Label>
                 <Select onValueChange={setSelectedCity}>
                   <SelectTrigger className="w-94 bg-transparent w-full">
-                    <SelectValue placeholder="Choississez une ville" />
+                    <SelectValue placeholder="Choisir une ville" />
                   </SelectTrigger>
                   <SelectContent>
                     {cities &&
@@ -375,7 +375,7 @@ const Form = ({ close }: FormProps) => {
         )}
         {activeTab === 'signup' && (
           <p className="text-sm text-gray-600">
-            Vous avez déjà un compte ?{' '}
+            Pas encore de compte ?{' '}
             <button
               type="button"
               onClick={() => switchTab('login')}

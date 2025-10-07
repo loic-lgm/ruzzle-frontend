@@ -22,11 +22,10 @@ const Discover = ({
       className="flex flex-col justify-center items-center min-h-screen scroll-mt-24"
     >
       <p className="text-4xl mb-4 font-bold bg-gradient-to-r from-lime-500 via-teal-500 to-green-500 bg-clip-text text-transparent animate-slide-up mt-8 md:mb-0">
-        Découvrez les puzzles
+        Découvre la collection
       </p>
       <p className="text-lg mb-10 text-center">
-        Parcourez notre vaste collection de puzzles de haute qualité prêts à
-        être échangés.
+        Choisis parmi des dizaines de puzzles prêts à changer de mains.
       </p>
       <div className="flex flex-col items-center justify-center flex-wrap gap-3 mb-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-15 mb-15 px-8">

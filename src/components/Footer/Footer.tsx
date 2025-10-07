@@ -13,9 +13,8 @@ const Footer = () => {
               Ruzzle
             </a>
             <p className="mt-4 text-gray-600 max-w-md">
-              La principale plateforme permettant aux passionnés de puzzles
-              d&apos;échanger, de partager et de découvrir de nouveaux puzzles
-              du monde entier.
+              La seule plateforme permettant aux passionnés de puzzles
+              d&apos;échanger, de partager et de découvrir de nouveaux puzzles.
             </p>
             <div className="mt-6 flex space-x-4">
               <a

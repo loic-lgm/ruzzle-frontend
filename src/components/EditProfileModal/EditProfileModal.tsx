@@ -66,11 +66,11 @@ const EditProfileModal = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userData.username) {
-      setError("Vous devez renseigner un nom d'utilisateur");
+      setError("Tu dois renseigner un nom d'utilisateur");
       return;
     }
     if (!userData.email) {
-      setError('Vous devez renseigner un email');
+      setError('Tu dois renseigner un email');
       return;
     }
 
@@ -96,9 +96,9 @@ const EditProfileModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[525px] max-h-[90vh] overflow-y-auto pb-0">
         <DialogHeader>
-          <DialogTitle>Éditer votre profil</DialogTitle>
+          <DialogTitle>Édite ton profil</DialogTitle>
           <DialogDescription>
-            Vous pouvez modifier vos informations personnelles ici.
+            Tu peux modifier tes informations personnelles ici.
           </DialogDescription>
         </DialogHeader>
 
@@ -144,13 +144,13 @@ const EditProfileModal = ({
               id="username"
               name="username"
               type="text"
-              placeholder="Votre nom d'utilisateur"
+              placeholder="Ton nom d'utilisateur"
               value={userData.username}
               onChange={handleChange}
               required
             />
             <p className="text-sm text-muted-foreground">
-              Ceci est votre nom affiché publiquement.
+              Ceci est ton nom affiché publiquement.
             </p>
           </div>
           <div className="space-y-2">

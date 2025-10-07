@@ -94,7 +94,7 @@ const RateBlock = ({
       ) : (
         <>
           <p className="text-sm font-medium text-green-700">
-            Vous n&apos;avez pas encore noté cet échange !
+            Tu n&apos;as pas encore noté cet échange !
           </p>
           <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((star) => (

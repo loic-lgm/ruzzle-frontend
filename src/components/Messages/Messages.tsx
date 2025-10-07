@@ -255,7 +255,7 @@ const Messages = ({
               <div className="text-center p-2">
                 <p className="text-sm text-gray-600">
                   {activeConversation.exchange.status === 'accepted'
-                    ? "Cette conversation est archivée car l'échange a été accepté"
+                    ? "Cette conversation est archivée car l'échange est terminé"
                     : "Cette conversation est archivée car l'échange a été refusé"}
                 </p>
               </div>

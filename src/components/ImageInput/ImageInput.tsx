@@ -50,19 +50,21 @@ const ImageInput = ({ setFormData, formData, errors }: ImageInputProps) => {
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         className={`border-2 border-dashed ${
-          (errors.some((err) => err.field == 'image') && !formData.image) ? 'border-red-500' : 'border-emerald-500'
+          errors.some((err) => err.field == 'image') && !formData.image
+            ? 'border-red-500'
+            : 'border-emerald-500'
         } rounded-lg p-8 text-center hover:border-green-500 transition-colors cursor-pointer block`}
       >
         <Upload className="h-8 w-8 mx-auto mb-4 text-emerald-500" />
         <div className="space-y-2">
           <p className="text-sm text-gray-600">
             {/* Glisser et déposez vos images ici, ou cliquez pour les sélectionner */}
-            Glisser et déposez votre image ici, ou cliquez pour la sélectionner
+            Glisser et déposer ton image ici ou clique pour la sélectionner.
           </p>
           <p className="text-xs text-gray-500">
             {/* Télécharger jusqu&apos;à 5 images (PNG, JPG, JPEG • 5MB max par
             image) */}
-            Télécharger votre image (PNG, JPG, JPEG • 5MB max par image)
+            Télécharge ton image (PNG, JPG, JPEG • 5MB max par image)
           </p>
         </div>
         <input

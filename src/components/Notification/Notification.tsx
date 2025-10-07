@@ -108,7 +108,7 @@ const Notification = ({ notifications }: NotificationBellProps) => {
                       {(() => {
                         switch (notification.notif_type) {
                           case 'exchange_request':
-                            return 'souhaite échanger des puzzles avec toi.';
+                            return 'souhaite faire un échange avec toi.';
                           case 'new_message':
                             return "t'a envoyé un message.";
                           case 'exchange_accepted':

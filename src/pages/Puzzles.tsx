@@ -73,7 +73,7 @@ const Puzzles = () => {
     <div className="bg-gray-50">
       <Header
         title="Explorer les puzzles"
-        subtitle="Découvrez et échangez avec notre vaste collection de puzzles"
+        subtitle="Parcours les puzzles disponibles et trouve celui qui te plaît."
       />
       {cities && brands && categories && (
         <Filter

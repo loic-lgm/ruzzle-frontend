@@ -68,7 +68,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
             className="flex flex-col md:flex-row items-center gap-1 md:gap-2 hover:text-green-500"
           >
             <UserIcon size={18} />
-            <span className="hidden md:inline text-sm">Mon profil</span>
+            <span className="hidden md:inline text-sm">Profil</span>
           </Link>
 
           <Link
@@ -77,7 +77,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
             className="flex flex-col md:flex-row items-center gap-1 md:gap-2 hover:text-green-500"
           >
             <Package size={18} />
-            <span className="hidden md:inline text-sm">Mes Échanges</span>
+            <span className="hidden md:inline text-sm">Échanges</span>
           </Link>
 
           <Link

@@ -36,7 +36,7 @@ const Puzzle = () => {
   const isUserConnectedIsOwner = puzzle?.owner.id == user?.id;
   const handleSwap = () => {
     if (isUserConnectedIsOwner) {
-      toast.error('Vous ne pouvez pas échanger vos propres puzzles.');
+      toast.error('Tu ne peux pas échanger tes propres puzzles.');
       return;
     }
     if (user) {

@@ -40,7 +40,7 @@ const MessageExchange = ({
       swap = { ...swap, status };
       setDisableConversation(true);
       if (status === 'accepted') {
-        toast.success('Échange accepté');
+        toast.success('Échange terminé');
         queryClient.invalidateQueries({
           queryKey: ['conversations'],
         });
@@ -182,7 +182,7 @@ const MessageExchange = ({
             <p className="text-xs text-gray-600">
               {swap.status === 'accepted' ? (
                 <>
-                  Échange accepté –{' '}
+                  Échange terminé –{' '}
                   <a
                     href={`mailto:support@tondomaine.com?subject=Support%20|%20Echange%20ID:%20${swap.id}%20-%20Conversation%20ID:%20${swap.conversation_id}`}
                     className="text-green-600 underline hover:text-green-800"
@@ -192,7 +192,7 @@ const MessageExchange = ({
                   si vous rencontrez une difficulté
                 </>
               ) : (
-                'Échange refusé – Cette conversation est terminée'
+                'Échange refusé – Cette conversation est archivée'
               )}
             </p>
           </div>

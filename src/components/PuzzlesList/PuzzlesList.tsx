@@ -126,7 +126,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
                 </div>
               </CardTitle>
               <CardDescription className="flex flex-col gap-2">
-                <div className='flex gap-1'>
+                <div className="flex gap-1">
                   <Badge variant="outline">
                     {
                       CONDITION.find((cond) => cond.id === puzzle.condition)
@@ -230,7 +230,7 @@ const PuzzlesList = ({ puzzles, categories, brands }: PuzzleListProps) => {
       </div>
       {puzzles.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
-          Vous n&apos;avez pas encore ajouté de puzzles à votre collection.
+          Tu n&apos;as pas encore ajouté de puzzles à ta collection.
         </div>
       )}
       {isEditPuzzleOpen && selectedPuzzle && (

@@ -14,17 +14,17 @@ const steps = [
   {
     title: 'Explorer',
     description:
-      'Parcourez les puzzles disponibles et trouvez celui qui vous plaît.',
+      'Parcours les puzzles disponibles et trouve celui qui te plaît.',
     icon: <Search className="h-8 w-8" />,
   },
   {
     title: 'Demandez un échange',
-    description: 'Sélectionnez votre puzzle et envoyez une demande.',
+    description: 'Sélectionne un puzzle et envoie une demande.',
     icon: <ArrowLeftRight className="h-8 w-8" />,
   },
   {
     title: "Validez l'échange",
-    description: "Discutez, rencontrez et finalisez l'échange facilement.",
+    description: 'Discute, rencontre, et finalise l’échange.',
     icon: <CheckCircle className="h-8 w-8" />,
   },
 ];

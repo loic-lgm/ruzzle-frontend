@@ -60,7 +60,7 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
         toast.success('Échange annulé !');
       }
       if (variables.payload == 'accepted') {
-        toast.success('Échange accepté !');
+        toast.success('Échange terminé !');
         queryClient.invalidateQueries({
           queryKey: ['completed-swaps', user.id],
         });
@@ -166,7 +166,7 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
               <div className="flex flex-col items-center gap-3">
                 <img
                   src={swap.puzzle.image}
-                  alt="Votre puzzle"
+                  alt="Ton puzzle"
                   className="h-16 w-16 object-cover rounded-md border"
                 />
                 <p className="text-sm text-gray-600">
@@ -224,9 +224,9 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
             <TableRow>
               <TableHead>Membre</TableHead>
               <TableHead>Son puzzle</TableHead>
-              <TableHead>Votre puzzle</TableHead>
+              <TableHead>Ton puzzle</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Statut</TableHead>
               {type != 'completed' && (
                 <TableHead className="text-right">Actions</TableHead>
               )}

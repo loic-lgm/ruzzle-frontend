@@ -17,11 +17,10 @@ const Publish = () => {
           <div className="p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-500 to-green-500 bg-clip-text text-transparent mb-2">
-                Partager votre puzzle
+                Partager un puzzle
               </h1>
               <p className="text-gray-600">
-                Publiez votre puzzle sur Ruzzle et entrez en contact avec
-                d&apos;autres passionnés du puzzle
+                Publie ton puzzle et partage le avec la communauté Ruzzle.
               </p>
             </div>
             {!categories || !brands ? (
@@ -38,7 +37,7 @@ const Publish = () => {
           </div>
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-500">
-              En publiant un puzzle, vous acceptez les{' '}
+              En publiant un puzzle, tu acceptes les{' '}
               <Link to="/conditions" className="text-green-500">
                 Conditions d&apos;utilisation{' '}
               </Link>{' '}

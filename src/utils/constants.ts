@@ -6,9 +6,9 @@ export const PIECE_COUNT = [
 ];
 
 export const CONDITION = [
-  { id: 'new', name: 'Neuf' },
-  { id: 'used', name: 'Usé' },
-  { id: 'damaged', name: 'Abimé' },
+  { id: 'new', name: 'Tout frais' },
+  { id: 'used', name: 'Fait 1 fois' },
+  { id: 'damaged', name: 'Fait plusieurs fois' },
 ];
 
 export const AVATARS = [

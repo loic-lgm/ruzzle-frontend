@@ -35,10 +35,10 @@ const AlertDialogSwap = ({
               isAccept ? 'text-green-500' : 'text-red-500'
             )}
           >
-            {isAccept ? "Accepter l'échange" : "Refuser l'échange"}
+            {isAccept ? "Terminer l'échange" : "Refuser l'échange"}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Êtes-vous sûr de vouloir {isAccept ? 'accepter' : 'refuser'} cet
+            Es tu sûr de vouloir {isAccept ? 'terminer' : 'refuser'} cet
             échange ? Cette action est définitive.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -53,7 +53,7 @@ const AlertDialogSwap = ({
             )}
             onClick={onConfirm}
           >
-            {isAccept ? 'Accepter' : 'Refuser'}
+            {isAccept ? 'Terminer' : 'Refuser'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

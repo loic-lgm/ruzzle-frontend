@@ -133,9 +133,7 @@ const EditPuzzleModal = ({
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col pb-0 overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Modifier le puzzle</DialogTitle>
-          <DialogDescription>
-            Modifiez les informations de votre puzzle
-          </DialogDescription>
+          <DialogDescription>Modifie les infos de ton puzzle</DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 pt-4">
@@ -157,7 +155,7 @@ const EditPuzzleModal = ({
                   className="cursor-pointer"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Sélectionnez une nouvelle image pour remplacer l&apos;actuelle
+                  Sélectionne une nouvelle image pour remplacer l&apos;actuelle
                 </p>
               </div>
             </div>

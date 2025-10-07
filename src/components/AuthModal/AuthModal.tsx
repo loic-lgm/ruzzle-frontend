@@ -18,7 +18,7 @@ const AuthModal = () => {
           <DialogTitle className="text-2xl text-center font-bold text-gray-900 gradient-text">
             {activeTab === 'login'
               ? 'Bon retour parmi nous !'
-              : 'Rejoignez la communauté des puzzles'}
+              : 'Rejoins la communauté Ruzzle'}
           </DialogTitle>
         </DialogHeader>
         <Tabs

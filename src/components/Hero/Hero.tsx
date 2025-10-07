@@ -10,17 +10,16 @@ const Hero = () => {
 
         <div className="relative z-10 text-center">
           <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-green-500/10 to-lime-500/10 rounded-full font-medium mb-4 animate-fade-in">
-            Rejoignez la communauté!
+            Rejoins la communauté !
           </span>
 
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-lime-500 via-green-500 to-teal-500 bg-clip-text text-transparent animate-slide-up">
-            Trouvez la pièce manquante
+            Trouve la pièce manquante
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-10 animate-slide-up-delay-1">
-            La première marketplace pour les amateurs de puzzles afin
-            d&apos;échanger des puzzles et d&apos;entrer en contact avec une
-            communauté florissante.
+            La première plateforme qui réunit les amateurs de puzzles. Donne une
+            seconde vie à tes jeux et connecte-toi à une communauté passionnée.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up-delay-2">

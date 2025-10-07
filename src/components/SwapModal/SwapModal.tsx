@@ -32,7 +32,7 @@ const SwapModal = ({
 }: ExchangeModalProps) => {
   const [internalError, setInternalError] = useState<string | null>(null);
   const [message, setMessage] = useState<string>(
-    'Bonjour, je suis intéressé pour échanger votre puzzle.'
+    'Hey 👋, j’ai repéré ton puzzle, on échange ?'
   );
   const queryClient = useQueryClient();
   const { isOpen, close } = useModalStore();
@@ -60,12 +60,12 @@ const SwapModal = ({
 
   const handleSubmit = () => {
     if (!message) {
-      setInternalError("Écrivez un message pour faciliter l'échange");
+      setInternalError("Écris un message pour faciliter l'échange");
       return;
     }
     if (!puzzleToSend) {
       setInternalError(
-        'Vous devez choisir un de vos puzzles à proposer en échange'
+        'Tu dois choisir un de tes puzzles à proposer en échange'
       );
       return;
     }
@@ -89,7 +89,7 @@ const SwapModal = ({
         <div className="grid gap-6 pt-4">
           <div>
             <h3 className="text-base font-semibold mb-2">
-              Vous souhaitez échanger
+              Tu souhaite échanger
             </h3>
             <div className="flex items-center p-3 rounded-md bg-muted/50">
               <img
@@ -110,7 +110,7 @@ const SwapModal = ({
 
           <div>
             <h3 className="text-base font-semibold mb-2">
-              Séléctionner un de vos puzzles:
+              Sélectionne un de tes puzzle à échanger:
             </h3>
             <ScrollArea className="h-[200px] rounded-md border">
               <div className="p-4 grid gap-3">
@@ -150,7 +150,7 @@ const SwapModal = ({
                   ))
                 ) : (
                   <p className="text-center text-muted-foreground py-8">
-                    Vous n&apos;avez aucun puzzle à échanger.
+                    Tu n&apos;as aucun puzzle à échanger pour le moment.
                   </p>
                 )}
               </div>
