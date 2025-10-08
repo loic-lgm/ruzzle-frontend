@@ -18,13 +18,13 @@ const steps = [
     icon: <Search className="h-8 w-8" />,
   },
   {
-    title: 'Demandez un échange',
+    title: 'Demande un échange',
     description: 'Sélectionne un puzzle et envoie une demande.',
     icon: <ArrowLeftRight className="h-8 w-8" />,
   },
   {
-    title: "Validez l'échange",
-    description: 'Discute, rencontre, et finalise l’échange.',
+    title: "Termine l'échange",
+    description: 'Discute, rencontre, et clôture l’échange une fois les puzzles échangés.',
     icon: <CheckCircle className="h-8 w-8" />,
   },
 ];
@@ -45,20 +45,20 @@ const Stepper = ({ user }: StepperProps) => {
   };
   return (
     <section
-      className="flex flex-col justify-center items-center min-h-[calc(100vh-160px)] w-full scroll-mt-24 gap-5"
+      className="flex flex-col justify-center items-center min-h-[calc(100vh-160px)] w-full scroll-mt-24 gap-6 px-6 sm:px-0"
       id="comment-ca-marche"
     >
-      <h2 className="text-4xl font-bold bg-gradient-to-r from-lime-500 via-green-500 to-teal-500 bg-clip-text text-transparent mt-8 md:mb-30">
+      <h2 className="text-center text-4xl font-bold bg-gradient-to-r from-lime-500 via-green-500 to-teal-500 bg-clip-text text-transparent mt-8 md:mb-30">
         Comment ça marche ?
       </h2>
 
-      <div className="flex flex-col md:flex-row justify-between items-center gap-10 max-w-5xl w-full">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-8 sm:gap-10 max-w-5xl w-full">
         {steps.map((step, i) => (
           <div
             key={i}
             className="flex flex-col items-center text-center max-w-xs"
           >
-            <div className="w-16 h-16 rounded-full bg-gradient-to-bl from-lime-500 to-green-500 text-white flex items-center justify-center mb-4">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-bl from-lime-500 to-green-500 text-white flex items-center justify-center mb-1 sm:mb-4">
               {step.icon}
             </div>
             <h3 className="text-lg font-semibold">{step.title}</h3>
@@ -83,7 +83,7 @@ const Stepper = ({ user }: StepperProps) => {
           size="custom"
           onClick={handleStartNow}
         >
-          Commencer maintenant
+          Commencer
           <ChevronsRight className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
         </Button>
       </div>

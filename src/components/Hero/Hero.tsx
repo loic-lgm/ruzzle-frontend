@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const Hero = () => {
   return (
-    <section className="flex items-center min-h-screen pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden">
+    <section className="flex items-center min-h-screen md:pt-40 md:pb-20 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="absolute top-0 right-0 w-64 h-64 bg-lime-500/10 rounded-full filter blur-3xl animate-spin-slow"></div>
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-teal-500/10 rounded-full filter blur-3xl"></div>
