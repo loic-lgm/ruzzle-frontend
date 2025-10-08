@@ -64,7 +64,7 @@ const ImageInput = ({ setFormData, formData, errors }: ImageInputProps) => {
           <p className="text-xs text-gray-500">
             {/* Télécharger jusqu&apos;à 5 images (PNG, JPG, JPEG • 5MB max par
             image) */}
-            Télécharge ton image (PNG, JPG, JPEG • 5MB max par image)
+            Télécharge ton image (JPEG, PNG, WEBP, HEIC, HEIF, AVIF • 5Mo max)
           </p>
         </div>
         <input

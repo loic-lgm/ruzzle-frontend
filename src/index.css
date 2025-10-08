@@ -10,8 +10,20 @@ html {
   scroll-behavior: smooth;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield; /* Pour Firefox */
 }
 
 @media (max-width: 640px) {
@@ -22,8 +34,8 @@ html, body, #root {
 }
 
 .glass-card {
-    @apply relative backdrop-blur-lg bg-white/40 border border-white/30 shadow-lg rounded-2xl transition-all duration-300;
-  }
+  @apply relative backdrop-blur-lg bg-white/40 border border-white/30 shadow-lg rounded-2xl transition-all duration-300;
+}
 
 .gradient-border-button-cta {
   @apply px-5 py-2.5 text-gray-800 font-medium rounded-xl inline-flex items-center justify-center;

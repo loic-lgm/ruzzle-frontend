@@ -180,7 +180,7 @@ const EditPuzzleModal = ({
           </div>
           <div className="grid gap-2">
             <div className="space-y-2">
-              <Label htmlFor="condition">Nombre de pièces</Label>
+              <Label htmlFor="pieceCount">Nombre de pièces</Label>
               <Input
                 id="pieceCount"
                 name="pieceCount"
