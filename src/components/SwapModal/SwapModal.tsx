@@ -89,7 +89,7 @@ const SwapModal = ({
         <div className="grid gap-6 pt-4">
           <div>
             <h3 className="text-base font-semibold mb-2">
-              Tu souhaite échanger
+              Tu souhaites échanger
             </h3>
             <div className="flex items-center p-3 rounded-md bg-muted/50">
               <img
