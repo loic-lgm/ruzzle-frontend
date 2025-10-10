@@ -23,7 +23,7 @@ const AlertDialogSwap = ({
   setOpen,
   onConfirm,
 }: AlertDialogSwapProps) => {
-  const isAccept = action === 'accepted';
+  const isTerminated = action === 'accepted';
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -32,14 +32,15 @@ const AlertDialogSwap = ({
           <AlertDialogTitle
             className={clsx(
               'text-lg font-semibold',
-              isAccept ? 'text-green-500' : 'text-red-500'
+              isTerminated ? 'text-green-500' : 'text-red-500'
             )}
           >
-            {isAccept ? "Terminer l'échange" : "Refuser l'échange"}
+            {isTerminated ? "Terminer l'échange" : "Refuser l'échange"}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Es tu sûr de vouloir {isAccept ? 'terminer' : 'refuser'} cet
-            échange ? Cette action est définitive.
+            {isTerminated
+              ? 'En cliquant sur « Terminé », tu confirmes que l’échange s’est bien déroulé. Ton puzzle sera retiré de ta liste et la discussion sera close.'
+              : 'Souhaites-tu vraiment refuser cet échange ? La discussion sera close et tu ne pourras envoyer de message.'}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -47,13 +48,13 @@ const AlertDialogSwap = ({
           <AlertDialogAction
             className={clsx(
               'text-white',
-              isAccept
+              isTerminated
                 ? 'bg-green-500 hover:bg-emerald-500'
                 : 'bg-red-500 hover:bg-red-600'
             )}
             onClick={onConfirm}
           >
-            {isAccept ? 'Terminer' : 'Refuser'}
+            {isTerminated ? 'Terminer' : 'Refuser'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
