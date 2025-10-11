@@ -61,10 +61,10 @@ const CropModal = ({
       <DialogContent className="max-w-4xl p-0 gap-0 overflow-hidden">
         <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/50">
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-green-500 to-teal-500 bg-clip-text text-transparent">
-            Recadrer votre image
+            Recadre votre image
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Ajustez le cadrage de votre image pour obtenir le meilleur rendu
+            Ajuste le cadrage de ton image pour obtenir le meilleur rendu
           </DialogDescription>
         </DialogHeader>
 
