@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { RotateCw, ZoomIn, ZoomOut, Crop } from 'lucide-react';
-import { getCroppedImg } from '@/utils/getCroppedImg';
+import { getCroppedImg } from '@/utils/crop';
 
 interface CropModalProps {
   open: boolean;
@@ -38,7 +38,11 @@ const CropModal = ({
 
   const handleApplyCrop = async () => {
     if (!imageUrl || !croppedAreaPixels) return;
-    const croppedBase64 = await getCroppedImg(imageUrl, croppedAreaPixels, rotation);
+    const croppedBase64 = await getCroppedImg(
+      imageUrl,
+      croppedAreaPixels,
+      rotation
+    );
     const file = dataURLtoFile(croppedBase64, 'cropped.jpg');
     onCropComplete(file);
     onOpenChange(false);

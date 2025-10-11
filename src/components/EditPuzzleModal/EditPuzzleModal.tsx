@@ -1,3 +1,4 @@
+import EditImageCropper from '@/components/EditImageCropper';
 import MultiSelectWithSuggestions from '@/components/MultiSelectWithSuggestions';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import SingleSelectWithSuggestions from '@/components/SingleSelectWithSuggestions';
@@ -17,9 +18,11 @@ import { Brand, BrandInput } from '@/types/brand';
 import { Category, CategoryInput } from '@/types/category';
 import { PublishOrEditPuzzleData, Puzzle } from '@/types/puzzle';
 import { CONDITION } from '@/utils/constants';
+import { fileCropped, urlToFile } from '@/utils/crop';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import { Area } from 'react-easy-crop';
 import { toast } from 'sonner';
 
 interface EditPuzzleModalProps {
@@ -49,7 +52,6 @@ const EditPuzzleModal = ({
   brands,
   categories,
 }: EditPuzzleModalProps) => {
-  const [imageURL, setImageURL] = useState('');
   const [formData, setFormData] = useState<FormData>({
     categories: puzzle.categories.map((c) => c.id) as CategoryInput[],
     brand: puzzle.brand.id as BrandInput,
@@ -59,6 +61,8 @@ const EditPuzzleModal = ({
     width: puzzle.width ?? null,
     height: puzzle.height ?? null,
   });
+  const [croppedArea, setCroppedArea] = useState<Area | null>(null);
+  const [rotation, setRotation] = useState<number>(0);
   const queryClient = useQueryClient();
 
   const conditionLabels: Record<ConditionType, string> = {
@@ -74,17 +78,6 @@ const EditPuzzleModal = ({
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }));
-  };
-
-  const handleFiles = (fileList: FileList | null) => {
-    if (!fileList) return;
-    if (!fileList[0].type.startsWith('image/')) return;
-    setImageURL(URL.createObjectURL(fileList[0]));
-
-    setFormData((prev) => ({
-      ...prev,
-      image: fileList[0],
     }));
   };
 
@@ -112,7 +105,26 @@ const EditPuzzleModal = ({
     },
   });
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
+    let imageToCrop: File;
+    const urlParts = puzzle.image.split('/');
+    const originalName = urlParts[urlParts.length - 1] || 'puzzle.jpg';
+    const uniqueName = `${Date.now()}_${originalName}`;
+    if (formData.image) {
+      imageToCrop = formData.image;
+    } else {
+      imageToCrop = await urlToFile(puzzle.image, uniqueName);
+    }
+    const imageElement = new Image();
+    imageElement.src = URL.createObjectURL(imageToCrop);
+    await new Promise((resolve) => (imageElement.onload = resolve));
+    const area = croppedArea || {
+      x: 0,
+      y: 0,
+      width: imageElement.width,
+      height: imageElement.height,
+    };
+    const finalImage = await fileCropped(imageToCrop, area, rotation);
     update.mutate({
       hashid: puzzle.hashid!,
       data: {
@@ -123,7 +135,7 @@ const EditPuzzleModal = ({
         height: formData.height ?? null,
         width: formData.width ?? null,
         owner: puzzle.owner.id,
-        ...(formData.image && { image: formData.image }),
+        ...(finalImage && { image: finalImage }),
       },
     });
   };
@@ -138,27 +150,41 @@ const EditPuzzleModal = ({
 
         <div className="grid gap-4 pt-4">
           <div className="grid gap-2">
-            <Label>Image du puzzle</Label>
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <img
-                  src={imageURL || puzzle.image}
-                  alt="Aperçu"
-                  className="w-20 h-20 object-cover rounded border"
-                />
-              </div>
-              <div className="flex-1">
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleFiles(e.target.files)}
-                  className="cursor-pointer"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Sélectionne une nouvelle image pour remplacer l&apos;actuelle
-                </p>
-              </div>
+            <div className="relative w-full">
+              <Input
+                type="text"
+                readOnly
+                placeholder="Clique pour sélectionner une image"
+                value={formData.image?.name || ''}
+                onClick={() => document.getElementById('file-input')?.click()}
+                className="cursor-pointer bg-white"
+              />
+              <input
+                id="file-input"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) =>
+                  handleChange('image', e.target.files?.[0] || null)
+                }
+              />
             </div>
+            <EditImageCropper
+              initialImageUrl={
+                formData.image
+                  ? URL.createObjectURL(formData.image)
+                  : puzzle.image
+              }
+              onChange={(file) =>
+                setFormData((prev) => ({ ...prev, image: file }))
+              }
+              setCroppedArea={setCroppedArea}
+              setRotation={setRotation}
+              rotation={rotation}
+            />
+            <p className="text-xs text-muted-foreground mt-1">
+              Recadrer l&apos;image si nécessaire
+            </p>
           </div>
           <div className="grid gap-2">
             <Label>Catégories</Label>
