@@ -81,10 +81,14 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
       if (!keepAdding) navigate('/puzzles');
     },
     onError: (error) => {
-      const axiosError = error as AxiosError<{ error: string }>;
-      console.log(axiosError);
+      const axiosError = error as AxiosError<{
+        error?: string;
+        image?: string;
+      }>;
       setInternalError(
-        axiosError.response?.data?.error || 'Une erreur est survenue'
+        axiosError.response?.data?.error ||
+          axiosError.response?.data?.image ||
+          'Une erreur est survenue'
       );
     },
   });
@@ -277,7 +281,6 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
 
       <ImageInput
         setFormData={setFormData}
-        formData={formData}
         errors={errors}
       />
 
