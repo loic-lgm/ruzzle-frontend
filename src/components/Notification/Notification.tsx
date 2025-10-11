@@ -112,7 +112,7 @@ const Notification = ({ notifications }: NotificationBellProps) => {
                           case 'new_message':
                             return "t'a envoyé un message.";
                           case 'exchange_accepted':
-                            return "a accepté ton échange. Tu peux évaluer l'échange";
+                            return "a clôturé l'échange. Tu peux désormais l'évaluer";
                           case 'exchange_denied':
                             return "a annulé l'échange";
                           case 'rating':
