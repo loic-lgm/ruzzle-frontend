@@ -1,16 +1,21 @@
-import { Search, User, X } from 'lucide-react';
+import {Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import React, { useState } from 'react';
 import { useSearch } from '@/hooks/useSearch';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router';
+import SearchSection from '@/components/SearchSection';
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { data: searchResults = [], isFetching } = useSearch(searchTerm);
   const navigate = useNavigate();
+
+  const filteredCategories = [{ name: 'Categorie 1' }, { name: 'Categorie 2' }];
+  const filteredBrands = [{ name: 'Marque 1' }, { name: 'Marque 2' }];
+  const filteredUsers = [{ name: 'User 1' }, { name: 'User 2' }];
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -51,7 +56,10 @@ const SearchBar = () => {
       )}
       {isOpen && (
         <Card className="absolute top-full left-0 right-0 mt-2 py-2 bg-background/95 backdrop-blur-md border shadow-lg z-50 max-h-80 overflow-y-auto">
-          {searchResults.length > 0
+          <SearchSection type='category' datas={filteredCategories}/>
+          <SearchSection type='brand' datas={filteredBrands}/>
+          <SearchSection type='user' datas={filteredUsers}/>
+          {/* {searchResults.length > 0
             ? searchResults.map((user) => (
                 <div
                   key={user.id}
@@ -81,7 +89,7 @@ const SearchBar = () => {
                   <User className="h-8 w-8 mx-auto mb-2 opacity-50" />
                   <p>Aucun utilisateur trouvé</p>
                 </div>
-              )}
+              )} */}
         </Card>
       )}
     </div>
