@@ -1,18 +1,13 @@
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-  FilterIcon,
-  X,
-  FilterX,
-  Grid3X3,
-  Search,
-} from 'lucide-react';
+import { FilterIcon, X, FilterX, Grid3X3, Search } from 'lucide-react';
 import { Brand, Brands } from '@/types/brand';
 import { FilterTypes } from '@/types/puzzle';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { PIECE_COUNT } from '@/utils/constants';
 import { Cities, City } from '@/types/city';
 import { Categories, Category } from '@/types/category';
+import { useNavigate } from 'react-router';
 
 interface FilterPropsType {
   brands: Brands;
@@ -34,7 +29,7 @@ const Filter = ({
   setDisplayMode,
 }: FilterPropsType) => {
   const [filtersVisible, setFiltersVisible] = useState(true);
-
+  const navigate = useNavigate();
   const handleClearFilters = () => {
     setFilters({
       category: '',
@@ -42,6 +37,9 @@ const Filter = ({
       brand: '',
       city: '',
     });
+    if (window.location.search) {
+      navigate('/puzzles', { replace: true });
+    }
   };
 
   const handleFilterChange = useCallback(
@@ -68,7 +66,7 @@ const Filter = ({
       }
 
       if (!selectedItem) return;
-
+      window.history.replaceState(null, '', '/puzzles');
       setFilters((prev) => ({
         ...prev,
         [type]:
