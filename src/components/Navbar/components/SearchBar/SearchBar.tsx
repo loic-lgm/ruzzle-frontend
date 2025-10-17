@@ -30,7 +30,7 @@ const SearchBar = () => {
       <Search className="absolute left-[10px] z-[99] h-4 w-4 text-muted-foreground transition-colors" />
       <Input
         type="text"
-        placeholder="Rechercher un membre, une marque ou un mot-clé"
+        placeholder="Rechercher par mots-clés, marques, ..."
         className="pl-10 pr-4 rounded-full border-2 border-border/50 bg-background/80 backdrop-blur-sm focus:border-primary/50 focus:bg-background transition-all"
         value={searchTerm}
         onChange={handleValueChange}
