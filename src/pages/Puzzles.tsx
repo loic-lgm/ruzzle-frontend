@@ -13,6 +13,7 @@ import { useBrands } from '@/hooks/useBrands';
 import { useCategories } from '@/hooks/useCategories';
 import { useUserPuzzles } from '@/hooks/useUserPuzzles';
 import Header from '@/components/Header';
+import { useSearchParams } from 'react-router';
 
 const Puzzles = () => {
   const user = useUserStore((state) => state.user);
@@ -68,6 +69,18 @@ const Puzzles = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const category = searchParams.get('category') || '';
+    const brand = searchParams.get('brand') || '';
+    setFilters((prev) => ({
+      ...prev,
+      category,
+      brand,
+    }));
+  }, [searchParams]);
 
   return (
     <div className="bg-gray-50">

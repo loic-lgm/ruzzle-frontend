@@ -47,10 +47,3 @@ export const fetchCompletedSwapsByUser = async (
   );
   return res.data;
 };
-
-export const searchUser = async (search: string): Promise<User[]> => {
-  const res = await api.get(
-    `${import.meta.env.VITE_API_URL}/users/search/?q=${search}`
-  );
-  return res.data;
-};
