@@ -58,7 +58,7 @@ const PublicProfilePage = () => {
                   <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
                     <MapPin size={16} className="text-gray-500" />
                     <p className="text-gray-600">
-                      {publicUser.city?.name}, France
+                      {publicUser.city_name}, France
                     </p>
                   </div>
                   <p className="text-sm text-gray-500 mt-1">

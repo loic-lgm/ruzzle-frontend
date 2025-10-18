@@ -2,20 +2,17 @@ import { useState } from 'react';
 import { useCities } from '@/hooks/useCities';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { City } from '@/types/city';
 
-interface City {
-  id: string;
-  name: string;
-  postal_code: string;
-  latitude: number;
-  longitude: number;
+interface CityAutoCompleteProps {
+  onSelectCity: (city: City) => void;
+  displayLabel?: boolean;
 }
 
 const CityAutocomplete = ({
   onSelectCity,
-}: {
-  onSelectCity: (city: City) => void;
-}) => {
+  displayLabel = true,
+}: CityAutoCompleteProps) => {
   const [query, setQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -34,7 +31,9 @@ const CityAutocomplete = ({
 
   return (
     <div className="space-y-2 w-full relative">
+      {displayLabel &&
       <Label htmlFor="city">Ville</Label>
+      }
       <Input
         id="city"
         value={query}

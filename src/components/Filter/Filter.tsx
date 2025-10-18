@@ -5,13 +5,13 @@ import { Brand, Brands } from '@/types/brand';
 import { FilterTypes } from '@/types/puzzle';
 import SelectCustom from '@/components/SelectCustom/SelectCustom';
 import { PIECE_COUNT } from '@/utils/constants';
-import { Cities, City } from '@/types/city';
+import { City, CityFilterValue } from '@/types/city';
 import { Categories, Category } from '@/types/category';
 import { useNavigate } from 'react-router';
+import CityFilter from '@/components/CityFilter';
 
 interface FilterPropsType {
   brands: Brands;
-  cities: Cities;
   categories: Categories;
   displayMode: string;
   filters: FilterTypes;
@@ -21,7 +21,6 @@ interface FilterPropsType {
 
 const Filter = ({
   brands,
-  cities,
   categories,
   displayMode,
   filters,
@@ -29,6 +28,7 @@ const Filter = ({
   setDisplayMode,
 }: FilterPropsType) => {
   const [filtersVisible, setFiltersVisible] = useState(true);
+  const [radius, setRadius] = useState<number>(0);
   const navigate = useNavigate();
   const handleClearFilters = () => {
     setFilters({
@@ -37,13 +37,21 @@ const Filter = ({
       brand: '',
       city: '',
     });
+    setRadius(0)
     if (window.location.search) {
       navigate('/puzzles', { replace: true });
     }
   };
 
   const handleFilterChange = useCallback(
-    (type: keyof FilterTypes, value: string) => {
+    (type: keyof FilterTypes, value: string | number | CityFilterValue) => {
+      if (type === 'city') {
+        setFilters((prev) => ({
+          ...prev,
+          city: value as CityFilterValue | string,
+        }));
+        return;
+      }
       let selectedItem;
 
       switch (type) {
@@ -54,9 +62,6 @@ const Filter = ({
           break;
         case 'brand':
           selectedItem = brands.find((item) => item.id.toString() === value);
-          break;
-        case 'city':
-          selectedItem = cities.find((item) => item.id.toString() === value);
           break;
         case 'pieceCount':
           selectedItem = value;
@@ -75,7 +80,7 @@ const Filter = ({
             : (selectedItem as Category | Brand | City).id.toString(),
       }));
     },
-    [brands, categories, cities, setFilters]
+    [brands, categories, setFilters]
   );
 
   const hasActiveFilters =
@@ -153,7 +158,9 @@ const Filter = ({
               )}
             </div>
 
-            <div className="flex flex-col gap-2 sm:flex-row sm:gap-10 mb-10">
+            <div
+              className="flex flex-col gap-2 lg:flex-row lg:gap-10 mb-10 lg:items-center"
+            >
               <SelectCustom
                 label="Categorie"
                 data={categories}
@@ -175,13 +182,7 @@ const Filter = ({
                 onChange={handleFilterChange}
                 value={filters.brand ?? ''}
               />
-              <SelectCustom
-                label="Ville"
-                data={cities}
-                type="city"
-                onChange={handleFilterChange}
-                value={filters.city ?? ''}
-              />
+              <CityFilter onChange={handleFilterChange} radius={radius} setRadius={setRadius}/>
             </div>
           </div>
         )}

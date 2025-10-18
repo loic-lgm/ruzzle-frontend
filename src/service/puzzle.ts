@@ -12,7 +12,13 @@ export const fetchPuzzles = async (
 ): Promise<PaginatedResponse> => {
   const searchParams = new URLSearchParams();
   Object.entries(filters).forEach(([key, value]) => {
-    searchParams.append(key, value.toString());
+    if (key === 'city' && value && typeof value === 'object') {
+      searchParams.append('latitude', value.latitude.toString());
+      searchParams.append('longitude', value.longitude.toString());
+      searchParams.append('radius', value.radius.toString());
+    } else if (value !== undefined && value !== null && value !== '') {
+      searchParams.append(key, value.toString());
+    }
   });
   const response = await api.get(
     `${import.meta.env.VITE_API_URL}/puzzles/?${searchParams}`

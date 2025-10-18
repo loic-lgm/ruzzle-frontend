@@ -65,37 +65,6 @@ const SearchBar = () => {
               />
             </>
           )}
-          {/* {searchResults.length > 0
-            ? searchResults.map((user) => (
-                <div
-                  key={user.id}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-muted/50 cursor-pointer transition-colors"
-                  onClick={() => handleClick(user.username)}
-                >
-                  <Avatar className="h-10 w-10 border border-border/20">
-                    <AvatarImage src={user.image} alt={user.username} />
-                    <AvatarFallback>
-                      <User className="h-5 w-5" />
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium text-foreground truncate">
-                        @{user.username}
-                      </p>
-                    </div>
-                    <p className="text-sm text-muted-foreground truncate">
-                      {user.city?.name}
-                    </p>
-                  </div>
-                </div>
-              ))
-            : !isFetching && (
-                <div className="px-2 py-3 text-center text-muted-foreground">
-                  <User className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  <p>Aucun utilisateur trouvé</p>
-                </div>
-              )} */}
         </Card>
       )}
     </div>

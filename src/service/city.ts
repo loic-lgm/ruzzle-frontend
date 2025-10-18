@@ -1,7 +1,7 @@
 import { City, GouvApiResponse } from '@/types/city';
 
 export const fetchCities = async (query: string): Promise<City[]> => {
-  if (!query || query.length < 2) return [];
+  if (!query || query.length < 3) return [];
 
   const url = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(
     query

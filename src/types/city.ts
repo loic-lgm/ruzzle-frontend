@@ -6,6 +6,12 @@ export type City = {
   longitude: number;
 };
 
+export interface CityFilterValue {
+  latitude: number;
+  longitude: number;
+  radius: number;
+}
+
 interface Feature {
   type: string;
   geometry: {

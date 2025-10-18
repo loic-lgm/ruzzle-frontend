@@ -1,5 +1,6 @@
 import { Brand, BrandInput } from '@/types/brand';
 import { Category, CategoryInput } from '@/types/category';
+import { CityFilterValue } from '@/types/city';
 import { User } from '@/types/user';
 
 export interface Puzzle {
@@ -31,7 +32,7 @@ export interface FilterTypes {
   category: string;
   pieceCount: string;
   brand: string;
-  city: string;
+  city: string | CityFilterValue;
   condition?: string;
   page?: number;
 }

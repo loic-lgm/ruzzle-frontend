@@ -8,7 +8,7 @@ import { Loader } from 'lucide-react';
 import SwapModal from '@/components/SwapModal';
 import useUserStore from '@/stores/useUserStore';
 import { useInView } from 'react-intersection-observer';
-import { useCities } from '@/hooks/useCities';
+// import { useCities } from '@/hooks/useCities';
 import { useBrands } from '@/hooks/useBrands';
 import { useCategories } from '@/hooks/useCategories';
 import { useUserPuzzles } from '@/hooks/useUserPuzzles';
@@ -88,9 +88,8 @@ const Puzzles = () => {
         title="Explorer les puzzles"
         subtitle="Parcours les puzzles disponibles et trouve celui qui te plaît."
       />
-      {cities && brands && categories && (
+      {brands && categories && (
         <Filter
-          cities={cities}
           brands={brands}
           categories={categories}
           displayMode={displayMode}
