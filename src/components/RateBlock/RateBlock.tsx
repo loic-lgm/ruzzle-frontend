@@ -50,7 +50,6 @@ const RateBlock = ({
     onSuccess: () => {
       setLocalHasVoted(true);
       setLocalRating(ratingSelected);
-      // onRated();
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
       toast.success('Note envoyée avec succès');
     },

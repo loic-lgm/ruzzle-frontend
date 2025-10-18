@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { MapPin } from 'lucide-react';
-// import { Slider } from '@/components/ui/slider';
 import useUserStore from '@/stores/useUserStore';
 import { FilterTypes } from '@/types/puzzle';
 import { City, CityFilterValue } from '@/types/city';
@@ -67,21 +66,6 @@ const CityFilter = ({ onChange, radius, setRadius }: CityFilterProps) => {
           <p className="text-xs text-emerald-600 mt-1 mb-2">
             Ville sélectionnée : <strong>{user.city_name}</strong>
           </p>
-          {/* <div className="px-1">
-            <Slider
-              value={[radius]}
-              onValueChange={(v) => handleRadiusChange(v[0])}
-              min={5}
-              max={50}
-              step={5}
-              className="mb-2"
-            />
-            <div className="flex justify-between text-xs text-green-500/60">
-              <span>5km</span>
-              <span className="font-semibold text-emerald-500">{radius}km</span>
-              <span>50km</span>
-            </div>
-          </div> */}
         </>
       ) : (
         <>
@@ -94,24 +78,6 @@ const CityFilter = ({ onChange, radius, setRadius }: CityFilterProps) => {
               <p className="text-xs text-emerald-600 mt-1 mb-2">
                 Ville sélectionnée : <strong>{selectedCity.name}</strong>
               </p>
-
-              {/* <div className="px-1">
-                <Slider
-                  value={[radius]}
-                  onValueChange={(v) => handleRadiusChange(v[0])}
-                  min={5}
-                  max={50}
-                  step={5}
-                  className="mb-2"
-                />
-                <div className="flex justify-between text-xs text-green-500/60">
-                  <span>5km</span>
-                  <span className="font-semibold text-emerald-500">
-                    {radius}km
-                  </span>
-                  <span>50km</span>
-                </div>
-              </div> */}
             </>
           )}
         </>
