@@ -25,7 +25,7 @@ const Puzzles = () => {
     brand: '',
     city: '',
   });
-  const { data: cities } = useCities();
+
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
   const { data: userPuzzles } = useUserPuzzles();

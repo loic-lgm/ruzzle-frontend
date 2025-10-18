@@ -2,13 +2,6 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { ChevronRight, Loader } from 'lucide-react';
 import SocialLoginButtons from '@/components/AuthModal/SocialLoginButtons';
 import { AxiosError } from 'axios';
@@ -18,12 +11,12 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { City } from '@/types/city';
 import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import useUserStore from '@/stores/useUserStore';
-import { useCities } from '@/hooks/useCities';
 import { AVATARS } from '@/utils/constants';
 import { toast } from 'sonner';
 import { isValidEmail } from '@/utils/isValideEmail';
 import { forgotPassword as forgotPasswordQuery } from '@/service/auth';
 import { Checkbox } from '@/components/ui/checkbox';
+import CityAutocomplete from '@/components/CityAutoComplete';
 
 interface FormProps {
   close?: () => void;
@@ -34,11 +27,10 @@ const Form = ({ close }: FormProps) => {
   const { activeTab, switchTab } = useAuthModalStore();
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
-  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [selectedCityData, setSelectedCityData] = useState<City | null>(null);
   const [error, setError] = useState<string | null>('');
   const setUser = useUserStore((state) => state.setUser);
   const location = useLocation();
-  const { data: cities } = useCities();
 
   const login = useMutation({
     mutationFn: loginFn,
@@ -109,7 +101,6 @@ const Form = ({ close }: FormProps) => {
     const password = formData.get('password') as string;
     const confirmedPassword = formData.get('confirm-password') as string;
     const username = formData.get('username') as string;
-    const city = formData.get('city') as string;
     const firstname = formData.get('firstname') as string;
     const name = formData.get('name') as string;
 
@@ -144,7 +135,7 @@ const Form = ({ close }: FormProps) => {
       if (/\s/.test(username)) {
         setError("Le nom d'utlisateur ne doit pas contenir d'espace.");
       }
-      if (!city) {
+      if (!selectedCityData) {
         setError('Vous devez renseigner une ville');
         return;
       }
@@ -166,7 +157,10 @@ const Form = ({ close }: FormProps) => {
         username,
         email,
         password,
-        city_id: city,
+        city_name: selectedCityData!.name,
+        postal_code: selectedCityData!.postal_code,
+        latitude: selectedCityData!.latitude,
+        longitude: selectedCityData!.longitude,
         image: AVATARS[Math.floor(Math.random() * AVATARS.length)],
         first_name: firstname,
         last_name: name,
@@ -176,7 +170,6 @@ const Form = ({ close }: FormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {error && <div className="text-red-500 text-sm">{error}</div>}
       {activeTab === 'login' && (
         <>
           <div className="space-y-2">
@@ -236,19 +229,12 @@ const Form = ({ close }: FormProps) => {
                   id="username"
                   name="username"
                   type="text"
-                  placeholder="Nom d'utilisateur"
-                  required
+                  placeholder="johndoe"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="name">Nom</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Nom"
-                  required
-                />
+                <Input id="name" name="name" type="text" placeholder="Doe" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="firstname">Prénom</Label>
@@ -256,8 +242,7 @@ const Form = ({ close }: FormProps) => {
                   id="firstname"
                   name="firstname"
                   type="text"
-                  placeholder="Prénom"
-                  required
+                  placeholder="John"
                 />
               </div>
             </div>
@@ -269,29 +254,12 @@ const Form = ({ close }: FormProps) => {
                   name="email"
                   type="email"
                   placeholder="email@exemple.com"
-                  required
                 />
               </div>
               <div className="space-y-2 sm:w-1/2 min-w-0">
-                <Label>Ville</Label>
-                <Select onValueChange={setSelectedCity}>
-                  <SelectTrigger className="w-94 bg-transparent w-full">
-                    <SelectValue placeholder="Choisir une ville" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {cities &&
-                      cities.map((city: City) => (
-                        <SelectItem
-                          key={city.id}
-                          value={city.id.toString()}
-                          className="hover:bg-accent hover:text-accent-foreground"
-                        >
-                          {city.name}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-                <input type="hidden" name="city" value={selectedCity} />
+                <CityAutocomplete
+                  onSelectCity={(city) => setSelectedCityData(city)}
+                />
               </div>
             </div>
           </div>
@@ -302,7 +270,6 @@ const Form = ({ close }: FormProps) => {
               name="password"
               type="password"
               placeholder="••••••••"
-              required
             />
           </div>
           <div className="space-y-2">
@@ -312,7 +279,6 @@ const Form = ({ close }: FormProps) => {
               name="confirm-password"
               type="password"
               placeholder="••••••••"
-              required
             />
           </div>
           <div className="flex items-start space-x-3 rounded-lg border border-gray-200 bg-white/20 p-4 shadow-sm hover:shadow transition">
@@ -338,9 +304,11 @@ const Form = ({ close }: FormProps) => {
           </div>
         </>
       )}
+      {error && <div className="text-red-500 text-sm">{error}</div>}
       <Button
         type="submit"
         className="w-full gradient-border-button-cta bg-white/10 text-gray-900 hover:bg-white/20 font-semibold"
+        disabled={activeTab === 'signup' && !termsAccepted}
       >
         <span>{activeTab === 'login' ? 'Se connecter' : "S'inscrire"}</span>
         {login.isPending || signup.isPending ? (

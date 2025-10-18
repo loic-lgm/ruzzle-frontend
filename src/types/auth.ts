@@ -14,7 +14,10 @@ export type SignupData = {
   email: string;
   username: string;
   password: string;
-  city_id: string;
+  city_name: string;
+  postal_code: string;
+  latitude: number;
+  longitude: number;
   image: string;
   first_name: string;
   last_name: string;
@@ -26,7 +29,7 @@ export type SignupResponse = {
   first_name: string;
   last_name: string;
   image: string;
-  city: string;
+  city_name: string;
 };
 
 export interface ActivateUserResponse {
