@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MapPin } from 'lucide-react';
 import useUserStore from '@/stores/useUserStore';
 import { FilterTypes } from '@/types/puzzle';
@@ -9,11 +9,19 @@ interface CityFilterProps {
   onChange: (type: keyof FilterTypes, value: number | CityFilterValue) => void;
   radius: number;
   setRadius: React.Dispatch<React.SetStateAction<number>>;
+  selectedCity: City | null;
+  setSelectedCity: React.Dispatch<React.SetStateAction<City | null>>;
 }
 
-const CityFilter = ({ onChange, radius, setRadius }: CityFilterProps) => {
+const CityFilter = ({
+  onChange,
+  radius,
+  setRadius,
+  selectedCity,
+  setSelectedCity,
+}: CityFilterProps) => {
+  console.log('radius: ', radius);
   const user = useUserStore((state) => state.user);
-  const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const handleRadiusChange = (newRadius: number) => {
     setRadius(newRadius);
     if (user?.latitude && user?.longitude) {
@@ -48,6 +56,9 @@ const CityFilter = ({ onChange, radius, setRadius }: CityFilterProps) => {
       </label>
       {user && user?.latitude && user?.longitude ? (
         <>
+          <p className="text-xs text-emerald-600 mt-1 mb-2">
+            Ville sélectionnée : <strong>{user.city_name}</strong>
+          </p>
           <div className="grid grid-cols-4 gap-2">
             {[5, 10, 25, 50].map((dist) => (
               <button
@@ -63,9 +74,6 @@ const CityFilter = ({ onChange, radius, setRadius }: CityFilterProps) => {
               </button>
             ))}
           </div>
-          <p className="text-xs text-emerald-600 mt-1 mb-2">
-            Ville sélectionnée : <strong>{user.city_name}</strong>
-          </p>
         </>
       ) : (
         <>
@@ -78,6 +86,21 @@ const CityFilter = ({ onChange, radius, setRadius }: CityFilterProps) => {
               <p className="text-xs text-emerald-600 mt-1 mb-2">
                 Ville sélectionnée : <strong>{selectedCity.name}</strong>
               </p>
+              <div className="grid grid-cols-4 gap-2">
+                {[5, 10, 25, 50].map((dist) => (
+                  <button
+                    key={dist}
+                    onClick={() => handleRadiusChange(dist)}
+                    className={`py-2 px-2 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                      radius === dist
+                        ? 'bg-gradient-to-r from-teal-500 to-emerald-500 text-white shadow-md'
+                        : 'bg-green-500/10 text-green-500 hover:bg-green-500/20'
+                    }`}
+                  >
+                    {dist}km
+                  </button>
+                ))}
+              </div>
             </>
           )}
         </>

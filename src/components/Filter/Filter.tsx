@@ -28,7 +28,8 @@ const Filter = ({
   setDisplayMode,
 }: FilterPropsType) => {
   const [filtersVisible, setFiltersVisible] = useState(true);
-  const [radius, setRadius] = useState<number>(0);
+  const [radius, setRadius] = useState<number>(5);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const navigate = useNavigate();
   const handleClearFilters = () => {
     setFilters({
@@ -37,7 +38,8 @@ const Filter = ({
       brand: '',
       city: '',
     });
-    setRadius(0)
+    setSelectedCity(null);
+    setRadius(5);
     if (window.location.search) {
       navigate('/puzzles', { replace: true });
     }
@@ -158,9 +160,7 @@ const Filter = ({
               )}
             </div>
 
-            <div
-              className="flex flex-col gap-2 lg:flex-row lg:gap-10 mb-10 lg:items-center"
-            >
+            <div className="flex flex-col gap-2 lg:flex-row lg:gap-10 mb-10 lg:items-center">
               <SelectCustom
                 label="Categorie"
                 data={categories}
@@ -182,7 +182,13 @@ const Filter = ({
                 onChange={handleFilterChange}
                 value={filters.brand ?? ''}
               />
-              <CityFilter onChange={handleFilterChange} radius={radius} setRadius={setRadius}/>
+              <CityFilter
+                onChange={handleFilterChange}
+                radius={radius}
+                setRadius={setRadius}
+                selectedCity={selectedCity}
+                setSelectedCity={setSelectedCity}
+              />
             </div>
           </div>
         )}
