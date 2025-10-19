@@ -68,7 +68,7 @@ const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
           <div className="flex items-center justify-between mt-1 text-white/90 text-xs">
             <div className="flex flex-row items-center">
               <MapPin className="h-3 w-3 mr-1" />
-              <span>{puzzle.owner.city?.name}</span>
+              <span>{puzzle.owner.city_name}</span>
             </div>
             <div className="flex flex-row items-center">
               <User className="h-3 w-3 mr-1" />
