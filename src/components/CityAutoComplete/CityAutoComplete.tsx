@@ -7,33 +7,43 @@ import { City } from '@/types/city';
 interface CityAutoCompleteProps {
   onSelectCity: (city: City) => void;
   displayLabel?: boolean;
+  value?: string;
+  onValueChange?: (value: string) => void;
 }
 
 const CityAutocomplete = ({
   onSelectCity,
   displayLabel = true,
+  value: externalValue,
+  onValueChange,
 }: CityAutoCompleteProps) => {
-  const [query, setQuery] = useState('');
+  const [internalQuery, setInternalQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const query = externalValue !== undefined ? externalValue : internalQuery;
   const { data: cities = [], isLoading } = useCities(query);
 
   const handleInputChange = (value: string) => {
-    setQuery(value);
+    if (onValueChange) {
+      onValueChange(value);
+    } else {
+      setInternalQuery(value);
+    }
     setShowDropdown(value.length > 0);
   };
 
   const handleSelect = (city: City) => {
-    setQuery(city.name);
+    if (onValueChange) {
+      onValueChange(city.name);
+    } else {
+      setInternalQuery(city.name);
+    }
     onSelectCity(city);
     setShowDropdown(false);
   };
 
   return (
     <div className="space-y-2 w-full relative">
-      {displayLabel &&
-      <Label htmlFor="city">Ville</Label>
-      }
+      {displayLabel && <Label htmlFor="city">Ville</Label>}
       <Input
         id="city"
         value={query}

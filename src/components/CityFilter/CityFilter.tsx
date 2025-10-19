@@ -11,6 +11,8 @@ interface CityFilterProps {
   setRadius: React.Dispatch<React.SetStateAction<number>>;
   selectedCity: City | null;
   setSelectedCity: React.Dispatch<React.SetStateAction<City | null>>;
+  cityQuery: string;
+  setCityQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const CityFilter = ({
@@ -19,8 +21,9 @@ const CityFilter = ({
   setRadius,
   selectedCity,
   setSelectedCity,
+  cityQuery,
+  setCityQuery,
 }: CityFilterProps) => {
-  console.log('radius: ', radius);
   const user = useUserStore((state) => state.user);
   const handleRadiusChange = (newRadius: number) => {
     setRadius(newRadius);
@@ -49,8 +52,8 @@ const CityFilter = ({
   };
 
   return (
-    <div className="flex flex-col w-full max-w-xs">
-      <label className="block text-sm font-medium text-black mb-2 flex items-center">
+    <div className="flex flex-col w-full max-w-xs lg:relative">
+      <label className="block text-sm font-medium text-black mb-2 flex items-center lg:absolute lg:-top-6">
         <MapPin className="h-4 w-4 mr-1 text-green-500" />
         {user ? 'Autour de moi' : 'Autour d’une ville'}
       </label>
@@ -80,6 +83,8 @@ const CityFilter = ({
           <CityAutocomplete
             onSelectCity={handleSelectCity}
             displayLabel={false}
+            value={cityQuery}
+            onValueChange={setCityQuery}
           />
           {selectedCity && (
             <>

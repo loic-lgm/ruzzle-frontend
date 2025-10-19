@@ -30,6 +30,7 @@ const Filter = ({
   const [filtersVisible, setFiltersVisible] = useState(true);
   const [radius, setRadius] = useState<number>(5);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [cityQuery, setCityQuery] = useState<string>('');
   const navigate = useNavigate();
   const handleClearFilters = () => {
     setFilters({
@@ -40,6 +41,7 @@ const Filter = ({
     });
     setSelectedCity(null);
     setRadius(5);
+    setCityQuery('');
     if (window.location.search) {
       navigate('/puzzles', { replace: true });
     }
@@ -142,7 +144,7 @@ const Filter = ({
         </div>
         {filtersVisible && (
           <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 lg:mb-10">
               <h2 className="text-lg font-semibold flex items-center text-green-500">
                 <FilterIcon className="mr-2 h-5 w-5 text-emerald-500" />
                 Filtrer les puzzles
@@ -160,35 +162,37 @@ const Filter = ({
               )}
             </div>
 
-            <div className="flex flex-col gap-2 lg:flex-row lg:gap-10 mb-10 lg:items-center">
-              <SelectCustom
-                label="Categorie"
-                data={categories}
-                type="category"
-                onChange={handleFilterChange}
-                value={filters.category ?? ''}
-              />
-              <SelectCustom
-                label="Nombre de pièce"
-                data={PIECE_COUNT}
-                type="pieceCount"
-                onChange={handleFilterChange}
-                value={filters.pieceCount}
-              />
-              <SelectCustom
-                label="Marque"
-                data={brands}
-                type="brand"
-                onChange={handleFilterChange}
-                value={filters.brand ?? ''}
-              />
-              <CityFilter
-                onChange={handleFilterChange}
-                radius={radius}
-                setRadius={setRadius}
-                selectedCity={selectedCity}
-                setSelectedCity={setSelectedCity}
-              />
+              <div className="flex flex-col gap-2 mb-10 lg:flex-row lg:gap-10 lg:items-start">
+                <SelectCustom
+                  label="Categorie"
+                  data={categories}
+                  type="category"
+                  onChange={handleFilterChange}
+                  value={filters.category ?? ''}
+                />
+                <SelectCustom
+                  label="Nombre de pièce"
+                  data={PIECE_COUNT}
+                  type="pieceCount"
+                  onChange={handleFilterChange}
+                  value={filters.pieceCount}
+                />
+                <SelectCustom
+                  label="Marque"
+                  data={brands}
+                  type="brand"
+                  onChange={handleFilterChange}
+                  value={filters.brand ?? ''}
+                />
+                <CityFilter
+                  onChange={handleFilterChange}
+                  radius={radius}
+                  setRadius={setRadius}
+                  selectedCity={selectedCity}
+                  setSelectedCity={setSelectedCity}
+                  cityQuery={cityQuery}
+                  setCityQuery={setCityQuery}
+                />
             </div>
           </div>
         )}
