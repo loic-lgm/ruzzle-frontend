@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { User } from '@/types/user';
 import { Conversation } from '@/types/conversation';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, Send, XCircle } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,6 +12,7 @@ import MessageExchange from '@/components/MessageExchange/MessageExchange';
 import { useNavigate } from 'react-router';
 import { formatDate, formatTime } from '@/utils/timeFormat';
 import RateBlock from '@/components/RateBlock';
+import { Textarea } from '@/components/ui/textarea';
 
 interface MessagesType {
   user: User;
@@ -262,14 +262,19 @@ const Messages = ({
             </div>
           ) : (
             <div className="p-3 border-t bg-white">
-              <div className="flex gap-2">
-                <Input
+              <div className="flex gap-2 items-center">
+                <Textarea
                   placeholder="Discutez..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                  className="flex-1"
+                  onKeyDown={(e) =>
+                    e.key === 'Enter' && !e.shiftKey && handleSendMessage()
+                  }
+                  rows={1}
+                  className="resize-none overflow-hidden max-h-40 pr-10"
+                  style={{ minHeight: '40px' }}
                 />
+
                 <div className="text-xs text-gray-500 mt-1 text-right flex items-center">
                   {newMessage.length}/500
                 </div>
