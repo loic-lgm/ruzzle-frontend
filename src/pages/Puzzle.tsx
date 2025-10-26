@@ -7,6 +7,7 @@ import { useBrands } from '@/hooks/useBrands';
 import { useCategories } from '@/hooks/useCategories';
 import { usePuzzle } from '@/hooks/usePuzzle';
 import { useUserPuzzles } from '@/hooks/useUserPuzzles';
+import { useAuthModalStore } from '@/stores/useAuthModalStore';
 import { useModalStore } from '@/stores/useModalStore';
 import useUserStore from '@/stores/useUserStore';
 import { CONDITION } from '@/utils/constants';
@@ -31,7 +32,8 @@ const Puzzle = () => {
   const { data: userPuzzles } = useUserPuzzles();
   const { data: brands } = useBrands();
   const { data: categories } = useCategories();
-  const { open } = useModalStore();
+  const { open } = useAuthModalStore();
+  const { open: openSwap } = useModalStore();
   const navigate = useNavigate();
   const isUserConnectedIsOwner = puzzle?.owner.id == user?.id;
   const handleSwap = () => {
@@ -40,7 +42,7 @@ const Puzzle = () => {
       return;
     }
     if (user) {
-      open();
+      openSwap();
     } else {
       open('login');
     }
@@ -148,7 +150,7 @@ const Puzzle = () => {
                         </div>
                       </div>
                     </div>
-                    {puzzle?.owner.city?.name && (
+                    {puzzle?.owner.city_name && (
                       <div className="glass-card p-4">
                         <div className="flex items-center">
                           <MapPin className="h-5 w-5 text-teal-500 mr-3" />
@@ -157,7 +159,7 @@ const Puzzle = () => {
                               Localisation
                             </p>
                             <p className="font-semibold">
-                              {puzzle?.owner.city?.name}
+                              {puzzle?.owner.city_name}
                             </p>
                           </div>
                         </div>
