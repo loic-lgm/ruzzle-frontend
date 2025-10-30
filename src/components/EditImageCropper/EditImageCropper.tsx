@@ -29,7 +29,7 @@ const EditImageCropper = ({
           crop={crop}
           zoom={zoom}
           rotation={rotation}
-          aspect={1}
+          aspect={5/8}
           onCropChange={setCrop}
           onZoomChange={setZoom}
           onCropComplete={(_, croppedAreaPixels) => {
@@ -42,14 +42,14 @@ const EditImageCropper = ({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setZoom((z) => Math.min(z + 0.1, 3))}
+          onClick={() => setZoom((z) => Math.min(z + 0.05, 3))}
         >
           <ZoomIn className="h-4 w-4" /> Zoom +
         </Button>
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setZoom((z) => Math.max(z - 0.1, 1))}
+          onClick={() => setZoom((z) => Math.max(z - 0.05, 0.5))}
         >
           <ZoomOut className="h-4 w-4" /> Zoom -
         </Button>

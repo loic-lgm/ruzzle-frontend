@@ -57,9 +57,9 @@ const Puzzle = () => {
               <NotFound type="puzzle" />
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                <div className="order-2 lg:order-1">
+                <div className="order-2 lg:order-1 max-w-1/2 m-auto">
                   <div className="glass-card overflow-hidden">
-                    <div className="aspect-square relative">
+                    <div className="aspect-[5/8] relative">
                       <img
                         src={`${puzzle?.image}?w=800&auto=format&q=90`}
                         alt={puzzle?.image}

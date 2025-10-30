@@ -65,7 +65,7 @@ const CropModal = ({
       <DialogContent className="max-w-4xl p-0 gap-0 overflow-hidden">
         <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/50">
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-green-500 to-teal-500 bg-clip-text text-transparent">
-            Recadre votre image
+            Recadre ton image
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
             Ajuste le cadrage de ton image pour obtenir le meilleur rendu
@@ -78,7 +78,7 @@ const CropModal = ({
               variant="outline"
               size="sm"
               className="gap-2 hover:bg-accent"
-              onClick={() => setZoom((z) => Math.min(z + 0.1, 3))}
+              onClick={() => setZoom((z) => Math.min(z + 0.05, 3))}
             >
               <ZoomIn className="h-4 w-4" /> Zoom +
             </Button>
@@ -86,7 +86,7 @@ const CropModal = ({
               variant="outline"
               size="sm"
               className="gap-2 hover:bg-accent"
-              onClick={() => setZoom((z) => Math.max(z - 0.1, 1))}
+              onClick={() => setZoom((z) => Math.max(z - 0.05, 0.5))}
             >
               <ZoomOut className="h-4 w-4" /> Zoom -
             </Button>
@@ -104,13 +104,14 @@ const CropModal = ({
 
         <div className="relative bg-muted/20 p-8">
           {imageUrl ? (
-            <div className="relative mx-auto max-w-2xl aspect-video bg-background rounded-lg overflow-hidden border-2 border-dashed border-primary/30 shadow-xl">
+            <div className="relative mx-auto max-w-2xl aspect-square bg-background rounded-lg overflow-hidden border-2 border-dashed border-primary/30 shadow-xl">
               <Cropper
                 image={imageUrl}
                 crop={crop}
                 zoom={zoom}
                 rotation={rotation}
-                aspect={1}
+                aspect={5/8}
+                minZoom={0.5}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
                 onCropComplete={handleCropComplete}

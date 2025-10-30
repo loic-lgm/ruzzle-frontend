@@ -162,7 +162,7 @@ const PublishForm = ({ categories, brands, user }: PublishFormProps) => {
               onChange={(vals) => handleChange('brand', vals)}
               className={`
                 ${
-                  errors.some((err) => err.field == 'categories')
+                  errors.some((err) => err.field == 'brand')
                     ? 'border-red-500'
                     : 'border-emerald-500'
                 }
