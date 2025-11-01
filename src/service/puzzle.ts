@@ -13,9 +13,11 @@ export const fetchPuzzles = async (
   const searchParams = new URLSearchParams();
   Object.entries(filters).forEach(([key, value]) => {
     if (key === 'city' && value && typeof value === 'object') {
-      searchParams.append('latitude', value.latitude.toString());
-      searchParams.append('longitude', value.longitude.toString());
-      searchParams.append('radius', value.radius.toString());
+      if (value.radius && value.radius > 0) {
+        searchParams.append('latitude', value.latitude.toString());
+        searchParams.append('longitude', value.longitude.toString());
+        searchParams.append('radius', value.radius.toString());
+      }
     } else if (value !== undefined && value !== null && value !== '') {
       searchParams.append(key, value.toString());
     }

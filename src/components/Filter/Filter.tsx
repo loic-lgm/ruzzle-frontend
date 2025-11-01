@@ -28,7 +28,7 @@ const Filter = ({
   setDisplayMode,
 }: FilterPropsType) => {
   const [filtersVisible, setFiltersVisible] = useState(true);
-  const [radius, setRadius] = useState<number>(5);
+  const [radius, setRadius] = useState<number>(0);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [cityQuery, setCityQuery] = useState<string>('');
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const Filter = ({
       city: '',
     });
     setSelectedCity(null);
-    setRadius(5);
+    setRadius(0);
     setCityQuery('');
     if (window.location.search) {
       navigate('/puzzles', { replace: true });
