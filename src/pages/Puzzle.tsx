@@ -189,7 +189,7 @@ const Puzzle = () => {
                       size="lg"
                     >
                       <ArrowRightLeft className="h-5 w-5 mr-2" />
-                      Demander un échanger
+                      Demander un échange
                     </Button>
                     {/* <div className="grid grid-cols-2 gap-40">
                       <Button
