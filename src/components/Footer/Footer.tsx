@@ -18,7 +18,7 @@ const Footer = () => {
             </p>
             <div className="mt-6 flex space-x-4">
               <a
-                href="#"
+                href="https://www.facebook.com/ruzzle.fr/"
                 className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 hover:bg-green-500 hover:text-white transition-colors"
               >
                 <svg
@@ -48,7 +48,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/ruzzle.fr"
                 className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 hover:bg-green-500 hover:text-white transition-colors"
               >
                 <svg
