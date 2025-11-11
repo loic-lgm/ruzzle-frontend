@@ -13,16 +13,15 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useImageCrop } from '@/hooks/useImageCrop';
 import { editPuzzle } from '@/service/puzzle';
 import { Brand, BrandInput } from '@/types/brand';
 import { Category, CategoryInput } from '@/types/category';
 import { PublishOrEditPuzzleData, Puzzle } from '@/types/puzzle';
 import { CONDITION } from '@/utils/constants';
-import { fileCropped, urlToFile } from '@/utils/crop';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
-import { Area } from 'react-easy-crop';
 import { toast } from 'sonner';
 
 interface EditPuzzleModalProps {
@@ -61,9 +60,10 @@ const EditPuzzleModal = ({
     width: puzzle.width ?? null,
     height: puzzle.height ?? null,
   });
-  const [croppedArea, setCroppedArea] = useState<Area | null>(null);
-  const [rotation, setRotation] = useState<number>(0);
   const queryClient = useQueryClient();
+  const crop = useImageCrop(
+    formData.image ? URL.createObjectURL(formData.image) : puzzle.image
+  );
 
   const conditionLabels: Record<ConditionType, string> = {
     used: 'Usé',
@@ -106,25 +106,8 @@ const EditPuzzleModal = ({
   });
 
   const handleEdit = async () => {
-    let imageToCrop: File;
-    const urlParts = puzzle.image.split('/');
-    const originalName = urlParts[urlParts.length - 1] || 'puzzle.jpg';
-    const uniqueName = `${Date.now()}_${originalName}`;
-    if (formData.image) {
-      imageToCrop = formData.image;
-    } else {
-      imageToCrop = await urlToFile(puzzle.image, uniqueName);
-    }
-    const imageElement = new Image();
-    imageElement.src = URL.createObjectURL(imageToCrop);
-    await new Promise((resolve) => (imageElement.onload = resolve));
-    const area = croppedArea || {
-      x: 0,
-      y: 0,
-      width: imageElement.width,
-      height: imageElement.height,
-    };
-    const finalImage = await fileCropped(imageToCrop, area, rotation);
+    const finalImage = await crop.generateCroppedFile();
+
     update.mutate({
       hashid: puzzle.hashid!,
       data: {
@@ -175,12 +158,7 @@ const EditPuzzleModal = ({
                   ? URL.createObjectURL(formData.image)
                   : puzzle.image
               }
-              onChange={(file) =>
-                setFormData((prev) => ({ ...prev, image: file }))
-              }
-              setCroppedArea={setCroppedArea}
-              setRotation={setRotation}
-              rotation={rotation}
+              crop={crop}
             />
             <p className="text-xs text-muted-foreground mt-1">
               Recadrer l&apos;image si nécessaire
