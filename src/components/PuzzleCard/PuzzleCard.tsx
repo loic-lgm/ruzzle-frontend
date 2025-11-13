@@ -54,7 +54,7 @@ const PuzzleCard = ({ puzzle, setSelectedPuzzle, user }: PuzzleCardProps) => {
         <img
           src={puzzle.image}
           alt={puzzle.title}
-          className="w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105"
+          className="w-full h-full object-contain transition-transform duration-500 ease-in-out group-hover:scale-105"
         />
       </CardContent>
 
