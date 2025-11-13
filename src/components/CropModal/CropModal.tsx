@@ -138,9 +138,9 @@ const CropModal = ({
                   transform: `translate(${position.x}px, ${position.y}px) rotate(${rotation}deg) scale(${zoom})`,
                   transition: isDragging ? 'none' : 'transform 0.1s ease-out',
                   userSelect: 'none',
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'fill',
+                  // width: '100%',
+                  // height: '100%',
+                  // objectFit: 'fill',
                 }}
               />
             </div>
