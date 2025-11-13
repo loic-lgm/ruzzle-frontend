@@ -63,7 +63,7 @@ const Puzzle = () => {
                       <img
                         src={`${puzzle?.image}?w=800&auto=format&q=90`}
                         alt={puzzle?.image}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full"
                       />
                     </div>
                   </div>
