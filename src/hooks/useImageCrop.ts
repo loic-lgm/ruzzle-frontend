@@ -31,24 +31,7 @@ export const useImageCrop = (imageUrl: string | null) => {
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, finalSize, finalSize);
 
-    // Calculer comment l'image est affichée avec object-fit: contain
-    const imgRatio = img.width / img.height;
-    let displayWidth = previewSize;
-    let displayHeight = previewSize;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    if (imgRatio > 1) {
-      // Image plus large que haute
-      displayHeight = previewSize / imgRatio;
-      offsetY = (previewSize - displayHeight) / 2;
-    } else {
-      // Image plus haute que large
-      displayWidth = previewSize * imgRatio;
-      offsetX = (previewSize - displayWidth) / 2;
-    }
-
-    // Ratio entre le canvas final et l'affichage preview
+    // Ratio entre le canvas final et le preview
     const scale = finalSize / previewSize;
 
     ctx.save();
@@ -62,22 +45,20 @@ export const useImageCrop = (imageUrl: string | null) => {
     // Appliquer le zoom
     ctx.scale(zoom, zoom);
 
-    // Appliquer la position en tenant compte de l'offset du object-fit: contain
-    ctx.translate(
-      (position.x - offsetX) * scale,
-      (position.y - offsetY) * scale
-    );
+    // Appliquer la position (scaling pour correspondre au canvas final)
+    ctx.translate(position.x * scale, position.y * scale);
 
-    // Dessiner l'image avec les bonnes dimensions
-    const finalImgWidth = displayWidth * scale;
-    const finalImgHeight = displayHeight * scale;
+    // L'image doit avoir la même taille relative que dans le preview
+    // Dans le preview, l'image fait 200x200 (100% du conteneur avec object-fit: contain)
+    // Donc dans le canvas final, elle doit faire 800x800
+    const finalImgSize = finalSize;
 
     ctx.drawImage(
       img,
-      -finalImgWidth / 2,
-      -finalImgHeight / 2,
-      finalImgWidth,
-      finalImgHeight
+      -finalImgSize / 2,
+      -finalImgSize / 2,
+      finalImgSize,
+      finalImgSize
     );
 
     ctx.restore();
