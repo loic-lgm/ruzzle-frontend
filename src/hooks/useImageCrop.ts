@@ -31,16 +31,21 @@ export const useImageCrop = (imageUrl: string | null) => {
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, finalSize, finalSize);
 
-    // Calculer l'échelle de l'image pour qu'elle rentre dans le preview
-    // Dans le CSS, l'image est affichée en "contain" implicite
+    // Calculer comment l'image est affichée avec object-fit: contain
     const imgRatio = img.width / img.height;
     let displayWidth = previewSize;
     let displayHeight = previewSize;
+    let offsetX = 0;
+    let offsetY = 0;
 
     if (imgRatio > 1) {
+      // Image plus large que haute
       displayHeight = previewSize / imgRatio;
+      offsetY = (previewSize - displayHeight) / 2;
     } else {
+      // Image plus haute que large
       displayWidth = previewSize * imgRatio;
+      offsetX = (previewSize - displayWidth) / 2;
     }
 
     // Ratio entre le canvas final et l'affichage preview
@@ -57,8 +62,11 @@ export const useImageCrop = (imageUrl: string | null) => {
     // Appliquer le zoom
     ctx.scale(zoom, zoom);
 
-    // Appliquer la position (scaling pour correspondre au canvas final)
-    ctx.translate(position.x * scale, position.y * scale);
+    // Appliquer la position en tenant compte de l'offset du object-fit: contain
+    ctx.translate(
+      (position.x - offsetX) * scale,
+      (position.y - offsetY) * scale
+    );
 
     // Dessiner l'image avec les bonnes dimensions
     const finalImgWidth = displayWidth * scale;
