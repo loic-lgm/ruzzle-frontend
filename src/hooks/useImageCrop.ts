@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-export function useImageCrop(imageUrl: string | null) {
+export const useImageCrop = (imageUrl: string | null) => {
   const [zoom, setZoom] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
@@ -9,13 +9,14 @@ export function useImageCrop(imageUrl: string | null) {
     if (!imageUrl) return null;
 
     const canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 800;
+    const finalSize = 800;
+    canvas.width = finalSize;
+    canvas.height = finalSize;
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, 800, 800);
+    ctx.fillRect(0, 0, finalSize, finalSize);
 
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -26,14 +27,14 @@ export function useImageCrop(imageUrl: string | null) {
     });
 
     const previewSize = 200;
-    const ratio = 800 / previewSize;
+    const ratio = finalSize / previewSize;
 
     ctx.save();
-    ctx.translate(400, 400);
+    ctx.translate(finalSize / 2, finalSize / 2);
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(zoom, zoom);
-    ctx.translate((position.x * ratio) / zoom, (position.y * ratio) / zoom);
-    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+    ctx.translate(position.x * ratio, position.y * ratio);
+    ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
     ctx.restore();
 
     return await new Promise((resolve) => {
@@ -48,7 +49,6 @@ export function useImageCrop(imageUrl: string | null) {
     });
   }, [imageUrl, zoom, position, rotation]);
 
-
   return {
     zoom,
     setZoom,
@@ -58,4 +58,4 @@ export function useImageCrop(imageUrl: string | null) {
     setRotation,
     generateCroppedFile,
   };
-}
+};
