@@ -8,33 +8,70 @@ export const useImageCrop = (imageUrl: string | null) => {
   const generateCroppedFile = useCallback(async (): Promise<File | null> => {
     if (!imageUrl) return null;
 
+    // Charger l'image d'abord pour connaître ses dimensions
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = reject;
+      img.src = imageUrl;
+    });
+
     const canvas = document.createElement('canvas');
     const finalSize = 800;
+    const previewSize = 200;
+
     canvas.width = finalSize;
     canvas.height = finalSize;
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
 
+    // Fond blanc
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, finalSize, finalSize);
 
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
+    // Calculer l'échelle de l'image pour qu'elle rentre dans le preview
+    // Dans le CSS, l'image est affichée en "contain" implicite
+    const imgRatio = img.width / img.height;
+    let displayWidth = previewSize;
+    let displayHeight = previewSize;
 
-    await new Promise((resolve) => {
-      img.onload = resolve;
-      img.src = imageUrl;
-    });
+    if (imgRatio > 1) {
+      displayHeight = previewSize / imgRatio;
+    } else {
+      displayWidth = previewSize * imgRatio;
+    }
 
-    const previewSize = 200;
-    const ratio = finalSize / previewSize;
+    // Ratio entre le canvas final et l'affichage preview
+    const scale = finalSize / previewSize;
 
     ctx.save();
+
+    // Centrer sur le canvas
     ctx.translate(finalSize / 2, finalSize / 2);
+
+    // Appliquer la rotation
     ctx.rotate((rotation * Math.PI) / 180);
+
+    // Appliquer le zoom
     ctx.scale(zoom, zoom);
-    ctx.translate(position.x * ratio, position.y * ratio);
-    ctx.drawImage(img, -img.width / 2, -img.height / 2, img.width, img.height);
+
+    // Appliquer la position (scaling pour correspondre au canvas final)
+    ctx.translate(position.x * scale, position.y * scale);
+
+    // Dessiner l'image avec les bonnes dimensions
+    const finalImgWidth = displayWidth * scale;
+    const finalImgHeight = displayHeight * scale;
+
+    ctx.drawImage(
+      img,
+      -finalImgWidth / 2,
+      -finalImgHeight / 2,
+      finalImgWidth,
+      finalImgHeight
+    );
+
     ctx.restore();
 
     return await new Promise((resolve) => {
