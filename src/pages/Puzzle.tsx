@@ -183,14 +183,16 @@ const Puzzle = () => {
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <Button
-                      className="w-full bg-gradient-to-r from-lime-500 to-emerald-500 hover:from-teal-500 hover:to-green-500 text-white font-medium py-3"
-                      onClick={handleSwap}
-                      size="lg"
-                    >
-                      <ArrowRightLeft className="h-5 w-5 mr-2" />
-                      Demander un échange
-                    </Button>
+                    {!isUserConnectedIsOwner && (
+                      <Button
+                        className="w-full bg-gradient-to-r from-lime-500 to-emerald-500 hover:from-teal-500 hover:to-green-500 text-white font-medium py-3"
+                        onClick={handleSwap}
+                        size="lg"
+                      >
+                        <ArrowRightLeft className="h-5 w-5 mr-2" />
+                        Demander un échange
+                      </Button>
+                    )}
                     {/* <div className="grid grid-cols-2 gap-40">
                       <Button
                         variant="outline"
