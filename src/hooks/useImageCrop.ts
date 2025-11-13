@@ -8,7 +8,6 @@ export const useImageCrop = (imageUrl: string | null) => {
   const generateCroppedFile = useCallback(async (): Promise<File | null> => {
     if (!imageUrl) return null;
 
-    // Charger l'image d'abord pour connaître ses dimensions
     const img = new Image();
     img.crossOrigin = 'anonymous';
 
@@ -27,30 +26,17 @@ export const useImageCrop = (imageUrl: string | null) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
 
-    // Fond blanc
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, finalSize, finalSize);
 
-    // Ratio entre le canvas final et le preview
     const scale = finalSize / previewSize;
 
     ctx.save();
-
-    // Centrer sur le canvas
     ctx.translate(finalSize / 2, finalSize / 2);
-
-    // Appliquer la rotation
     ctx.rotate((rotation * Math.PI) / 180);
-
-    // Appliquer le zoom
     ctx.scale(zoom, zoom);
-
-    // Appliquer la position (scaling pour correspondre au canvas final)
     ctx.translate(position.x * scale, position.y * scale);
 
-    // L'image doit avoir la même taille relative que dans le preview
-    // Dans le preview, l'image fait 200x200 (100% du conteneur avec object-fit: contain)
-    // Donc dans le canvas final, elle doit faire 800x800
     const finalImgSize = finalSize;
 
     ctx.drawImage(
