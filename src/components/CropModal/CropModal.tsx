@@ -80,7 +80,7 @@ const CropModal = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setZoom((z) => Math.min(z + 0.05, 3))}
+              onClick={() => setZoom((z) => Math.min(z + 0.1, 3))}
             >
               <ZoomIn className="h-4 w-4" />
               Zoom +
@@ -88,7 +88,7 @@ const CropModal = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setZoom((z) => Math.max(z - 0.05, 0.5))}
+              onClick={() => setZoom((z) => Math.max(z - 0.1, 0.1))}
             >
               <ZoomOut className="h-4 w-4" />
               Zoom -
@@ -104,49 +104,56 @@ const CropModal = ({
           </div>
         </div>
 
-        <div className="relative bg-muted/20 p-8">
-          {imageUrl ? (
-            <div
-              className="relative mx-auto bg-white rounded-lg overflow-hidden border-2 border-dashed border-primary/30 shadow-xl cursor-move"
-              style={{ width: 200, height: 200, touchAction: 'none' }}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              onTouchStart={(e) => {
-                const touch = e.touches[0];
-                setIsDragging(true);
-                setDragStart({
-                  x: touch.clientX - position.x,
-                  y: touch.clientY - position.y,
-                });
-              }}
-              onTouchMove={(e) => {
-                if (!isDragging) return;
-                const touch = e.touches[0];
-                setPosition({
-                  x: touch.clientX - dragStart.x,
-                  y: touch.clientY - dragStart.y,
-                });
-              }}
-              onTouchEnd={() => setIsDragging(false)}
-            >
-              <img
-                src={imageUrl}
-                draggable={false}
-                style={{
-                  transform: `translate(${position.x}px, ${position.y}px) rotate(${rotation}deg) scale(${zoom})`,
-                  transition: isDragging ? 'none' : 'transform 0.1s ease-out',
-                  userSelect: 'none',
+        <div className="relative bg-muted/20 p-8 flex items-center justify-center">
+          <div
+            className="relative bg-white rounded-lg overflow-hidden border-2 border-dashed border-primary/30 shadow-xl"
+            style={{ width: 200, height: 200 }}
+          >
+            {imageUrl ? (
+              <div
+                className="absolute inset-0 cursor-move flex items-center justify-center"
+                style={{ touchAction: 'none' }}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+                onTouchStart={(e) => {
+                  const touch = e.touches[0];
+                  setIsDragging(true);
+                  setDragStart({
+                    x: touch.clientX - position.x,
+                    y: touch.clientY - position.y,
+                  });
                 }}
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-64 text-muted-foreground">
-              <Crop className="h-12 w-12 opacity-50 mb-2" />
-              Aucune image
-            </div>
-          )}
+                onTouchMove={(e) => {
+                  if (!isDragging) return;
+                  const touch = e.touches[0];
+                  setPosition({
+                    x: touch.clientX - dragStart.x,
+                    y: touch.clientY - dragStart.y,
+                  });
+                }}
+                onTouchEnd={() => setIsDragging(false)}
+              >
+                <img
+                  src={imageUrl}
+                  draggable={false}
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'contain',
+                    transform: `translate(${position.x}px, ${position.y}px) rotate(${rotation}deg) scale(${zoom})`,
+                    transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+                    userSelect: 'none',
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full text-muted-foreground">
+                <Crop className="h-12 w-12 opacity-50" />
+              </div>
+            )}
+          </div>
         </div>
 
         <DialogFooter className="px-6 py-4 bg-muted/20 border-t border-border/50">

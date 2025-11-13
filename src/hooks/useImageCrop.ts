@@ -8,6 +8,7 @@ export const useImageCrop = (imageUrl: string | null) => {
   const generateCroppedFile = useCallback(async (): Promise<File | null> => {
     if (!imageUrl) return null;
 
+    // Charger l'image
     const img = new Image();
     img.crossOrigin = 'anonymous';
 
@@ -29,24 +30,33 @@ export const useImageCrop = (imageUrl: string | null) => {
     ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(0, 0, finalSize, finalSize);
 
+    const imgRatio = img.width / img.height;
+    let displayWidth: number;
+    let displayHeight: number;
+
+    if (imgRatio > 1) {
+      displayWidth = Math.min(img.width, previewSize);
+      displayHeight = displayWidth / imgRatio;
+    } else {
+      displayHeight = Math.min(img.height, previewSize);
+      displayWidth = displayHeight * imgRatio;
+    }
     const scale = finalSize / previewSize;
+    const finalImgWidth = displayWidth * scale;
+    const finalImgHeight = displayHeight * scale;
 
     ctx.save();
     ctx.translate(finalSize / 2, finalSize / 2);
     ctx.rotate((rotation * Math.PI) / 180);
     ctx.scale(zoom, zoom);
     ctx.translate(position.x * scale, position.y * scale);
-
-    const finalImgSize = finalSize;
-
     ctx.drawImage(
       img,
-      -finalImgSize / 2,
-      -finalImgSize / 2,
-      finalImgSize,
-      finalImgSize
+      -finalImgWidth / 2,
+      -finalImgHeight / 2,
+      finalImgWidth,
+      finalImgHeight
     );
-
     ctx.restore();
 
     return await new Promise((resolve) => {

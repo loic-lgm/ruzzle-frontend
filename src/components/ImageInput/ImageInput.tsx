@@ -83,7 +83,7 @@ const ImageInput = ({ setFormData, errors }: ImageInputProps) => {
               <img
                 src={preview}
                 alt="Prévisualisation"
-                className="w-full h-64 object-contain rounded-xl"
+                className="w-full aspect-square rounded-xl"
               />
               <button
                 type="button"
