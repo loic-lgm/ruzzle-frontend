@@ -118,8 +118,8 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                 >
                   <Avatar className="h-10 w-10">
                     <AvatarImage
-                      src={swap.user.avatar}
-                      alt={swap.user.username}
+                      src={swap.user.image}
+                      alt={swap.user.image}
                     />
                     <AvatarFallback>
                       {swap.user.username.substring(0, 2)}
@@ -242,7 +242,7 @@ const SwapRequests = ({ type, swaps, user }: ExchangeRequestsListProps) => {
                   >
                     <Avatar className="h-8 w-8">
                       <AvatarImage
-                        src={swap.user.avatar}
+                        src={swap.user.image}
                         alt={swap.user.username}
                       />
                       <AvatarFallback>

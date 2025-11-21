@@ -23,7 +23,7 @@ export type Swap = {
 export type SwapRow = {
   id: number;
   user: {
-    avatar: string;
+    image: string;
     username: string;
   };
   puzzle: {
