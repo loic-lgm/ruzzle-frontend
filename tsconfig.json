@@ -13,7 +13,7 @@
     /* Language and Environment */    
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
