@@ -43,6 +43,13 @@ const Publish = () => {
               </Link>{' '}
               de Ruzzle.
             </p>
+            <p className="mt-2 text-sm text-gray-500">
+              ⚠️ Pour être accepté, ton puzzle doit être{' '}
+              <span className="font-medium text-gray-600">
+                entier et contenir toutes ses pièces
+              </span>
+              .
+            </p>
           </div>
         </div>
       </main>
