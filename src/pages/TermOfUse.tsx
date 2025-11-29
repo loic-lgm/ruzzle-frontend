@@ -46,6 +46,13 @@ par envoi postal ou tout autre mode de remise convenu entre eux."
             respectueusement, sans publier de contenu illicite ou nuisible et en
             respectant les autres utilisateurs lors des rencontres.
           </p>
+          <p>
+            Les utilisateurs sont responsables des informations qu’ils
+            choisissent de partager dans le cadre des échanges. Il est
+            recommandé de ne communiquer que les données strictement nécessaires
+            à l’organisation de l’échange (ex. adresse pour un envoi) et de ne
+            jamais partager d’informations sensibles.
+          </p>
           <h2 className="text-xl font-semibold">4.1. Publication de puzzles</h2>
           <p>
             Lors de la publication d’un puzzle, vous vous engagez à ne proposer
